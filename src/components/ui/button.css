@@ -1,0 +1,62 @@
+.buttonBase {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  width: fit-content;
+  height: 3rem;
+  border: 0;
+  border-radius: 9999px;
+  cursor: pointer;
+  overflow: hidden;
+  white-space: nowrap;
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: var(--white, #ffffff);
+  transition: all 500ms ease;
+}
+
+.buttonBase:disabled {
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+.buttonPrimary {
+  padding: 0.25rem 3.5rem 0.25rem 1.5rem;
+  background-color: var(--secondary);
+}
+
+.buttonPrimary:hover {
+  padding-left: 3.5rem;
+  padding-right: 1.5rem;
+}
+
+.buttonSecondary {
+  padding: 0 1.5rem;
+  background-color: var(--black, #000000);
+}
+
+.buttonLabel {
+  position: relative;
+  z-index: 10;
+  transition: all 500ms ease;
+}
+
+.buttonIcon {
+  position: absolute;
+  right: 0.25rem;
+  display: flex;
+  width: 2.5rem;
+  height: 2.5rem;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  background-color: var(--bg);
+  color: var(--secondary);
+  transition: all 500ms ease;
+}
+
+.buttonPrimary:hover .buttonIcon {
+  right: calc(100% - 44px);
+  transform: rotate(45deg);
+}

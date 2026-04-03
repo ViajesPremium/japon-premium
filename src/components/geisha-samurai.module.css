@@ -1,0 +1,77 @@
+#center {
+    position: relative;
+    width: 100%;
+    height: 100svh;
+    overflow: hidden;
+    isolation: isolate;
+    background-color: transparent;
+    /* El fondo de tu web */
+    cursor: default;
+    touch-action: none;
+    /* Previene scroll en móviles mientras arrastras el líquido */
+}
+
+.mediaStage {
+    --stage-shift-x: 0px;
+    --stage-shift-y: 0px;
+
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 100%;
+    /* Ajusta el tamaño de la foto base según necesites */
+    height: 100%;
+    max-width: 800px;
+    /* Limite opcional */
+    transform: translate(-50%, -50%) translate3d(var(--stage-shift-x), var(--stage-shift-y), 0);
+    transform-origin: center center;
+    will-change: transform;
+    z-index: 1;
+}
+
+.geisha {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    /* o cover */
+    object-position: center;
+    user-select: none;
+    pointer-events: none;
+    -webkit-user-drag: none;
+}
+
+/* El lienzo WebGL se saca del contenedor de la imagen y se fija a la pantalla completa */
+.samuraiOverlay {
+    position: fixed;
+    /* Cambiado a fixed para que el líquido nade libremente por toda la ventana */
+    inset: 0;
+    z-index: 10;
+    pointer-events: none;
+}
+
+.samuraiOverlay canvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+    outline: none;
+}
+
+#center.is-coarse {
+    cursor: default;
+}
+
+@media (hover: none),
+(pointer: coarse) {
+    #center {
+        height: 100svh;
+    }
+
+    .mediaStage {
+        width: 80%;
+        /* Ajuste para móviles */
+        height: auto;
+        aspect-ratio: 1;
+    }
+}

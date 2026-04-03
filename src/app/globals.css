@@ -1,0 +1,140 @@
+@import "tailwindcss";
+
+@font-face {
+  font-family: 'Nohemi';
+  src: url('/fonts/nohemi-font-family/Nohemi-VF-BF6438cc58ad63d.ttf') format('truetype');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'BigCaslon';
+  src: url('/fonts/BigCaslon-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Thunder';
+  src: url('/fonts/OpenType-TT/Thunder-ThinHC.ttf') format('truetype');
+  font-weight: 100;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Thunder';
+  src: url('/fonts/OpenType-TT/Thunder-ExtraLightHC.ttf') format('truetype');
+  font-weight: 200;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Thunder';
+  src: url('/fonts/OpenType-TT/Thunder-LightHC.ttf') format('truetype');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Thunder';
+  src: url('/fonts/OpenType-TT/Thunder-HC.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Thunder';
+  src: url('/fonts/OpenType-TT/Thunder-MediumHC.ttf') format('truetype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Thunder';
+  src: url('/fonts/OpenType-TT/Thunder-SemiBoldHC.ttf') format('truetype');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Thunder';
+  src: url('/fonts/OpenType-TT/Thunder-BoldHC.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Thunder';
+  src: url('/fonts/OpenType-TT/Thunder-ExtraBoldHC.ttf') format('truetype');
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Thunder';
+  src: url('/fonts/OpenType-TT/Thunder-BlackHC.ttf') format('truetype');
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+  --font-nohemi: var(--font-nohemi);
+  --font-bigcaslon: var(--font-bigcaslon);
+  --font-thunder: var(--font-thunder);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+main {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+.lenis.lenis-smooth iframe {
+  pointer-events: none;
+}

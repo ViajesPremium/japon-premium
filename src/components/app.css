@@ -1,0 +1,238 @@
+#center {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  isolation: isolate;
+  background-color: transparent;
+  cursor: default;
+  touch-action: none;
+  background-color: #ffffffee;
+  border-radius: var(--radius-md);
+}
+
+.media-stage {
+  display: flex;
+  --stage-shift-x: 0px;
+  --stage-shift-y: 0px;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 100%;
+  height: 100%;
+  transform: translate(-50%, -50%) translate3d(var(--stage-shift-x), var(--stage-shift-y), 0);
+  transform-origin: center center;
+  will-change: transform;
+  z-index: 1;
+}
+
+.heroContent {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 40%;
+  margin: 40px;
+}
+
+.geisha {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  transform: translate(var(--geisha-offset-x, 0px), var(--geisha-offset-y, 0px)) scale(var(--geisha-scale, 1));
+  transform-origin: center center;
+  z-index: 2;
+  will-change: transform;
+}
+
+.geisha-image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
+  user-select: none;
+  pointer-events: none;
+  -webkit-user-drag: none;
+}
+
+.circle {
+  position: absolute;
+  top: 55%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 400px;
+  height: 400px;
+  background-color: var(--secondary);
+  border-radius: 50%;
+  z-index: -1;
+}
+
+.samurai-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  transform: translate(var(--samurai-offset-x, 0px), var(--samurai-offset-y, 0px)) scale(var(--samurai-scale, 1));
+  transform-origin: center center;
+  will-change: transform;
+}
+
+.samurai-overlay canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  outline: none;
+}
+
+#center.is-coarse {
+  cursor: default;
+}
+
+@media (hover: none),
+(pointer: coarse) {
+  #center {
+    height: 100svh;
+  }
+
+  .media-stage {
+    width: 80%;
+    height: auto;
+    aspect-ratio: 1;
+  }
+}
+
+.title {
+  color: var(--secondary);
+  font-family: var(--font-bigcaslon);
+  font-weight: 300;
+  font-size: 6.4rem;
+  line-height: 1;
+  padding-left: 140px;
+  margin-bottom: -50px;
+  text-align: start;
+}
+
+.subtitle {
+  color: var(--black);
+  font-family: var(--font-thunder);
+  font-weight: 500;
+  font-size: 16rem;
+  line-height: 1;
+}
+
+.buttons-cta {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+@media (max-width: 768px) {
+  #center {
+    height: auto;
+    min-height: 100svh;
+    border-radius: 0;
+    touch-action: pan-y;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .media-stage {
+    position: relative;
+    left: auto;
+    top: auto;
+    transform: none;
+    width: 100%;
+    height: 100%;
+    aspect-ratio: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    flex: 1;
+  }
+
+  /* El contenido fluye de forma natural arriba */
+  .heroContent {
+    position: relative;
+    left: auto;
+    top: auto;
+    transform: none;
+    z-index: 5;
+    width: 100%;
+    padding: 12svh 5% 2svh 5%;
+    /* Espaciado adaptativo */
+    margin: 0;
+    text-align: center;
+    gap: clamp(0.5rem, 1.8vh, 1.1rem);
+  }
+
+  .title {
+    font-size: clamp(2.5rem, 12vw, 3.8rem);
+    line-height: 1;
+    margin: 0 0 10px 0;
+    padding: 0;
+    text-align: center;
+  }
+
+  .subtitle {
+    font-size: clamp(4rem, 24vw, 8rem);
+    line-height: 0.9;
+    margin: 0;
+    text-align: center;
+  }
+
+  .buttons-cta {
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 0.8rem;
+    margin-top: 1.5rem;
+    z-index: 5;
+  }
+
+  .buttons-cta .buttonBase {
+    min-width: 200px;
+    justify-content: center;
+  }
+
+  /* La imagen fluye naturalmente abajo y ocupa lo restante */
+  .geisha {
+    position: relative;
+    inset: auto;
+    width: 100%;
+    height: 45svh;
+    /* Ocupa el 45% de la pantalla táctil */
+    margin-top: auto;
+    /* Mantenemos tus variables visuales, pero sin el -50% que lo rompía */
+    transform: translate(var(--geisha-mobile-offset-x, 0px), var(--geisha-mobile-offset-y, 0px)) scale(var(--geisha-mobile-scale, 1));
+    transform-origin: center bottom;
+    touch-action: none;
+    /* Permite interactuar con la imagen sin hacer scroll en la página */
+    pointer-events: auto;
+    /* Activa los eventos táctiles */
+  }
+
+  .geisha-image {
+    object-position: center bottom;
+  }
+
+  .circle {
+    top: 55%;
+    width: clamp(200px, 65vw, 320px);
+    height: auto;
+    aspect-ratio: 1 / 1;
+  }
+}
+
+@media (max-width: 480px) {
+  .buttons-cta {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .buttons-cta .buttonBase {
+    width: min(90vw, 320px);
+  }
+}

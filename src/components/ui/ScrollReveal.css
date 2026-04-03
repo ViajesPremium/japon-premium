@@ -1,0 +1,8 @@
+.scroll-reveal-text {
+    line-height: 1.8;
+    font-family: var(--font-nohemi);
+}
+
+.word {
+    display: inline-block;
+}

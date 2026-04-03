@@ -1,0 +1,19 @@
+:root {
+    /* Colors */
+    --primary: #DB2F21;
+    --secondary: #95231C;
+    --complementary: #2A4073;
+    --black: #000;
+    --bg: #f4f4f4;
+    --white: #f4f4f4;
+
+    /* Radius */
+    --radius-sm: 40px;
+    --radius-md: 60px;
+    --radius-lg: 80px;
+
+    /* Fonts */
+    --font-nohemi: 'Nohemi', sans-serif;
+    --font-bigcaslon: 'BigCaslon', serif;
+    --font-thunder: 'Thunder', sans-serif;
+}

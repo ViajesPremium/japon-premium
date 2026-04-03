@@ -1,0 +1,46 @@
+.highlights {
+    display: flex;
+    flex-direction: column;
+    height: max-content;
+    width: 100%;
+    padding: 100px 50px;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--black);
+}
+
+.title {
+    font-size: clamp(4rem, 6vw, 6rem);
+    width: 80%;
+    max-width: 900px;
+    font-weight: 300;
+    margin-bottom: 50px;
+    line-height: 1;
+    color: var(--white);
+    font-family: var(--font-bigcaslon);
+}
+
+
+.container {
+    width: 90%;
+    max-width: 1200px;
+    height: 100%;
+}
+
+.highlight {
+    color: var(--secondary);
+    font-family: var(--font-nohemi);
+    font-weight: 600;
+    font-style: italic;
+}
+
+.text {
+    color: var(--white);
+    font-size: clamp(2rem, 3vw, 3rem);
+    font-weight: thin;
+}
+
+
+.button {
+    margin-top: 2rem;
+}
