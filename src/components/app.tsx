@@ -35,6 +35,12 @@ const RADIUS_STIFFNESS = 8;
 const STAGE_PARALLAX = 15;
 const MAX_PIXEL_RATIO = 2;
 
+// --- Animación Fantasma (idle S-curve) ---
+const GHOST_IDLE_DELAY = 3.0;          // Segundos sin mover el mouse antes de activar
+const GHOST_S_DURATION = 2.8;          // Duración total del trazo en S (segundos)
+const GHOST_PAUSE_BETWEEN = 4.0;       // Pausa entre repeticiones (segundos)
+const GHOST_RADIUS = 0.12;             // Radio del cursor fantasma
+
 // --- CONTROLES VISUALES (GEISHA + CASCO) ---
 // Puedes usar valores en px, %, vw, etc. para offset.
 const GEISHA_SCALE = 1.22
@@ -261,6 +267,13 @@ function App() {
   const mouseVelocityRef = useRef(new THREE.Vector2(0, 0))
   const smoothVelocityRef = useRef(new THREE.Vector2(0, 0))
 
+  // Ghost animation state
+  const lastRealMoveTimeRef = useRef(0)
+  const ghostActiveRef = useRef(false)
+  const ghostProgressRef = useRef(0)
+  const ghostPauseTimerRef = useRef(0)
+  const realMouseActiveRef = useRef(false)
+
   const [isCoarsePointer, setIsCoarsePointer] = useState(false)
 
   const visualControlsStyle = {
@@ -287,6 +300,13 @@ function App() {
 
     targetMouseRef.current.set(x, y)
     targetHoverStateRef.current = 1 // Enciende el efecto al tocar
+    realMouseActiveRef.current = true
+    lastRealMoveTimeRef.current = performance.now() / 1000
+    // Interrupt ghost animation immediately
+    if (ghostActiveRef.current) {
+      ghostActiveRef.current = false
+      ghostProgressRef.current = 0
+    }
   }, [])
 
   const handlePointerEnter = useCallback((event: React.PointerEvent<HTMLElement>) => {
@@ -380,6 +400,7 @@ function App() {
       rendererRef.current = renderer
       uniformsRef.current = uniforms
       clockRef.current = new THREE.Clock()
+      lastRealMoveTimeRef.current = performance.now() / 1000
 
       resizeObserver = new ResizeObserver(() => {
         if (!rendererRef.current || !uniformsRef.current) return
@@ -396,6 +417,62 @@ function App() {
         if (!rendererRef.current || !sceneRef.current || !cameraRef.current || !uniformsRef.current || !clockRef.current) return
 
         const delta = Math.min(clockRef.current.getDelta(), 1 / 30)
+
+        // ─── ANIMACIÓN FANTASMA (S-curve idle) ───
+        const now = performance.now() / 1000
+        const idleTime = now - lastRealMoveTimeRef.current
+
+        if (!ghostActiveRef.current && !realMouseActiveRef.current && idleTime > GHOST_IDLE_DELAY) {
+          if (ghostPauseTimerRef.current <= 0) {
+            ghostActiveRef.current = true
+            ghostProgressRef.current = 0
+            targetHoverStateRef.current = 1
+          } else {
+            ghostPauseTimerRef.current -= delta
+          }
+        }
+
+        if (ghostActiveRef.current) {
+          ghostProgressRef.current += delta / GHOST_S_DURATION
+          const t = ghostProgressRef.current
+
+          if (t >= 1) {
+            // Terminó el trazo, iniciar pausa
+            ghostActiveRef.current = false
+            ghostProgressRef.current = 0
+            ghostPauseTimerRef.current = GHOST_PAUSE_BETWEEN
+            targetHoverStateRef.current = 0
+          } else {
+            // Curva en S natural sobre la máscara
+            // Ease in-out para que empiece y termine suave
+            const eased = t < 0.5
+              ? 4 * t * t * t
+              : 1 - Math.pow(-2 * t + 2, 3) / 2
+
+            // Trayectoria en S: recorre verticalmente con ondulación horizontal
+            // Centro de la máscara aprox en (0.5, 0.5), la S va de arriba a abajo
+            const yStart = 0.82
+            const yEnd = 0.18
+            const ghostY = yStart + (yEnd - yStart) * eased
+
+            // Ondulación horizontal en forma de S (sinusoidal con 1.5 períodos)
+            const sWave = Math.sin(eased * Math.PI * 3) * 0.12
+            // Ligera variación adicional para que no sea perfectamente simétrica
+            const drift = Math.sin(eased * Math.PI * 1.3 + 0.7) * 0.03
+            const ghostX = 0.5 + sWave + drift
+
+            targetMouseRef.current.set(ghostX, ghostY)
+
+            // Forzar un radio visible durante la animación fantasma
+            const ghostEaseRadius = Math.sin(t * Math.PI) // 0→1→0 suave
+            uniformsRef.current.u_radius.value = GHOST_RADIUS * ghostEaseRadius
+          }
+        }
+
+        // Si el mouse real dejó de moverse, marcar inactivo para permitir ghost
+        if (realMouseActiveRef.current && idleTime > 0.5) {
+          realMouseActiveRef.current = false
+        }
 
         // Calcular la inercia real
         const mouseToTargetX = targetMouseRef.current.x - smoothMouseRef.current.x
@@ -420,7 +497,10 @@ function App() {
 
         const targetRadius = Math.min(velocityMagnitude * activeVelMult, activeMaxRadius)
 
-        uniformsRef.current.u_radius.value += (targetRadius - uniformsRef.current.u_radius.value) * RADIUS_STIFFNESS * delta
+        // Solo aplicar el radius del mouse real si no está activo el fantasma
+        if (!ghostActiveRef.current) {
+          uniformsRef.current.u_radius.value += (targetRadius - uniformsRef.current.u_radius.value) * RADIUS_STIFFNESS * delta
+        }
 
         // 2. SISTEMA FÍSICO DE GOTEO
         // Vamos soltando gotas conforme avanzamos. Estas gotas se quedan ancladas en su posición.
