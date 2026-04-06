@@ -34,7 +34,7 @@
 .stickyCard {
   position: sticky;
   width: 100%;
-  max-width: 800px;
+  max-width: 1200px;
   min-height: 200px;
   overflow: hidden;
   border-radius: 2rem;

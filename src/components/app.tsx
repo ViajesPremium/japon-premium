@@ -1,52 +1,52 @@
-'use client'
+"use client";
 
-import { useCallback, useEffect, useRef, useState, type CSSProperties } from 'react'
-import * as THREE from 'three'
-import TextType from './ui/TextType'
-import './app.css'
-import { Button } from './ui/button'
+import {
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+  type CSSProperties,
+} from "react";
+import * as THREE from "three";
+import TextType from "./ui/TextType";
+import "./app.css";
+import { Button } from "./ui/button";
 
-const geisha = '/images/geisha.png'
-const samurai = '/images/casco-samurai.png'
+const geisha = "/images/geisha.png";
+const samurai = "/images/casco-samurai.png";
 
 // ====================================================================
-// 🎛️ PANEL DE CONTROL: FÍSICAS INERCIALES (LANDO NORRIS 1:1)
+// 🎛️ DEFAULT SETTINGS
 // ====================================================================
 
-const MAX_RADIUS = 0.2;             // Tamaño máximo al mover rápido el cursor
-const BLOB_COLOR = '#000000';        // Color del líquido fuera de la imagen
-const BLOB_OPACITY = 0.1;            // Opacidad del líquido (0.0 a 1.0)
+const TRAIL_LENGTH = 32;
+const SPLASH_LENGTH = 16;
+const MAX_PIXEL_RATIO = 2;
 
-// --- Físicas del Rastro y Encogimiento ---
-const TRAIL_LENGTH = 32;             // Cantidad de gotas en la cola
-const TRAIL_SHRINK_SPEED = 0.3;      // Qué tan rápido se encoge la cola hasta desaparecer
-const TRAIL_DROP_DISTANCE = 0.005;   // Gotas muy juntas para un líquido ininterrumpido
-const VELOCITY_MULTIPLIER = 6;     // Qué tan rápido crece el líquido al mover el ratón
-
-// --- Físicas de Salpicaduras (Splashes) ---
-const SPLASH_LENGTH = 16;            // Cantidad máxima de gotas volando al mismo tiempo
-const SPLASH_SHRINK_SPEED = 0.6;     // Velocidad a la que desaparece una salpicadura
-const SPLASH_VELOCITY_DAMPING = 0.94;// Fricción en el aire para las salpicaduras
-
-// --- Físicas del Ratón ---
+const MAX_RADIUS = 0.2;
+const BLOB_COLOR = "#000000";
+const BLOB_OPACITY = 0.1;
+const TRAIL_SHRINK_SPEED = 0.3;
+const TRAIL_DROP_DISTANCE = 0.005;
+const VELOCITY_MULTIPLIER = 6;
+const SPLASH_SHRINK_SPEED = 0.6;
+const SPLASH_VELOCITY_DAMPING = 0.94;
 const MOUSE_STIFFNESS = 60;
 const MOUSE_DAMPING = 0.15;
 const RADIUS_STIFFNESS = 8;
 const STAGE_PARALLAX = 15;
-const MAX_PIXEL_RATIO = 2;
+const GHOST_IDLE_THRESHOLD = 3000;
+const GHOST_MOVE_DURATION = 2000;
+const GEISHA_SCALE = 1.22;
+const GEISHA_OFFSET_X = "15%";
+const GEISHA_OFFSET_Y = "80px";
+const SAMURAI_SCALE = 1;
 
-// --- CONTROLES VISUALES (GEISHA + CASCO) ---
-// Puedes usar valores en px, %, vw, etc. para offset.
-const GEISHA_SCALE = 1.22
-const GEISHA_OFFSET_X = '15%'
-const GEISHA_OFFSET_Y = '80px'
-const GEISHA_MOBILE_SCALE = 0.92
-const GEISHA_MOBILE_OFFSET_X = '0px'
-const GEISHA_MOBILE_OFFSET_Y = '8px'
-
-const SAMURAI_SCALE = 1
-const SAMURAI_OFFSET_X = '0px'
-const SAMURAI_OFFSET_Y = '0px'
+const GEISHA_MOBILE_SCALE = 0.92;
+const GEISHA_MOBILE_OFFSET_X = "0px";
+const GEISHA_MOBILE_OFFSET_Y = "8px";
+const SAMURAI_OFFSET_X = "0px";
+const SAMURAI_OFFSET_Y = "0px";
 
 // ====================================================================
 
@@ -56,7 +56,7 @@ const vertexShader = `
     v_uv = uv;
     gl_Position = vec4(position, 1.0);
   }
-`
+`;
 
 const fragmentShader = `
   precision highp float;
@@ -210,131 +210,154 @@ const fragmentShader = `
 
     gl_FragColor = vec4(finalColor, finalAlpha);
   }
-`
+`;
 
 type ShaderUniforms = {
-  u_texture: { value: THREE.Texture }
-  u_mouse: { value: THREE.Vector2 }
-  u_resolution: { value: THREE.Vector2 }
-  u_radius: { value: number }
-  u_time: { value: number }
-  u_imageAspect: { value: number }
-  u_blobColor: { value: THREE.Color }
-  u_blobOpacity: { value: number }
-  u_hoverState: { value: number }
-  u_trailPositions: { value: THREE.Vector2[] }
-  u_trailSizes: { value: number[] }
-  u_splashPositions: { value: THREE.Vector2[] }
-  u_splashSizes: { value: number[] }
-}
+  u_texture: { value: THREE.Texture };
+  u_mouse: { value: THREE.Vector2 };
+  u_resolution: { value: THREE.Vector2 };
+  u_radius: { value: number };
+  u_time: { value: number };
+  u_imageAspect: { value: number };
+  u_blobColor: { value: THREE.Color };
+  u_blobOpacity: { value: number };
+  u_hoverState: { value: number };
+  u_trailPositions: { value: THREE.Vector2[] };
+  u_trailSizes: { value: number[] };
+  u_splashPositions: { value: THREE.Vector2[] };
+  u_splashSizes: { value: number[] };
+};
 
 function App() {
-  const rootRef = useRef<HTMLElement | null>(null)
-  const stageRef = useRef<HTMLDivElement | null>(null)
-  const geishaRef = useRef<HTMLDivElement | null>(null)
-  const overlayRef = useRef<HTMLDivElement | null>(null)
-  const sceneRef = useRef<THREE.Scene | null>(null)
-  const rendererRef = useRef<THREE.WebGLRenderer | null>(null)
-  const cameraRef = useRef<THREE.OrthographicCamera | null>(null)
-  const uniformsRef = useRef<ShaderUniforms | null>(null)
-  const animationRef = useRef<number | null>(null)
-  const clockRef = useRef<THREE.Clock | null>(null)
+  const rootRef = useRef<HTMLElement | null>(null);
+  const stageRef = useRef<HTMLDivElement | null>(null);
+  const geishaRef = useRef<HTMLDivElement | null>(null);
+  const overlayRef = useRef<HTMLDivElement | null>(null);
+  const sceneRef = useRef<THREE.Scene | null>(null);
+  const rendererRef = useRef<THREE.WebGLRenderer | null>(null);
+  const cameraRef = useRef<THREE.OrthographicCamera | null>(null);
+  const uniformsRef = useRef<ShaderUniforms | null>(null);
+  const animationRef = useRef<number | null>(null);
+  const clockRef = useRef<THREE.Clock | null>(null);
 
-  const isCoarsePointerRef = useRef(false)
-  const targetHoverStateRef = useRef(0)
-  const currentHoverStateRef = useRef(0)
+  const isCoarsePointerRef = useRef(false);
+  const targetHoverStateRef = useRef(0);
+  const currentHoverStateRef = useRef(0);
 
   // Arreglos de memoria física
-  const trailPositionsRef = useRef(Array.from({ length: TRAIL_LENGTH }, () => new THREE.Vector2(-10, -10)))
-  const trailSizesRef = useRef(new Array(TRAIL_LENGTH).fill(0))
-  const trailIndexRef = useRef(0)
-  const lastDropPosRef = useRef(new THREE.Vector2(-10, -10))
+  const trailPositionsRef = useRef(
+    Array.from({ length: TRAIL_LENGTH }, () => new THREE.Vector2(-10, -10)),
+  );
+  const trailSizesRef = useRef(new Array(TRAIL_LENGTH).fill(0));
+  const trailIndexRef = useRef(0);
+  const lastDropPosRef = useRef(new THREE.Vector2(-10, -10));
 
   // Arreglos de estado para las salpicaduras
-  const splashPositionsRef = useRef(Array.from({ length: SPLASH_LENGTH }, () => new THREE.Vector2(-10, -10)))
-  const splashVelocitiesRef = useRef(Array.from({ length: SPLASH_LENGTH }, () => new THREE.Vector2(0, 0)))
-  const splashSizesRef = useRef(new Array(SPLASH_LENGTH).fill(0))
-  const splashIndexRef = useRef(0)
+  const splashPositionsRef = useRef(
+    Array.from({ length: SPLASH_LENGTH }, () => new THREE.Vector2(-10, -10)),
+  );
+  const splashVelocitiesRef = useRef(
+    Array.from({ length: SPLASH_LENGTH }, () => new THREE.Vector2(0, 0)),
+  );
+  const splashSizesRef = useRef(new Array(SPLASH_LENGTH).fill(0));
+  const splashIndexRef = useRef(0);
 
-  const targetMouseRef = useRef(new THREE.Vector2(0.5, 0.5))
-  const smoothMouseRef = useRef(new THREE.Vector2(0.5, 0.5))
-  const mouseVelocityRef = useRef(new THREE.Vector2(0, 0))
-  const smoothVelocityRef = useRef(new THREE.Vector2(0, 0))
+  const targetMouseRef = useRef(new THREE.Vector2(0.5, 0.5));
+  const smoothMouseRef = useRef(new THREE.Vector2(0.5, 0.5));
+  const mouseVelocityRef = useRef(new THREE.Vector2(0, 0));
+  const smoothVelocityRef = useRef(new THREE.Vector2(0, 0));
 
-  const [isCoarsePointer, setIsCoarsePointer] = useState(false)
+  // --- Refs para el Fantasma ---
+  const lastInteractionTimeRef = useRef(Date.now());
+  const ghostNextMoveTimeRef = useRef(0);
+  const ghostActiveUntilRef = useRef(0);
+
+  const ghostStartRef = useRef(new THREE.Vector2());
+  const ghostControlRef = useRef(new THREE.Vector2());
+  const ghostEndRef = useRef(new THREE.Vector2());
+
+  const [isCoarsePointer, setIsCoarsePointer] = useState(false);
 
   const visualControlsStyle = {
-    '--geisha-scale': GEISHA_SCALE,
-    '--geisha-offset-x': GEISHA_OFFSET_X,
-    '--geisha-offset-y': GEISHA_OFFSET_Y,
-    '--geisha-mobile-scale': GEISHA_MOBILE_SCALE,
-    '--geisha-mobile-offset-x': GEISHA_MOBILE_OFFSET_X,
-    '--geisha-mobile-offset-y': GEISHA_MOBILE_OFFSET_Y,
-    '--samurai-scale': SAMURAI_SCALE,
-    '--samurai-offset-x': SAMURAI_OFFSET_X,
-    '--samurai-offset-y': SAMURAI_OFFSET_Y,
-  } as CSSProperties
+    "--geisha-scale": GEISHA_SCALE,
+    "--geisha-offset-x": GEISHA_OFFSET_X,
+    "--geisha-offset-y": GEISHA_OFFSET_Y,
+    "--geisha-mobile-scale": GEISHA_MOBILE_SCALE,
+    "--geisha-mobile-offset-x": GEISHA_MOBILE_OFFSET_X,
+    "--geisha-mobile-offset-y": GEISHA_MOBILE_OFFSET_Y,
+    "--samurai-scale": SAMURAI_SCALE,
+    "--samurai-offset-x": SAMURAI_OFFSET_X,
+    "--samurai-offset-y": SAMURAI_OFFSET_Y,
+  } as CSSProperties;
 
-  const handlePointerMove = useCallback((event: React.PointerEvent<HTMLElement>) => {
-    const geishaElement = geishaRef.current
-    if (!geishaElement) return // Quitamos el bloqueo táctil
+  const handlePointerMove = useCallback(
+    (event: React.PointerEvent<HTMLElement>) => {
+      const geishaElement = geishaRef.current;
+      if (!geishaElement) return; // Quitamos el bloqueo táctil
 
-    const rect = geishaElement.getBoundingClientRect()
-    const rawX = (event.clientX - rect.left) / rect.width
-    const rawY = 1 - (event.clientY - rect.top) / rect.height
-    const x = Math.min(Math.max(rawX, 0), 1)
-    const y = Math.min(Math.max(rawY, 0), 1)
+      const rect = geishaElement.getBoundingClientRect();
+      const rawX = (event.clientX - rect.left) / rect.width;
+      const rawY = 1 - (event.clientY - rect.top) / rect.height;
+      const x = Math.min(Math.max(rawX, 0), 1);
+      const y = Math.min(Math.max(rawY, 0), 1);
 
-    targetMouseRef.current.set(x, y)
-    targetHoverStateRef.current = 1 // Enciende el efecto al tocar
-  }, [])
+      targetMouseRef.current.set(x, y);
+      targetHoverStateRef.current = 1; // Enciende el efecto al tocar
+      lastInteractionTimeRef.current = Date.now(); // Resetear el cronómetro del fantasma
+    },
+    [],
+  );
 
-  const handlePointerEnter = useCallback((event: React.PointerEvent<HTMLElement>) => {
-    handlePointerMove(event)
-  }, [handlePointerMove])
+  const handlePointerEnter = useCallback(
+    (event: React.PointerEvent<HTMLElement>) => {
+      handlePointerMove(event);
+    },
+    [handlePointerMove],
+  );
 
   const handlePointerLeave = useCallback(() => {
-    targetHoverStateRef.current = 0 // Apaga suavemente al levantar el dedo
-  }, [])
+    targetHoverStateRef.current = 0; // Apaga suavemente al levantar el dedo
+  }, []);
 
   const handleImageEnter = useCallback(() => {
-    targetHoverStateRef.current = 1
-  }, [])
+    targetHoverStateRef.current = 1;
+    lastInteractionTimeRef.current = Date.now();
+  }, []);
 
   const handleImageLeave = useCallback(() => {
-    targetHoverStateRef.current = 0
-  }, [])
+    targetHoverStateRef.current = 0;
+  }, []);
 
   useEffect(() => {
-    const mediaQuery = window.matchMedia('(pointer: coarse)')
+    const mediaQuery = window.matchMedia("(pointer: coarse)");
     const syncMode = () => {
-      const coarse = mediaQuery.matches
-      isCoarsePointerRef.current = coarse
-      setIsCoarsePointer(coarse)
+      const coarse = mediaQuery.matches;
+      isCoarsePointerRef.current = coarse;
+      setIsCoarsePointer(coarse);
       // Hemos eliminado la forzatura del mouse al (0.5, 0.5) para dejar que el dedo dirija.
-    }
-    syncMode()
-    mediaQuery.addEventListener('change', syncMode)
-    return () => mediaQuery.removeEventListener('change', syncMode)
-  }, [])
+    };
+    syncMode();
+    mediaQuery.addEventListener("change", syncMode);
+    return () => mediaQuery.removeEventListener("change", syncMode);
+  }, []);
 
   useEffect(() => {
-    const container = overlayRef.current
-    if (!container) return
-    let disposed = false
-    let resizeObserver: ResizeObserver | null = null
-    const loader = new THREE.TextureLoader()
+    const container = overlayRef.current;
+    if (!container) return;
+    let disposed = false;
+    let resizeObserver: ResizeObserver | null = null;
+    const loader = new THREE.TextureLoader();
 
     loader.load(samurai, (texture: THREE.Texture) => {
-      if (disposed) return
+      if (disposed) return;
 
-      texture.colorSpace = THREE.SRGBColorSpace
-      const width = Math.max(container.clientWidth, 1)
-      const height = Math.max(container.clientHeight, 1)
+      texture.colorSpace = THREE.SRGBColorSpace;
+      const width = Math.max(container.clientWidth, 1);
+      const height = Math.max(container.clientHeight, 1);
 
-      const scene = new THREE.Scene()
-      const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1)
-      const textureImage = texture.image as { width: number; height: number }
+      const scene = new THREE.Scene();
+      const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
+      const textureImage = texture.image as { width: number; height: number };
 
       const uniforms: ShaderUniforms = {
         u_texture: { value: texture },
@@ -349,10 +372,10 @@ function App() {
         u_trailPositions: { value: trailPositionsRef.current },
         u_trailSizes: { value: trailSizesRef.current },
         u_splashPositions: { value: splashPositionsRef.current },
-        u_splashSizes: { value: splashSizesRef.current }
-      }
+        u_splashSizes: { value: splashSizesRef.current },
+      };
 
-      const geometry = new THREE.PlaneGeometry(2, 2)
+      const geometry = new THREE.PlaneGeometry(2, 2);
       const material = new THREE.ShaderMaterial({
         uniforms,
         vertexShader,
@@ -360,153 +383,265 @@ function App() {
         transparent: true,
         depthTest: false,
         depthWrite: false,
-      })
+      });
 
-      scene.add(new THREE.Mesh(geometry, material))
+      scene.add(new THREE.Mesh(geometry, material));
 
-      const renderer = new THREE.WebGLRenderer({ antialias: false, alpha: true, powerPreference: 'high-performance' })
-      renderer.outputColorSpace = THREE.SRGBColorSpace
-      renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, MAX_PIXEL_RATIO))
-      renderer.setSize(width, height)
+      const renderer = new THREE.WebGLRenderer({
+        antialias: false,
+        alpha: true,
+        powerPreference: "high-performance",
+      });
+      renderer.outputColorSpace = THREE.SRGBColorSpace;
+      renderer.setPixelRatio(
+        Math.min(window.devicePixelRatio || 1, MAX_PIXEL_RATIO),
+      );
+      renderer.setSize(width, height);
 
-      texture.minFilter = THREE.LinearFilter
-      texture.magFilter = THREE.LinearFilter
+      texture.minFilter = THREE.LinearFilter;
+      texture.magFilter = THREE.LinearFilter;
 
-      container.innerHTML = ''
-      container.appendChild(renderer.domElement)
+      container.innerHTML = "";
+      container.appendChild(renderer.domElement);
 
-      sceneRef.current = scene
-      cameraRef.current = camera
-      rendererRef.current = renderer
-      uniformsRef.current = uniforms
-      clockRef.current = new THREE.Clock()
+      sceneRef.current = scene;
+      cameraRef.current = camera;
+      rendererRef.current = renderer;
+      uniformsRef.current = uniforms;
+      clockRef.current = new THREE.Clock();
 
       resizeObserver = new ResizeObserver(() => {
-        if (!rendererRef.current || !uniformsRef.current) return
-        const nextWidth = Math.max(container.clientWidth, 1)
-        const nextHeight = Math.max(container.clientHeight, 1)
-        rendererRef.current.setPixelRatio(Math.min(window.devicePixelRatio || 1, MAX_PIXEL_RATIO))
-        rendererRef.current.setSize(nextWidth, nextHeight, false)
-        uniformsRef.current.u_resolution.value.set(nextWidth, nextHeight)
-      })
-      resizeObserver.observe(container)
-      if (geishaRef.current) resizeObserver.observe(geishaRef.current)
+        if (!rendererRef.current || !uniformsRef.current) return;
+        const nextWidth = Math.max(container.clientWidth, 1);
+        const nextHeight = Math.max(container.clientHeight, 1);
+        rendererRef.current.setPixelRatio(
+          Math.min(window.devicePixelRatio || 1, MAX_PIXEL_RATIO),
+        );
+        rendererRef.current.setSize(nextWidth, nextHeight, false);
+        uniformsRef.current.u_resolution.value.set(nextWidth, nextHeight);
+      });
+      resizeObserver.observe(container);
+      if (geishaRef.current) resizeObserver.observe(geishaRef.current);
 
       const render = () => {
-        if (!rendererRef.current || !sceneRef.current || !cameraRef.current || !uniformsRef.current || !clockRef.current) return
+        if (
+          !rendererRef.current ||
+          !sceneRef.current ||
+          !cameraRef.current ||
+          !uniformsRef.current ||
+          !clockRef.current
+        )
+          return;
 
-        const delta = Math.min(clockRef.current.getDelta(), 1 / 30)
+        const delta = Math.min(clockRef.current.getDelta(), 1 / 30);
+        const now = Date.now();
+
+        // --- Lógica del Fantasma (Ghost Drawing Path) ---
+        const isIdle =
+          now - lastInteractionTimeRef.current > GHOST_IDLE_THRESHOLD;
+        if (isIdle) {
+          if (now > ghostNextMoveTimeRef.current) {
+            ghostActiveUntilRef.current = now + GHOST_MOVE_DURATION;
+
+            // 1. Generar puntos para una curva suave aleatoria
+            // Inicio, fin y un punto de control que curve el trazo
+            ghostStartRef.current.set(
+              0.2 + Math.random() * 0.6,
+              0.2 + Math.random() * 0.6,
+            );
+            ghostEndRef.current.set(
+              0.2 + Math.random() * 0.6,
+              0.2 + Math.random() * 0.6,
+            );
+            ghostControlRef.current.set(
+              0.5 + (Math.random() - 0.5) * 1.5,
+              0.5 + (Math.random() - 0.5) * 1.5,
+            );
+
+            // 2. Evitar la "explosión" inicial teletransportando los cursores
+            // suavemente al punto de inicio antes de empezar a pintar
+            targetMouseRef.current.copy(ghostStartRef.current);
+            smoothMouseRef.current.copy(ghostStartRef.current);
+            mouseVelocityRef.current.set(0, 0);
+            smoothVelocityRef.current.set(0, 0);
+
+            targetHoverStateRef.current = 1; // Empezar a pintar
+
+            // Programar el siguiente trazo con pausas aleatorias
+            ghostNextMoveTimeRef.current =
+              now + GHOST_MOVE_DURATION + 1500 + Math.random() * 2500;
+          }
+
+          if (now < ghostActiveUntilRef.current) {
+            // 3. Progreso de 0 a 1
+            const progress =
+              1 - (ghostActiveUntilRef.current - now) / GHOST_MOVE_DURATION;
+
+            // 4. Easing In-Out (Arranca despacio, rápido en medio, frena despacio)
+            const easeProgress = -(Math.cos(Math.PI * progress) - 1) / 2;
+            const t = easeProgress;
+            const mt = 1 - t;
+
+            // 5. Calcular la curva de Bézier cuadrática
+            const currentX =
+              mt * mt * ghostStartRef.current.x +
+              2 * mt * t * ghostControlRef.current.x +
+              t * t * ghostEndRef.current.x;
+            const currentY =
+              mt * mt * ghostStartRef.current.y +
+              2 * mt * t * ghostControlRef.current.y +
+              t * t * ghostEndRef.current.y;
+
+            // 6. Añadir "temblor" microscópico de mano (ruido de baja amplitud)
+            const noiseX = Math.sin(now * 0.003) * 0.004;
+            const noiseY = Math.cos(now * 0.004) * 0.004;
+
+            targetMouseRef.current.set(currentX + noiseX, currentY + noiseY);
+          } else if (targetHoverStateRef.current === 1) {
+            targetHoverStateRef.current = 0; // Levantar el "pincel" al terminar
+          }
+        }
 
         // Calcular la inercia real
-        const mouseToTargetX = targetMouseRef.current.x - smoothMouseRef.current.x
-        const mouseToTargetY = targetMouseRef.current.y - smoothMouseRef.current.y
+        const mouseToTargetX =
+          targetMouseRef.current.x - smoothMouseRef.current.x;
+        const mouseToTargetY =
+          targetMouseRef.current.y - smoothMouseRef.current.y;
 
-        mouseVelocityRef.current.x += mouseToTargetX * MOUSE_STIFFNESS * delta
-        mouseVelocityRef.current.y += mouseToTargetY * MOUSE_STIFFNESS * delta
-        mouseVelocityRef.current.multiplyScalar(Math.pow(MOUSE_DAMPING, delta * 60))
+        mouseVelocityRef.current.x += mouseToTargetX * MOUSE_STIFFNESS * delta;
+        mouseVelocityRef.current.y += mouseToTargetY * MOUSE_STIFFNESS * delta;
+        mouseVelocityRef.current.multiplyScalar(
+          Math.pow(MOUSE_DAMPING, delta * 60),
+        );
 
-        smoothMouseRef.current.x += mouseVelocityRef.current.x * delta * 60
-        smoothMouseRef.current.y += mouseVelocityRef.current.y * delta * 60
+        smoothMouseRef.current.x += mouseVelocityRef.current.x * delta * 60;
+        smoothMouseRef.current.y += mouseVelocityRef.current.y * delta * 60;
 
-        uniformsRef.current.u_mouse.value.copy(smoothMouseRef.current)
+        uniformsRef.current.u_mouse.value.copy(smoothMouseRef.current);
 
         // 1. DINÁMICA DE APARICIÓN POR MOVIMIENTO
-        smoothVelocityRef.current.lerp(mouseVelocityRef.current, 0.2)
-        const velocityMagnitude = smoothVelocityRef.current.length()
+        smoothVelocityRef.current.lerp(mouseVelocityRef.current, 0.2);
+        const velocityMagnitude = smoothVelocityRef.current.length();
 
         // 🟢 NUEVO: Si es táctil, hacemos la pintura MÁS GRANDE para que se vea claro debajo del dedo
-        const activeMaxRadius = isCoarsePointerRef.current ? MAX_RADIUS * 2.0 : MAX_RADIUS
-        const activeVelMult = isCoarsePointerRef.current ? VELOCITY_MULTIPLIER * 2.5 : VELOCITY_MULTIPLIER
+        const activeMaxRadius = isCoarsePointerRef.current
+          ? MAX_RADIUS * 2.0
+          : MAX_RADIUS;
+        const activeVelMult = isCoarsePointerRef.current
+          ? VELOCITY_MULTIPLIER * 2.5
+          : VELOCITY_MULTIPLIER;
 
-        const targetRadius = Math.min(velocityMagnitude * activeVelMult, activeMaxRadius)
+        const targetRadius = Math.min(
+          velocityMagnitude * activeVelMult,
+          activeMaxRadius,
+        );
 
-        uniformsRef.current.u_radius.value += (targetRadius - uniformsRef.current.u_radius.value) * RADIUS_STIFFNESS * delta
+        uniformsRef.current.u_radius.value +=
+          (targetRadius - uniformsRef.current.u_radius.value) *
+          RADIUS_STIFFNESS *
+          delta;
 
         // 2. SISTEMA FÍSICO DE GOTEO
-        // Vamos soltando gotas conforme avanzamos. Estas gotas se quedan ancladas en su posición.
-        if (smoothMouseRef.current.distanceTo(lastDropPosRef.current) > TRAIL_DROP_DISTANCE) {
+        if (
+          smoothMouseRef.current.distanceTo(lastDropPosRef.current) >
+          TRAIL_DROP_DISTANCE
+        ) {
           const idx = trailIndexRef.current;
           trailPositionsRef.current[idx].copy(smoothMouseRef.current);
-          // La gota nace con el mismo radio actual que tiene el cursor
           trailSizesRef.current[idx] = uniformsRef.current.u_radius.value;
           trailIndexRef.current = (idx + 1) % TRAIL_LENGTH;
           lastDropPosRef.current.copy(smoothMouseRef.current);
         }
 
         // 3. ENCOGIMIENTO INERCIAL (Shrink)
-        // Las gotas que dejamos atrás no se desvanecen; se encogen físicamente.
         for (let i = 0; i < TRAIL_LENGTH; i++) {
           if (trailSizesRef.current[i] > 0) {
-            trailSizesRef.current[i] = Math.max(0, trailSizesRef.current[i] - delta * TRAIL_SHRINK_SPEED);
+            trailSizesRef.current[i] = Math.max(
+              0,
+              trailSizesRef.current[i] - delta * TRAIL_SHRINK_SPEED,
+            );
           }
         }
 
         // 4. SALPICADURAS (Splashes)
-        // Soltamos gotas separadas que salen disparadas
         if (velocityMagnitude > 0.05 && Math.random() > 0.5) {
           const sIdx = splashIndexRef.current;
           splashPositionsRef.current[sIdx].copy(smoothMouseRef.current);
 
-          // Dirección completamente aleatoria (360 grados)
           const angle = Math.random() * Math.PI * 2;
           const force = velocityMagnitude * (0.8 + Math.random() * 1.5);
 
           splashVelocitiesRef.current[sIdx].set(
             smoothVelocityRef.current.x * 0.2 + Math.cos(angle) * force,
-            smoothVelocityRef.current.y * 0.2 + Math.sin(angle) * force
+            smoothVelocityRef.current.y * 0.2 + Math.sin(angle) * force,
           );
 
-          // Tamaño variable pero menor al volumen central
-          splashSizesRef.current[sIdx] = Math.max(0.015, uniformsRef.current.u_radius.value * (0.15 + Math.random() * 0.3));
+          splashSizesRef.current[sIdx] = Math.max(
+            0.015,
+            uniformsRef.current.u_radius.value * (0.15 + Math.random() * 0.3),
+          );
           splashIndexRef.current = (sIdx + 1) % SPLASH_LENGTH;
         }
 
-        // Resolviendo la cinemática de las gotas
         for (let i = 0; i < SPLASH_LENGTH; i++) {
           if (splashSizesRef.current[i] > 0) {
-            splashPositionsRef.current[i].x += splashVelocitiesRef.current[i].x * delta;
-            splashPositionsRef.current[i].y += splashVelocitiesRef.current[i].y * delta;
-            splashVelocitiesRef.current[i].multiplyScalar(Math.pow(SPLASH_VELOCITY_DAMPING, delta * 60));
-            splashSizesRef.current[i] = Math.max(0, splashSizesRef.current[i] - delta * SPLASH_SHRINK_SPEED);
+            splashPositionsRef.current[i].x +=
+              splashVelocitiesRef.current[i].x * delta;
+            splashPositionsRef.current[i].y +=
+              splashVelocitiesRef.current[i].y * delta;
+            splashVelocitiesRef.current[i].multiplyScalar(
+              Math.pow(SPLASH_VELOCITY_DAMPING, delta * 60),
+            );
+            splashSizesRef.current[i] = Math.max(
+              0,
+              splashSizesRef.current[i] - delta * SPLASH_SHRINK_SPEED,
+            );
           }
         }
 
-        // Transición suave entre Color <-> Imagen
-        currentHoverStateRef.current += (targetHoverStateRef.current - currentHoverStateRef.current) * delta * 12
+        currentHoverStateRef.current +=
+          (targetHoverStateRef.current - currentHoverStateRef.current) *
+          delta *
+          12;
 
-        uniformsRef.current.u_hoverState.value = currentHoverStateRef.current
-        uniformsRef.current.u_time.value += delta
+        uniformsRef.current.u_hoverState.value = currentHoverStateRef.current;
+        uniformsRef.current.u_time.value += delta;
 
-        rendererRef.current.render(sceneRef.current, cameraRef.current)
+        rendererRef.current.render(sceneRef.current, cameraRef.current);
 
-        // Parallax sutil del fondo
-        const host = stageRef.current
+        const host = stageRef.current;
         if (host) {
-          const offsetX = smoothMouseRef.current.x - 0.5
-          const offsetY = 0.5 - smoothMouseRef.current.y
-          host.style.setProperty('--stage-shift-x', `${(offsetX * STAGE_PARALLAX).toFixed(2)}px`)
-          host.style.setProperty('--stage-shift-y', `${(offsetY * STAGE_PARALLAX).toFixed(2)}px`)
+          const offsetX = smoothMouseRef.current.x - 0.5;
+          const offsetY = 0.5 - smoothMouseRef.current.y;
+          host.style.setProperty(
+            "--stage-shift-x",
+            `${(offsetX * STAGE_PARALLAX).toFixed(2)}px`,
+          );
+          host.style.setProperty(
+            "--stage-shift-y",
+            `${(offsetY * STAGE_PARALLAX).toFixed(2)}px`,
+          );
         }
 
-        animationRef.current = requestAnimationFrame(render)
-      }
-      render()
-    }
-    )
+        animationRef.current = requestAnimationFrame(render);
+      };
+      render();
+    });
 
     return () => {
-      disposed = true
-      if (animationRef.current !== null) cancelAnimationFrame(animationRef.current)
-      resizeObserver?.disconnect()
-      rendererRef.current?.dispose()
-    }
-  }, [])
+      disposed = true;
+      if (animationRef.current !== null)
+        cancelAnimationFrame(animationRef.current);
+      resizeObserver?.disconnect();
+      rendererRef.current?.dispose();
+    };
+  }, []);
 
   return (
     <section
       ref={rootRef}
       id="center"
-      className={isCoarsePointer ? 'is-coarse' : ''}
+      className={isCoarsePointer ? "is-coarse" : ""}
       style={visualControlsStyle}
       onPointerEnter={handlePointerEnter}
       onPointerMove={handlePointerMove}
@@ -522,7 +657,7 @@ function App() {
           <TextType
             as="h1"
             className="title"
-            text={['Conoce', 'Viaja a', 'Disfruta']}
+            text={["Conoce", "Viaja a", "Disfruta"]}
             typingSpeed={40}
             pauseDuration={1500}
             showCursor
@@ -538,13 +673,16 @@ function App() {
         </div>
         <div ref={geishaRef} className="geisha">
           <img src={geisha} alt="Geisha" className="geisha-image" />
-          <div ref={overlayRef} className="samurai-overlay" aria-hidden="true" />
+          <div
+            ref={overlayRef}
+            className="samurai-overlay"
+            aria-hidden="true"
+          />
           <div className="circle"></div>
         </div>
-
       </div>
     </section>
-  )
+  );
 }
 
-export default App
+export default App;

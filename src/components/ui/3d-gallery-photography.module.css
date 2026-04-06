@@ -1,0 +1,44 @@
+.fallbackContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    background-color: transparent;
+    padding: 1rem;
+}
+
+.fallbackText {
+    color: #4b5563;
+    margin-bottom: 1rem;
+}
+
+.fallbackGrid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+    max-height: 24rem;
+    overflow-y: auto;
+    width: 100%;
+}
+
+@media (min-width: 768px) {
+    .fallbackGrid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+}
+
+.fallbackImage {
+    width: 100%;
+    height: 8rem;
+    object-fit: cover;
+    border-radius: 0.25rem;
+}
+
+.galleryContainer {
+    width: 100%;
+    height: 100vh;
+    position: relative;
+    overflow: hidden;
+    background-color: #000000;
+}
