@@ -12,7 +12,6 @@ import CTAForm from "@/sections/form/ctaForm";
 export default function Home() {
   return (
     <main>
-      <Navbar />
       <Hero />
       <div style={{ position: "relative", zIndex: 10 }}>
         <Snapshot />

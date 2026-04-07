@@ -13,7 +13,7 @@ import "./app.css";
 import { Button } from "./ui/button";
 
 const geisha = "/images/geisha.png";
-const samurai = "/images/casco-samurai.png";
+const samurai = "/images/samurai.png";
 
 // ====================================================================
 // 🎛️ DEFAULT SETTINGS
@@ -21,10 +21,10 @@ const samurai = "/images/casco-samurai.png";
 
 const TRAIL_LENGTH = 32;
 const SPLASH_LENGTH = 16;
-const MAX_PIXEL_RATIO = 2;
+const MAX_PIXEL_RATIO = 3;
 
 const MAX_RADIUS = 0.5;
-const BLOB_COLOR = "#ff0000";
+const BLOB_COLOR = "#000000";
 const BLOB_OPACITY = 0.3;
 const TRAIL_SHRINK_SPEED = 0.3;
 const TRAIL_DROP_DISTANCE = 0.005;
@@ -43,9 +43,9 @@ const GHOST_FORCED_RADIUS = 0.12;
 const GHOST_PAUSE_MIN = 1200;
 const GHOST_PAUSE_MAX = 1500;
 
-const GEISHA_SCALE = 1.22;
-const GEISHA_OFFSET_X = "15%";
-const GEISHA_OFFSET_Y = "80px";
+const GEISHA_SCALE = 1;
+const GEISHA_OFFSET_X = "0";
+const GEISHA_OFFSET_Y = "0px";
 const SAMURAI_SCALE = 1;
 
 const GEISHA_MOBILE_SCALE = 2;
