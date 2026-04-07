@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useRef, useState, useMemo } from "react";
+import { useLayoutEffect, useRef, useState, useMemo } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import InfiniteGallery from "@/components/ui/3d-gallery-photography";
@@ -52,7 +52,7 @@ export default function Enamorate() {
 
   const typingText = useMemo(() => ["Gastronomía", "Cultura", "Historia"], []);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (!containerRef.current) return;
 
     const st = ScrollTrigger.create({

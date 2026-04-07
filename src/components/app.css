@@ -7,8 +7,7 @@
   background-color: transparent;
   cursor: default;
   touch-action: none;
-  background-color: #ffffffee;
-  border-radius: var(--radius-md);
+  background-color: #ffffffd9;
 }
 
 .media-stage {

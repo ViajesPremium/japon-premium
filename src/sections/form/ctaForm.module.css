@@ -1,0 +1,103 @@
+.ctaForm {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--black);
+    padding: clamp(3rem, 10vw, 6rem) clamp(1.25rem, 5vw, 3rem);
+}
+
+.ctaFormContent {
+    width: 90%;
+    max-width: 1200px;
+    display: flex;
+    gap: clamp(2rem, 5vw, 4rem);
+    align-items: flex-start;
+}
+
+.ctaFormText {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.ctaFormText h2 {
+    font-family: var(--font-bigcaslon);
+    font-size: clamp(2rem, 5vw, 4rem);
+    font-weight: 300;
+    color: var(--white);
+}
+
+.ctaFormText p {
+    font-family: var(--font-nohemi);
+    font-size: clamp(1rem, 2vw, 1.25rem);
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.ctaFormForm {
+    flex: 1;
+}
+
+.ctaFormForm form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.ctaFormForm input,
+.ctaFormForm textarea {
+    width: 100%;
+    padding: 0.875rem 1rem;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 0.5rem;
+    color: var(--white);
+    font-family: var(--font-nohemi);
+    font-size: 1rem;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.ctaFormForm input:focus,
+.ctaFormForm textarea:focus {
+    border-color: var(--secondary);
+}
+
+.ctaFormForm input::placeholder,
+.ctaFormForm textarea::placeholder {
+    color: rgba(255, 255, 255, 0.4);
+}
+
+.ctaFormForm textarea {
+    min-height: 120px;
+    resize: vertical;
+}
+
+.ctaFormForm button {
+    padding: 0.875rem 2rem;
+    background-color: var(--secondary);
+    color: var(--white);
+    border: none;
+    border-radius: 9999px;
+    font-family: var(--font-nohemi);
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: opacity 0.2s;
+}
+
+.ctaFormForm button:hover {
+    opacity: 0.9;
+}
+
+@media (max-width: 768px) {
+    .ctaFormContent {
+        flex-direction: column;
+    }
+
+    .ctaFormText {
+        text-align: center;
+        align-items: center;
+    }
+}

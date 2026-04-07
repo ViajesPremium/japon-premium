@@ -23,9 +23,9 @@ const TRAIL_LENGTH = 32;
 const SPLASH_LENGTH = 16;
 const MAX_PIXEL_RATIO = 2;
 
-const MAX_RADIUS = 0.2;
-const BLOB_COLOR = "#000000";
-const BLOB_OPACITY = 0.1;
+const MAX_RADIUS = 0.5;
+const BLOB_COLOR = "#ff0000";
+const BLOB_OPACITY = 0.3;
 const TRAIL_SHRINK_SPEED = 0.3;
 const TRAIL_DROP_DISTANCE = 0.005;
 const VELOCITY_MULTIPLIER = 6;
@@ -34,17 +34,23 @@ const SPLASH_VELOCITY_DAMPING = 0.94;
 const MOUSE_STIFFNESS = 60;
 const MOUSE_DAMPING = 0.15;
 const RADIUS_STIFFNESS = 8;
+
 const STAGE_PARALLAX = 15;
-const GHOST_IDLE_THRESHOLD = 3000;
-const GHOST_MOVE_DURATION = 2000;
+
+const GHOST_IDLE_THRESHOLD = 1500;
+const GHOST_MOVE_DURATION = 1400;
+const GHOST_FORCED_RADIUS = 0.12;
+const GHOST_PAUSE_MIN = 1200;
+const GHOST_PAUSE_MAX = 1500;
+
 const GEISHA_SCALE = 1.22;
 const GEISHA_OFFSET_X = "15%";
 const GEISHA_OFFSET_Y = "80px";
 const SAMURAI_SCALE = 1;
 
-const GEISHA_MOBILE_SCALE = 0.92;
+const GEISHA_MOBILE_SCALE = 2;
 const GEISHA_MOBILE_OFFSET_X = "0px";
-const GEISHA_MOBILE_OFFSET_Y = "8px";
+const GEISHA_MOBILE_OFFSET_Y = "220px";
 const SAMURAI_OFFSET_X = "0px";
 const SAMURAI_OFFSET_Y = "0px";
 
@@ -436,69 +442,66 @@ function App() {
         const delta = Math.min(clockRef.current.getDelta(), 1 / 30);
         const now = Date.now();
 
-        // --- Lógica del Fantasma (Ghost Drawing Path) ---
+        // --- Lógica del Fantasma (S-curve agresiva) ---
         const isIdle =
           now - lastInteractionTimeRef.current > GHOST_IDLE_THRESHOLD;
         if (isIdle) {
           if (now > ghostNextMoveTimeRef.current) {
             ghostActiveUntilRef.current = now + GHOST_MOVE_DURATION;
 
-            // 1. Generar puntos para una curva suave aleatoria
-            // Inicio, fin y un punto de control que curve el trazo
-            ghostStartRef.current.set(
-              0.2 + Math.random() * 0.6,
-              0.2 + Math.random() * 0.6,
-            );
-            ghostEndRef.current.set(
-              0.2 + Math.random() * 0.6,
-              0.2 + Math.random() * 0.6,
-            );
-            ghostControlRef.current.set(
-              0.5 + (Math.random() - 0.5) * 1.5,
-              0.5 + (Math.random() - 0.5) * 1.5,
-            );
+            // Teletransportar al punto de inicio sin salto visual
+            const startX = 0.5 + Math.sin(now * 0.001) * 0.08;
+            ghostStartRef.current.set(startX, 0.88);
+            ghostEndRef.current.set(startX, 0.12);
 
-            // 2. Evitar la "explosión" inicial teletransportando los cursores
-            // suavemente al punto de inicio antes de empezar a pintar
             targetMouseRef.current.copy(ghostStartRef.current);
             smoothMouseRef.current.copy(ghostStartRef.current);
             mouseVelocityRef.current.set(0, 0);
             smoothVelocityRef.current.set(0, 0);
 
-            targetHoverStateRef.current = 1; // Empezar a pintar
+            targetHoverStateRef.current = 1;
 
-            // Programar el siguiente trazo con pausas aleatorias
+            // Pausa corta entre repeticiones
             ghostNextMoveTimeRef.current =
-              now + GHOST_MOVE_DURATION + 1500 + Math.random() * 2500;
+              now +
+              GHOST_MOVE_DURATION +
+              GHOST_PAUSE_MIN +
+              Math.random() * (GHOST_PAUSE_MAX - GHOST_PAUSE_MIN);
           }
 
           if (now < ghostActiveUntilRef.current) {
-            // 3. Progreso de 0 a 1
             const progress =
               1 - (ghostActiveUntilRef.current - now) / GHOST_MOVE_DURATION;
 
-            // 4. Easing In-Out (Arranca despacio, rápido en medio, frena despacio)
-            const easeProgress = -(Math.cos(Math.PI * progress) - 1) / 2;
-            const t = easeProgress;
-            const mt = 1 - t;
+            // Easing cuártico agresivo: arranque y frenado bruscos, rápido en el centro
+            const eased =
+              progress < 0.5
+                ? 8 * progress * progress * progress * progress
+                : 1 - Math.pow(-2 * progress + 2, 4) / 2;
 
-            // 5. Calcular la curva de Bézier cuadrática
-            const currentX =
-              mt * mt * ghostStartRef.current.x +
-              2 * mt * t * ghostControlRef.current.x +
-              t * t * ghostEndRef.current.x;
-            const currentY =
-              mt * mt * ghostStartRef.current.y +
-              2 * mt * t * ghostControlRef.current.y +
-              t * t * ghostEndRef.current.y;
+            // Trayectoria en S: recorrido vertical completo con ondulación lateral fuerte
+            const ghostY =
+              ghostStartRef.current.y +
+              (ghostEndRef.current.y - ghostStartRef.current.y) * eased;
 
-            // 6. Añadir "temblor" microscópico de mano (ruido de baja amplitud)
-            const noiseX = Math.sin(now * 0.003) * 0.004;
-            const noiseY = Math.cos(now * 0.004) * 0.004;
+            // Ondulación S pronunciada (3 semi-ondas)
+            const sWave = Math.sin(eased * Math.PI * 3) * 0.2;
+            // Drift asimétrico para romper la simetría
+            const drift = Math.sin(eased * Math.PI * 1.7 + 0.5) * 0.07;
+            // Micro-temblor de mano
+            const noiseX = Math.sin(now * 0.005) * 0.005;
+            const noiseY = Math.cos(now * 0.007) * 0.003;
+            const ghostX = ghostStartRef.current.x + sWave + drift + noiseX;
 
-            targetMouseRef.current.set(currentX + noiseX, currentY + noiseY);
+            targetMouseRef.current.set(ghostX, ghostY + noiseY);
+
+            // Radio forzado grande que se mantiene durante el 80% central del trazo
+            const fadeIn = Math.min(progress * 6, 1);
+            const fadeOut = Math.min((1 - progress) * 6, 1);
+            uniformsRef.current.u_radius.value =
+              GHOST_FORCED_RADIUS * fadeIn * fadeOut;
           } else if (targetHoverStateRef.current === 1) {
-            targetHoverStateRef.current = 0; // Levantar el "pincel" al terminar
+            targetHoverStateRef.current = 0;
           }
         }
 
@@ -536,10 +539,13 @@ function App() {
           activeMaxRadius,
         );
 
-        uniformsRef.current.u_radius.value +=
-          (targetRadius - uniformsRef.current.u_radius.value) *
-          RADIUS_STIFFNESS *
-          delta;
+        // Solo aplicar el radius del mouse real si el fantasma no está activo
+        if (!(isIdle && now < ghostActiveUntilRef.current)) {
+          uniformsRef.current.u_radius.value +=
+            (targetRadius - uniformsRef.current.u_radius.value) *
+            RADIUS_STIFFNESS *
+            delta;
+        }
 
         // 2. SISTEMA FÍSICO DE GOTEO
         if (

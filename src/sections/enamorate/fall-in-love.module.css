@@ -8,6 +8,7 @@
 .stickyContainer {
     width: 100%;
     height: 100vh;
+    height: 100svh;
     position: relative;
     display: flex;
     flex-direction: column;
@@ -16,14 +17,13 @@
 }
 
 .typing {
-   font-family: var(--font-thunder);
-   font-size: 7rem;
-   line-height: 1;
-   font-weight: bold;
-   font-style: italic;
-   color: var(--white);
+    font-family: var(--font-nohemi);
+    font-size: clamp(2.5rem, 6vw, 5rem);
+    line-height: 1;
+    font-weight: 600;
+    font-style: italic;
+    color: var(--white);
 }
-
 
 .overlay {
     position: absolute;
@@ -33,24 +33,15 @@
     align-items: center;
     justify-content: center;
     text-align: center;
-    padding: 0 0.75rem;
+    padding: 0 clamp(0.75rem, 3vw, 2rem);
     color: #ffffff;
     z-index: 10;
 }
 
-
-@media (min-width: 768px) {
-    .title {
-        font-size: 4.5rem;
-        line-height: 1;
-    }
-}
-
 .italic {
     font-family: var(--font-bigcaslon);
-    font-size: 6rem;
+    font-size: clamp(2.2rem, 5vw, 5rem);
     line-height: 1;
-    font-style: italic;
     color: var(--white);
 }
 

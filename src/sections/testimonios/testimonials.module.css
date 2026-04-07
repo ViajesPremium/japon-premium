@@ -1,0 +1,16 @@
+.testimonials {
+    width: 100%;
+    min-height: 50vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--bg);
+    padding: clamp(3rem, 10vw, 6rem) clamp(1.25rem, 5vw, 3rem);
+}
+
+.testimonials h2 {
+    font-family: var(--font-bigcaslon);
+    font-size: clamp(2.5rem, 6vw, 6rem);
+    font-weight: 300;
+    color: var(--secondary);
+}

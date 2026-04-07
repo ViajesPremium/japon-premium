@@ -14,14 +14,16 @@ export default function Home() {
     <main>
       <Navbar />
       <Hero />
-      <Snapshot />
-      <Enamorate />
-      <Promise />
-      <Highlights />
-      <Audience />
-      <Testimonials />
-      <CTAForm />
-      <Footer />
+      <div style={{ position: "relative", zIndex: 10 }}>
+        <Snapshot />
+        <Enamorate />
+        <Promise />
+        <Highlights />
+        <Audience />
+        <Testimonials />
+        <CTAForm />
+        <Footer />
+      </div>
     </main>
   );
 }

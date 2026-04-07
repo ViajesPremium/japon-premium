@@ -1,0 +1,34 @@
+.audience {
+    width: 100%;
+    min-height: 100vh;
+    min-height: 100svh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--bg);
+    padding: clamp(3rem, 10vw, 6rem) clamp(1.25rem, 5vw, 3rem);
+}
+
+.container {
+    width: 90%;
+    max-width: 1200px;
+    display: flex;
+    flex-direction: column;
+    gap: clamp(1.5rem, 4vw, 3rem);
+}
+
+.title {
+    font-family: var(--font-bigcaslon);
+    font-size: clamp(2.5rem, 6vw, 6rem);
+    font-weight: 300;
+    line-height: 1.05;
+    color: var(--secondary);
+}
+
+.text {
+    font-family: var(--font-nohemi);
+    font-size: clamp(1.25rem, 3vw, 3rem);
+    font-weight: 400;
+    color: var(--black);
+    line-height: 1.6;
+}
