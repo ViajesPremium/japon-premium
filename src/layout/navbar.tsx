@@ -53,6 +53,8 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
 }: StaggeredMenuProps) => {
   const [open, setOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isHeaderVisible, setIsHeaderVisible] = useState(true);
+  const lastScrollY = useRef(0);
   const openRef = useRef(false);
   const panelRef = useRef<HTMLDivElement | null>(null);
   const preLayersRef = useRef<HTMLDivElement | null>(null);
@@ -75,11 +77,22 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
 
   React.useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20);
+      const currentScrollY = window.scrollY;
+      setIsScrolled(currentScrollY > 20);
+
+      if (!openRef.current) {
+        if (currentScrollY < lastScrollY.current || currentScrollY <= 20) {
+          setIsHeaderVisible(true);
+        } else if (currentScrollY > lastScrollY.current && currentScrollY > 80) {
+          setIsHeaderVisible(false);
+        }
+      }
+
+      lastScrollY.current = currentScrollY;
     };
 
     handleScroll();
-    window.addEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", handleScroll, { passive: true });
 
     return () => {
       window.removeEventListener("scroll", handleScroll);
@@ -474,7 +487,7 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
         })()}
       </div>
       <header
-        className={`staggered-menu-header ${isScrolled ? "scrolled" : ""}`}
+        className={`staggered-menu-header ${isScrolled ? "scrolled" : ""} ${!isHeaderVisible ? "header-hidden" : ""}`}
         aria-label="Main navigation header"
       >
         <div className="sm-logo" aria-label="Logo">

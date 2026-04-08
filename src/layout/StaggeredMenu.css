@@ -43,7 +43,12 @@ body {
   transition:
     background-color 0.3s ease,
     box-shadow 0.3s ease,
-    backdrop-filter 0.3s ease;
+    backdrop-filter 0.3s ease,
+    transform 0.35s ease;
+}
+
+.staggered-menu-header.header-hidden {
+  transform: translateY(-100%);
 }
 
 .staggered-menu-header.scrolled {
