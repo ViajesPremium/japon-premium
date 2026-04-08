@@ -1,0 +1,131 @@
+.snapshot {
+    width: 100%;
+    min-height: 100dvh;
+    background-color: var(--secondary);
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding-top: 10rem;
+    padding-bottom: 6rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.postersWrapper {
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 50%;
+    z-index: 99;
+    pointer-events: none;
+    mask-image: linear-gradient(to right, transparent, black 40%);
+    opacity: 1;
+}
+
+.snapshotContent {
+    width: 90%;
+    max-width: 1200px;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    position: relative;
+    z-index: 10;
+}
+
+.trustStrip {
+    display: flex;
+    flex-wrap: wrap;
+    font-family: var(--font-nohemi);
+    font-size: clamp(2.8rem, 5.5vw, 6rem);
+    line-height: 1.1;
+    color: var(--white);
+}
+
+
+/* Bento Grid */
+.bentoGrid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    width: 100%;
+    margin-top: 2rem;
+}
+
+.bentoCard {
+    position: relative;
+    border-radius: 1.2rem;
+    overflow: hidden;
+    background-size: cover;
+    background-position: center;
+    height: 360px;
+    cursor: pointer;
+}
+
+.bentoCardWide {
+    grid-column: 1 / -1;
+    height: 280px;
+}
+
+.bentoCardOverlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.65) 0%, rgba(0,0,0,0.1) 60%, transparent 100%);
+    transition: background 0.3s ease;
+}
+
+.bentoCard:hover .bentoCardOverlay {
+    background: linear-gradient(to top, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.25) 70%, transparent 100%);
+}
+
+.bentoCardContent {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 1.5rem 1.8rem;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.bentoCardText {
+    font-family: var(--font-nohemi);
+    font-size: clamp(1.2rem, 2vw, 1.6rem);
+    font-weight: 600;
+    color: #fff;
+    line-height: 1.2;
+    margin: 0;
+}
+
+@media (max-width: 640px) {
+    .bentoGrid {
+        grid-template-columns: 1fr;
+    }
+
+    .bentoCardWide {
+        grid-column: 1;
+    }
+
+    .bentoCard,
+    .bentoCardWide {
+        height: 260px;
+    }
+}
+
+.italic {
+    color: var(--black);
+    font-family: var(--font-nohemi);
+    font-weight: 600;
+    font-style: italic;
+    
+}
+
+.description {
+    font-family: var(--font-nohemi);
+    font-size: clamp(2rem, 2vw, 2rem);
+    font-weight: 400;
+    max-width: 700px;
+    color: var(--black);
+}

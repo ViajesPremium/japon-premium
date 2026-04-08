@@ -10,6 +10,17 @@ body {
   overflow-x: hidden;
 }
 
+.sm-toggle-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.button-nav{
+  height: 37px !important;
+  background-color: var(--secondary) !important;
+}
+
 .staggered-menu-wrapper {
   position: relative;
   width: 100%;
@@ -43,11 +54,16 @@ body {
   transition:
     background-color 0.3s ease,
     box-shadow 0.3s ease,
-    backdrop-filter 0.3s ease;
+    backdrop-filter 0.3s ease,
+    transform 0.35s ease;
+}
+
+.staggered-menu-header.header-hidden {
+  transform: translateY(-100%);
 }
 
 .staggered-menu-header.scrolled {
-  background: rgba(255, 255, 255, 0.297);
+  background: rgb(255, 255, 255);
   transition: all 0.3s ease;
 }
 
@@ -65,7 +81,7 @@ body {
 
 .sm-logo-img {
   display: block;
-  height: 3.2rem;
+  height: 3.5rem;
   width: auto;
   max-width: 100%;
   object-fit: contain;
@@ -79,11 +95,12 @@ body {
   background: transparent;
   border: none;
   cursor: pointer;
-  color: #e9e9ef;
-  font-weight: 500;
+  font-weight: 300;
   line-height: 1;
   overflow: visible;
   flex-shrink: 0;
+  padding: 10px;
+  font-family: var(--font-nohemi);
 }
 
 .sm-toggle:focus-visible {
@@ -116,9 +133,9 @@ body {
 
 .sm-icon {
   position: relative;
-  width: 14px;
-  height: 14px;
-  flex: 0 0 14px;
+  width: 12px;
+  height: 12px;
+  flex: 0 0 12px;
   display: inline-flex;
   align-items: center;
   justify-content: center;

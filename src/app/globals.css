@@ -16,75 +16,275 @@
   font-display: swap;
 }
 
+/* ─── Thunder HC (High Condensed) ─────────────────────────────────────────── */
 @font-face {
   font-family: 'Thunder';
-  src: url('/fonts/OpenType-TT/Thunder-ThinHC.ttf') format('truetype');
+  src: url('/fonts/thunder-font/THUNDER/Thunder-ThinHC.otf') format('opentype');
   font-weight: 100;
   font-style: normal;
   font-display: swap;
 }
+@font-face {
+  font-family: 'Thunder';
+  src: url('/fonts/thunder-font/THUNDER/Thunder-ThinHCItalic.otf') format('opentype');
+  font-weight: 100;
+  font-style: italic;
+  font-display: swap;
+}
 
 @font-face {
   font-family: 'Thunder';
-  src: url('/fonts/OpenType-TT/Thunder-ExtraLightHC.ttf') format('truetype');
+  src: url('/fonts/thunder-font/THUNDER/Thunder-ExtraLightHC.otf') format('opentype');
   font-weight: 200;
   font-style: normal;
   font-display: swap;
 }
+@font-face {
+  font-family: 'Thunder';
+  src: url('/fonts/thunder-font/THUNDER/Thunder-ExtraLightHCItalic.otf') format('opentype');
+  font-weight: 200;
+  font-style: italic;
+  font-display: swap;
+}
 
 @font-face {
   font-family: 'Thunder';
-  src: url('/fonts/OpenType-TT/Thunder-LightHC.ttf') format('truetype');
+  src: url('/fonts/thunder-font/THUNDER/Thunder-LightHC.otf') format('opentype');
   font-weight: 300;
   font-style: normal;
   font-display: swap;
 }
+@font-face {
+  font-family: 'Thunder';
+  src: url('/fonts/thunder-font/THUNDER/Thunder-LightHCItalic.otf') format('opentype');
+  font-weight: 300;
+  font-style: italic;
+  font-display: swap;
+}
 
 @font-face {
   font-family: 'Thunder';
-  src: url('/fonts/OpenType-TT/Thunder-HC.ttf') format('truetype');
+  src: url('/fonts/thunder-font/THUNDER/Thunder-HC.otf') format('opentype');
   font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
+@font-face {
+  font-family: 'Thunder';
+  src: url('/fonts/thunder-font/THUNDER/Thunder-HCItalic.otf') format('opentype');
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
 
 @font-face {
   font-family: 'Thunder';
-  src: url('/fonts/OpenType-TT/Thunder-MediumHC.ttf') format('truetype');
+  src: url('/fonts/thunder-font/THUNDER/Thunder-MediumHC.otf') format('opentype');
   font-weight: 500;
   font-style: normal;
   font-display: swap;
 }
+@font-face {
+  font-family: 'Thunder';
+  src: url('/fonts/thunder-font/THUNDER/Thunder-MediumHCItalic.otf') format('opentype');
+  font-weight: 500;
+  font-style: italic;
+  font-display: swap;
+}
 
 @font-face {
   font-family: 'Thunder';
-  src: url('/fonts/OpenType-TT/Thunder-SemiBoldHC.ttf') format('truetype');
+  src: url('/fonts/thunder-font/THUNDER/Thunder-SemiBoldHC.otf') format('opentype');
   font-weight: 600;
   font-style: normal;
   font-display: swap;
 }
+@font-face {
+  font-family: 'Thunder';
+  src: url('/fonts/thunder-font/THUNDER/Thunder-SemiBoldHCItalic.otf') format('opentype');
+  font-weight: 600;
+  font-style: italic;
+  font-display: swap;
+}
 
 @font-face {
   font-family: 'Thunder';
-  src: url('/fonts/OpenType-TT/Thunder-BoldHC.ttf') format('truetype');
+  src: url('/fonts/thunder-font/THUNDER/Thunder-BoldHC.otf') format('opentype');
   font-weight: 700;
   font-style: normal;
   font-display: swap;
 }
-
 @font-face {
   font-family: 'Thunder';
-  src: url('/fonts/OpenType-TT/Thunder-ExtraBoldHC.ttf') format('truetype');
-  font-weight: 800;
-  font-style: normal;
+  src: url('/fonts/thunder-font/THUNDER/Thunder-BoldHCItalic.otf') format('opentype');
+  font-weight: 700;
+  font-style: italic;
   font-display: swap;
 }
 
 @font-face {
   font-family: 'Thunder';
-  src: url('/fonts/OpenType-TT/Thunder-BlackHC.ttf') format('truetype');
+  src: url('/fonts/thunder-font/THUNDER/Thunder-ExtraBoldHC.otf') format('opentype');
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Thunder';
+  src: url('/fonts/thunder-font/THUNDER/Thunder-ExtraBoldHCItalic.otf') format('opentype');
+  font-weight: 800;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Thunder';
+  src: url('/fonts/thunder-font/THUNDER/Thunder-BlackHC.otf') format('opentype');
   font-weight: 900;
   font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Thunder';
+  src: url('/fonts/thunder-font/THUNDER/Thunder-BlackHCItalic.otf') format('opentype');
+  font-weight: 900;
+  font-style: italic;
+  font-display: swap;
+}
+
+/* ─── Thunder LC (Low Condensed) ──────────────────────────────────────────── */
+@font-face {
+  font-family: 'ThunderLC';
+  src: url('/fonts/thunder-font/THUNDER/Thunder-ThinLC.otf') format('opentype');
+  font-weight: 100;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'ThunderLC';
+  src: url('/fonts/thunder-font/THUNDER/Thunder-ThinLCItalic.otf') format('opentype');
+  font-weight: 100;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'ThunderLC';
+  src: url('/fonts/thunder-font/THUNDER/Thunder-ExtraLightLC.otf') format('opentype');
+  font-weight: 200;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'ThunderLC';
+  src: url('/fonts/thunder-font/THUNDER/Thunder-ExtraLightLCItalic.otf') format('opentype');
+  font-weight: 200;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'ThunderLC';
+  src: url('/fonts/thunder-font/THUNDER/Thunder-LightLC.otf') format('opentype');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'ThunderLC';
+  src: url('/fonts/thunder-font/THUNDER/Thunder-LightLCItalic.otf') format('opentype');
+  font-weight: 300;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'ThunderLC';
+  src: url('/fonts/thunder-font/THUNDER/Thunder-LC.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'ThunderLC';
+  src: url('/fonts/thunder-font/THUNDER/Thunder-LCItalic.otf') format('opentype');
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'ThunderLC';
+  src: url('/fonts/thunder-font/THUNDER/Thunder-MediumLC.otf') format('opentype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'ThunderLC';
+  src: url('/fonts/thunder-font/THUNDER/Thunder-MediumLCItalic.otf') format('opentype');
+  font-weight: 500;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'ThunderLC';
+  src: url('/fonts/thunder-font/THUNDER/Thunder-SemiBoldLC.otf') format('opentype');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'ThunderLC';
+  src: url('/fonts/thunder-font/THUNDER/Thunder-SemiBoldLCItalic.otf') format('opentype');
+  font-weight: 600;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'ThunderLC';
+  src: url('/fonts/thunder-font/THUNDER/Thunder-BoldLC.otf') format('opentype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'ThunderLC';
+  src: url('/fonts/thunder-font/THUNDER/Thunder-BoldLCItalic.otf') format('opentype');
+  font-weight: 700;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'ThunderLC';
+  src: url('/fonts/thunder-font/THUNDER/Thunder-ExtraBoldLC.otf') format('opentype');
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'ThunderLC';
+  src: url('/fonts/thunder-font/THUNDER/Thunder-ExtraBoldLCItalic.otf') format('opentype');
+  font-weight: 800;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'ThunderLC';
+  src: url('/fonts/thunder-font/THUNDER/Thunder-BlackLC.otf') format('opentype');
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'ThunderLC';
+  src: url('/fonts/thunder-font/THUNDER/Thunder-BlackLCItalic.otf') format('opentype');
+  font-weight: 900;
+  font-style: italic;
   font-display: swap;
 }
 

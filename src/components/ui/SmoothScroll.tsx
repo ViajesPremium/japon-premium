@@ -25,10 +25,35 @@ const SmoothScroll = ({ children }: SmoothScrollProps) => {
     const update = (time: number) => {
       lenis.raf(time * 1000)
     }
-
     gsap.ticker.add(update)
 
+    // Snap suave entre hero y trust-strip
+    let isSnapping = false
+
+    const handleWheel = (e: WheelEvent) => {
+      if (isSnapping) return
+
+      const heroHeight = window.innerHeight
+      const scrollY = window.scrollY
+
+      if (scrollY > 0 && scrollY < heroHeight) {
+        isSnapping = true
+        const target = e.deltaY > 0 ? heroHeight : 0
+        lenis.scrollTo(target, {
+          duration: 1.6,
+          easing: (t: number) => 1 - Math.pow(1 - t, 4),
+          lock: true,
+          onComplete: () => {
+            isSnapping = false
+          },
+        })
+      }
+    }
+
+    window.addEventListener("wheel", handleWheel, { passive: true })
+
     return () => {
+      window.removeEventListener("wheel", handleWheel)
       gsap.ticker.remove(update)
       lenis.destroy()
     }

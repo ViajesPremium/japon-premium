@@ -12,6 +12,9 @@ import "./app.css";
 
 const geisha = "/images/geisha.png";
 const samurai = "/images/samurai.png";
+import { Button } from "@/components/ui/button";
+import { ArrowBigDown, ArrowDown } from "lucide-react";
+import { motion } from "motion/react";
 
 // ====================================================================
 // DEFAULT SETTINGS
@@ -33,7 +36,7 @@ const MOUSE_STIFFNESS = 90;
 const MOUSE_DAMPING = 0.15;
 const RADIUS_STIFFNESS = 8;
 
-const STAGE_PARALLAX = 0;
+const STAGE_PARALLAX = 3;
 
 const GHOST_CONFIG = {
   idleThreshold: 1200,
@@ -828,6 +831,44 @@ export default function App() {
       </div>
 
       <div className="circle" />
+      <div className="scroll-container">
+        <p className="text-scroll">Desliza</p>
+
+        <motion.div
+          style={{ display: "inline-block" }}
+          animate={{
+            y: [-5, 5, -5],
+          }}
+          transition={{
+            duration: 1.5,
+            // Repetir infinitamente
+            repeat: Infinity,
+            // Usamos "easeInOut" para que acelere y desacelere suavemente,
+            // dándole ese toque orgánico y fluido (como flotando)
+            ease: "easeInOut",
+          }}
+        >
+          <ArrowDown />
+        </motion.div>
+      </div>
+      <div className="button-container">
+        <Button className="button-app" variant="primary">
+          Diseñar mi viaje
+        </Button>
+      </div>
+      <div className="title-container">
+        <h1 className="h1">
+          <span className="line">
+            <span>Viaja a</span>
+            <span className="span-japon">desde</span>
+          </span>
+
+          <span className="line">
+            <span className="span-desde">Japón</span>
+            <span className="span-mexico">México</span>
+          </span>
+        </h1>
+      </div>
     </section>
   );
 }

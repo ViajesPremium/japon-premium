@@ -5,7 +5,7 @@ import Promise from "@/sections/promesa/promise";
 import Highlights from "@/sections/highlights/highlights";
 import Audience from "@/sections/audiencia/audience";
 import Enamorate from "@/sections/enamorate/fall-in-love";
-import Snapshot from "@/sections/snapshot/snapshot";
+import Snapshot from "@/sections/snapshot/trust-strip";
 import Testimonials from "@/sections/testimonios/testimonials";
 import CTAForm from "@/sections/form/ctaForm";
 

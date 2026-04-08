@@ -2,6 +2,7 @@
 import React, { useCallback, useLayoutEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import "./StaggeredMenu.css";
+import { Button } from "@/components/ui/button";
 
 export interface StaggeredMenuItem {
   label: string;
@@ -42,7 +43,7 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
   displayItemNumbering = true,
   className,
   logoUrl = "logos/jp-negro.svg",
-  menuButtonColor = "#000000",
+  menuButtonColor = "#000",
   openMenuButtonColor = "#000000",
   changeMenuColorOnOpen = true,
   accentColor = "var(--secondary)",
@@ -53,6 +54,8 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
 }: StaggeredMenuProps) => {
   const [open, setOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isHeaderVisible, setIsHeaderVisible] = useState(true);
+  const lastScrollY = useRef(0);
   const openRef = useRef(false);
   const panelRef = useRef<HTMLDivElement | null>(null);
   const preLayersRef = useRef<HTMLDivElement | null>(null);
@@ -75,11 +78,22 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
 
   React.useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20);
+      const currentScrollY = window.scrollY;
+      setIsScrolled(currentScrollY > 20);
+
+      if (!openRef.current) {
+        if (currentScrollY < lastScrollY.current || currentScrollY <= 20) {
+          setIsHeaderVisible(true);
+        } else if (currentScrollY > lastScrollY.current && currentScrollY > 80) {
+          setIsHeaderVisible(false);
+        }
+      }
+
+      lastScrollY.current = currentScrollY;
     };
 
     handleScroll();
-    window.addEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", handleScroll, { passive: true });
 
     return () => {
       window.removeEventListener("scroll", handleScroll);
@@ -474,7 +488,7 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
         })()}
       </div>
       <header
-        className={`staggered-menu-header ${isScrolled ? "scrolled" : ""}`}
+        className={`staggered-menu-header ${isScrolled ? "scrolled" : ""} ${!isHeaderVisible ? "header-hidden" : ""}`}
         aria-label="Main navigation header"
       >
         <div className="sm-logo" aria-label="Logo">
@@ -487,33 +501,38 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
             height={24}
           />
         </div>
-        <button
-          ref={toggleBtnRef}
-          className="sm-toggle"
-          aria-label={open ? "Close menu" : "Open menu"}
-          aria-expanded={open}
-          aria-controls="staggered-menu-panel"
-          onClick={toggleMenu}
-          type="button"
-        >
-          <span
-            ref={textWrapRef}
-            className="sm-toggle-textWrap"
-            aria-hidden="true"
+        <div className="sm-toggle-container">
+          <Button variant="secondary" className="button-nav">
+            Ver destinos
+          </Button>
+          <button
+            ref={toggleBtnRef}
+            className="sm-toggle"
+            aria-label={open ? "Close menu" : "Open menu"}
+            aria-expanded={open}
+            aria-controls="staggered-menu-panel"
+            onClick={toggleMenu}
+            type="button"
           >
-            <span ref={textInnerRef} className="sm-toggle-textInner">
-              {textLines.map((l, i) => (
-                <span className="sm-toggle-line" key={i}>
-                  {l}
-                </span>
-              ))}
+            <span
+              ref={textWrapRef}
+              className="sm-toggle-textWrap"
+              aria-hidden="true"
+            >
+              <span ref={textInnerRef} className="sm-toggle-textInner">
+                {textLines.map((l, i) => (
+                  <span className="sm-toggle-line" key={i}>
+                    {l}
+                  </span>
+                ))}
+              </span>
             </span>
-          </span>
-          <span ref={iconRef} className="sm-icon" aria-hidden="true">
-            <span ref={plusHRef} className="sm-icon-line" />
-            <span ref={plusVRef} className="sm-icon-line sm-icon-line-v" />
-          </span>
-        </button>
+            <span ref={iconRef} className="sm-icon" aria-hidden="true">
+              <span ref={plusHRef} className="sm-icon-line" />
+              <span ref={plusVRef} className="sm-icon-line sm-icon-line-v" />
+            </span>
+          </button>
+        </div>
       </header>
 
       <aside
