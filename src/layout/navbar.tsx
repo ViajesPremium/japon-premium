@@ -84,7 +84,10 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
       if (!openRef.current) {
         if (currentScrollY < lastScrollY.current || currentScrollY <= 20) {
           setIsHeaderVisible(true);
-        } else if (currentScrollY > lastScrollY.current && currentScrollY > 80) {
+        } else if (
+          currentScrollY > lastScrollY.current &&
+          currentScrollY > 80
+        ) {
           setIsHeaderVisible(false);
         }
       }
@@ -502,9 +505,7 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
           />
         </div>
         <div className="sm-toggle-container">
-          <Button variant="secondary" className="button-nav">
-            Ver destinos
-          </Button>
+          <Button variant="primary">Ver destinos</Button>
           <button
             ref={toggleBtnRef}
             className="sm-toggle"

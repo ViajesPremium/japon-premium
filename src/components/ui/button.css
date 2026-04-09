@@ -3,7 +3,7 @@
   align-items: center;
   justify-content: center;
   position: relative;
-  width: fit-content;
+  width: 200px;
   height: 2.8rem;
   border: 0;
   border-radius: 9999px;
@@ -24,23 +24,30 @@
 }
 
 .buttonPrimary {
-  padding: 0.15rem 3.5rem 0.15rem 1.5rem;
-  background-color: var(--secondary);
+  padding: 0.15rem 3.5rem 0.15rem 2rem;
+  background-color: var(--primary);
 }
 
 .buttonPrimary:hover {
-  padding-left: 3.5rem;
-  padding-right: 1.5rem;
+  padding-left: 3rem;
+  padding-right: 1rem;
+  background-color: var(--secondary);
 }
 
 .buttonSecondary {
-  padding: 0 1.5rem;
+  padding: 0 1.2rem;
   background-color: var(--black, #000000);
+}
+
+.buttonSecondary:hover {
+  background-color: var(--complementary);
+   transition: all 3ms ease-in-out;
 }
 
 .buttonLabel {
   position: relative;
   z-index: 10;
+    padding-top: 2px;
   transition: all 500ms ease;
 }
 
@@ -59,6 +66,6 @@
 }
 
 .buttonPrimary:hover .buttonIcon {
-  right: calc(100% - 44px);
+  right: calc(100% - 41px);
   transform: rotate(45deg);
 }

@@ -13,6 +13,7 @@ body {
 .sm-toggle-container {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 10px;
 }
 
@@ -113,6 +114,7 @@ body {
   position: relative;
   display: inline-block;
   height: 1em;
+  padding-top: 2px;
   overflow: hidden;
   white-space: nowrap;
   width: var(--sm-toggle-width, auto);

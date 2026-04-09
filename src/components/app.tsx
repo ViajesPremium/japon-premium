@@ -13,8 +13,10 @@ import "./app.css";
 const geisha = "/images/geisha.png";
 const samurai = "/images/samurai.png";
 import { Button } from "@/components/ui/button";
-import { ArrowBigDown, ArrowDown } from "lucide-react";
+import { ArrowDown } from "lucide-react";
 import { motion } from "motion/react";
+import TextPressure from "@/components/ui/TextPressure";
+import { section } from "motion/react-client";
 
 // ====================================================================
 // DEFAULT SETTINGS
@@ -831,43 +833,122 @@ export default function App() {
       </div>
 
       <div className="circle" />
-      <div className="scroll-container">
-        <p className="text-scroll">Desliza</p>
 
-        <motion.div
-          style={{ display: "inline-block" }}
-          animate={{
-            y: [-5, 5, -5],
-          }}
-          transition={{
-            duration: 1.5,
-            // Repetir infinitamente
-            repeat: Infinity,
-            // Usamos "easeInOut" para que acelere y desacelere suavemente,
-            // dándole ese toque orgánico y fluido (como flotando)
-            ease: "easeInOut",
-          }}
-        >
-          <ArrowDown />
-        </motion.div>
-      </div>
-      <div className="button-container">
-        <Button className="button-app" variant="primary">
-          Diseñar mi viaje
-        </Button>
-      </div>
       <div className="title-container">
-        <h1 className="h1">
-          <span className="line">
-            <span>Viaja a</span>
-            <span className="span-japon">desde</span>
-          </span>
+        <div className="h1">
+          <div className="line">
+            <div className="word-slot">
+              <TextPressure
+                text="Viaja a"
+                fontFamily="Nohemi"
+                fontUrl="/fonts/nohemi-font-family/Nohemi-VF-BF6438cc58ad63d.ttf"
+                fontWeight={100}
+                fontStyle="normal"
+                fontSize={190}
+                flex={false}
+                alpha={false}
+                stroke={false}
+                width={true}
+                weight={true}
+                italic={true}
+                weightFrom={100}
+                weightTo={400}
+                scaleFrom={1}
+                scaleTo={1}
+                textColor="#000000"
+                strokeColor="#DB2F21"
+                minFontSize={36}
+              />
+            </div>
+            <div className="word-slot">
+              <TextPressure
+                text="Japón"
+                fontFamily="Nohemi"
+                fontUrl="/fonts/nohemi-font-family/Nohemi-VF-BF6438cc58ad63d.ttf"
+                fontWeight={100}
+                fontStyle="normal"
+                fontSize={190}
+                flex={false}
+                alpha={false}
+                stroke={false}
+                width={true}
+                weight={true}
+                italic={false}
+                weightFrom={100}
+                weightTo={400}
+                scaleFrom={1}
+                scaleTo={1}
+                textColor="#000000"
+                strokeColor="#DB2F21"
+                minFontSize={36}
+              />
+            </div>
+          </div>
 
-          <span className="line">
-            <span className="span-desde">Japón</span>
-            <span className="span-mexico">México</span>
-          </span>
-        </h1>
+          <div className="line">
+            <div className="word-slot">
+              <TextPressure
+                text="desde"
+                fontFamily="Nohemi"
+                fontUrl="/fonts/nohemi-font-family/Nohemi-VF-BF6438cc58ad63d.ttf"
+                fontWeight={900}
+                fontStyle="normal"
+                fontSize={190}
+                flex={false}
+                alpha={false}
+                stroke={false}
+                width={true}
+                weight={true}
+                italic={false}
+                weightFrom={600}
+                weightTo={100}
+                scaleFrom={1.09}
+                scaleTo={1}
+                textColor="#000000"
+                strokeColor="#DB2F21"
+                minFontSize={36}
+              />
+            </div>
+            <div className="word-slot">
+              <TextPressure
+                text="México"
+                fontFamily="Nohemi"
+                fontUrl="/fonts/nohemi-font-family/Nohemi-VF-BF6438cc58ad63d.ttf"
+                fontWeight={900}
+                fontStyle="normal"
+                fontSize={190}
+                flex={false}
+                alpha={false}
+                stroke={false}
+                width={true}
+                weight={true}
+                italic={false}
+                weightFrom={600}
+                weightTo={100}
+                scaleFrom={1.09}
+                scaleTo={1}
+                textColor="#000000"
+                strokeColor="#DB2F21"
+                minFontSize={36}
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="content-container">
+        <div className="description">
+          <p>Eleva tu vida con una experiencia de viaje con calidad premium.</p>
+
+          <div className="scroll-content">
+            <span className="scroll-text">Scroll</span>
+            <ArrowDown width={16} />
+          </div>
+        </div>
+        <div className="cta-row">
+          <Button variant="primary">Comenzar</Button>
+          <Button variant="secondary">Ver destinos</Button>
+        </div>
       </div>
     </section>
   );
