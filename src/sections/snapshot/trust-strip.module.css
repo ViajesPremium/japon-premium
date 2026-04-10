@@ -5,10 +5,19 @@
     display: flex;
     justify-content: center;
     align-items: flex-start;
-    padding-top: 10rem;
+    padding-top: 2.5rem;
     padding-bottom: 6rem;
     position: relative;
     overflow: hidden;
+}
+
+.textContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content:center ;
+    gap: 1rem;
+    position: relative;
+    z-index: 10;
 }
 
 .postersWrapper {
@@ -36,17 +45,22 @@
 .trustStrip {
     display: flex;
     flex-wrap: wrap;
-    font-family: var(--font-nohemi);
+   font-family: var(--font-nohemi); 
     font-size: clamp(2.8rem, 5.5vw, 6rem);
-    line-height: 1.1;
+    line-height: 1;
+    font-weight: 300;
     color: var(--white);
 }
 
+.highlighted {
+    font-weight: 900;
+    font-style: italic;
+}
 
 /* Bento Grid */
 .bentoGrid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr;
     gap: 2rem;
     width: 100%;
     margin-top: 2rem;
@@ -62,9 +76,9 @@
     cursor: pointer;
 }
 
-.bentoCardWide {
-    grid-column: 1 / -1;
-    height: 280px;
+.bentoCard:hover {
+    transform: scale(102%);
+    transition: all 200ms ease-in-out;
 }
 
 .bentoCardOverlay {

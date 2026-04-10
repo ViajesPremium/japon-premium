@@ -1,0 +1,29 @@
+
+.badgeContainer {
+    display: flex;
+}
+
+.badgeLogo {
+    width: 10rem;
+    height: auto;
+    object-fit: contain;
+}
+
+.badge {
+    color: var(--white);
+    border-right: 1px solid #ffffff79;
+    border-bottom: 1px solid #ffffff79;
+    width: max-content;
+    padding: 8px 15px;
+    font-family: var(--font-nohemi);
+    font-size: .7rem;
+    padding-top: 10px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    line-height: 1.1;
+    font-weight: 300;
+}
+
+.text {
+    margin: 0;
+}

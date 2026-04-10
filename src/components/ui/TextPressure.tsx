@@ -1,5 +1,5 @@
 // Component ported from https://codepen.io/JuanFuentes/full/rgXKGQ
-
+"use client";
 import { useEffect, useRef, useState, useMemo, useCallback } from "react";
 
 interface TextPressureProps {
@@ -196,7 +196,17 @@ const TextPressure: React.FC<TextPressureProps> = ({
 
     animate();
     return () => cancelAnimationFrame(rafId);
-  }, [width, weight, italic, alpha, weightFrom, weightTo, scaleFrom, scaleTo, fontWeight]);
+  }, [
+    width,
+    weight,
+    italic,
+    alpha,
+    weightFrom,
+    weightTo,
+    scaleFrom,
+    scaleTo,
+    fontWeight,
+  ]);
 
   const styleElement = useMemo(() => {
     return (
@@ -234,9 +244,20 @@ const TextPressure: React.FC<TextPressureProps> = ({
     );
   }, [fontFamily, fontUrl, flex, stroke, textColor, strokeColor]);
 
-  const dynamicClassName = [className, flex ? "flex" : "", stroke ? "stroke" : ""]
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  const dynamicClassName = [
+    className,
+    flex ? "flex" : "",
+    stroke ? "stroke" : "",
+  ]
     .filter(Boolean)
     .join(" ");
+
+  if (!mounted) return null;
 
   return (
     <div
@@ -270,7 +291,9 @@ const TextPressure: React.FC<TextPressureProps> = ({
         {chars.map((char, i) => (
           <span
             key={i}
-            ref={(el) => { spansRef.current[i] = el; }}
+            ref={(el) => {
+              spansRef.current[i] = el;
+            }}
             data-char={char === " " ? "\u00A0" : char}
             style={{
               display: "inline-block",

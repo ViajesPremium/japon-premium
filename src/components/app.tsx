@@ -10,8 +10,8 @@ import {
 import * as THREE from "three";
 import "./app.css";
 
-const geisha = "/images/geisha.png";
-const samurai = "/images/samurai.png";
+const geisha = "/images/geisha3.webp";
+const samurai = "/images/samurai3.webp";
 import { Button } from "@/components/ui/button";
 import { ArrowDown } from "lucide-react";
 import { motion } from "motion/react";

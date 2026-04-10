@@ -9,9 +9,13 @@ import styles from "./trust-strip.module.css";
 gsap.registerPlugin(ScrollTrigger);
 
 const bentoCards = [
-  { image: "/images/kyoto.webp",      text: "Kyoto & Nara",           wide: false },
-  { image: "/images/buffet-jp.webp",  text: "Gastronomía auténtica",  wide: false },
-  { image: "/images/hotel-jp.webp",   text: "Hospedaje de lujo",      wide: true  },
+  { image: "/images/kioto-japon.jpg", text: "Kyoto & Nara", wide: false },
+  {
+    image: "/images/comida-japon.jpg",
+    text: "Gastronomía auténtica",
+    wide: false,
+  },
+  { image: "/images/hotel-japon.jpg", text: "Hospedaje de lujo", wide: false },
 ];
 
 export default function BentoGrid() {
@@ -22,9 +26,8 @@ export default function BentoGrid() {
     if (!cards.length) return;
 
     const ctx = gsap.context(() => {
-      // Las 2 cards superiores entran escalonadas desde abajo
       gsap.fromTo(
-        cards.slice(0, 2),
+        cards.slice(0, 3),
         { y: 80, opacity: 0, scale: 0.93 },
         {
           y: 0,
@@ -39,26 +42,7 @@ export default function BentoGrid() {
             end: "bottom 5%",
             toggleActions: "play reverse play reverse",
           },
-        }
-      );
-
-      // Card ancha inferior
-      gsap.fromTo(
-        cards[2],
-        { y: 60, opacity: 0, scale: 0.95 },
-        {
-          y: 0,
-          opacity: 1,
-          scale: 1,
-          duration: 0.9,
-          ease: "power3.out",
-          scrollTrigger: {
-            trigger: cards[2],
-            start: "top 92%",
-            end: "bottom 5%",
-            toggleActions: "play reverse play reverse",
-          },
-        }
+        },
       );
     });
 
@@ -70,7 +54,9 @@ export default function BentoGrid() {
       {bentoCards.map((card, i) => (
         <div
           key={i}
-          ref={(el) => { cardRefs.current[i] = el; }}
+          ref={(el) => {
+            cardRefs.current[i] = el;
+          }}
           className={`${styles.bentoCard} ${card.wide ? styles.bentoCardWide : ""}`}
           style={{ backgroundImage: `url(${card.image})` }}
         >
