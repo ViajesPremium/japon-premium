@@ -66,32 +66,55 @@
     margin-top: 2rem;
 }
 
+/* =========================================
+   LAS CARDS MEJORADAS
+   ========================================= */
 .bentoCard {
     position: relative;
-    border-radius: 1.2rem;
+    border-radius: var(--radius-sm);
     overflow: hidden;
     background-size: cover;
     background-position: center;
     height: 360px;
     cursor: pointer;
+    transform: translateZ(0) translateY(0) scale(1);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0);    
+    transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.4s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
+/* El Hover Premium */
 .bentoCard:hover {
-    transform: scale(102%);
-    transition: all 200ms ease-in-out;
+    transform: translateZ(0) translateY(-10px) scale(1.04);
 }
 
+/* =========================================
+   OVERLAY Y GRADIENTES (Truco de Opacidad)
+   ========================================= */
 .bentoCardOverlay {
     position: absolute;
     inset: 0;
-    background: linear-gradient(to top, rgba(0,0,0,0.65) 0%, rgba(0,0,0,0.1) 60%, transparent 100%);
-    transition: background 0.3s ease;
+    background: linear-gradient(to top, rgba(0,0,0,0.65) 0%, rgba(0,0,0,0.05) 50%, transparent 100%);
+    z-index: 1;
 }
 
-.bentoCard:hover .bentoCardOverlay {
-    background: linear-gradient(to top, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.25) 70%, transparent 100%);
+/* Capa extra oscura que solo aparece en el hover */
+.bentoCardOverlay::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.3) 60%, transparent 100%);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    z-index: 2;
 }
 
+.bentoCard:hover .bentoCardOverlay::after {
+    opacity: 1;
+}
+
+/* =========================================
+   CONTENIDO INTERNO (Efecto Parallax)
+   ========================================= */
 .bentoCardContent {
     position: absolute;
     bottom: 0;
@@ -102,6 +125,14 @@
     align-items: flex-end;
     justify-content: space-between;
     gap: 1rem;
+    z-index: 3; /* Asegura que el texto esté por encima de los gradientes */
+    transform: translateY(0);
+    transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.bentoCard:hover .bentoCardContent {
+    /* El contenido flota hacia arriba de forma independiente a la carta */
+    transform: translateY(-6px);
 }
 
 .bentoCardText {

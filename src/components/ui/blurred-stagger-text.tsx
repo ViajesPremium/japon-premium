@@ -18,11 +18,14 @@ export const BlurredStagger = ({
   className,
   highlights = [],
   style = {},
+  isActive,
 }: {
   text: string;
   className?: string;
   highlights?: HighlightWord[];
   style?: React.CSSProperties;
+  /** Cuando se pasa, controla la animación externamente (sin whileInView) */
+  isActive?: boolean;
 }) => {
   const container = {
     hidden: { opacity: 0 },
@@ -45,12 +48,15 @@ export const BlurredStagger = ({
     },
   };
 
+  const controlled = isActive !== undefined;
+
   return (
     <motion.h2
       variants={container}
       initial="hidden"
-      whileInView="show"
-      viewport={{ once: false, amount: 0.4 }}
+      animate={controlled ? (isActive ? "show" : "hidden") : undefined}
+      whileInView={controlled ? undefined : "show"}
+      viewport={controlled ? undefined : { once: false, amount: 0.4 }}
       className={className}
       style={{ ...style, display: "flex", flexWrap: "wrap", columnGap: "0.3em" }}
     >

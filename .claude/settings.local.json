@@ -3,7 +3,19 @@
     "allow": [
       "mcp__Claude_Preview__preview_start",
       "Bash(npx next:*)",
-      "Bash(npx tsc:*)"
+      "Bash(npx tsc:*)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:3000)",
+      "Bash(taskkill /PID 27224 /F)",
+      "Bash(cmd /c \"taskkill /PID 27224 /F\")",
+      "Bash(cmd /c \"del /F /Q \\\\\"C:\\\\Users\\\\apps1\\\\Desktop\\\\japon\\\\japon\\\\.next\\\\dev\\\\logs\\\\next-development.log\\\\\" 2>nul & dir \\\\\"C:\\\\Users\\\\apps1\\\\Desktop\\\\japon\\\\japon\\\\.next\\\\dev\\\\\"\")",
+      "Bash(cmd /c \"dir /b /s \\\\\"C:\\\\Users\\\\apps1\\\\Desktop\\\\japon\\\\japon\\\\.next\\\\dev\\\\\" | findstr /i lock\")",
+      "Bash(cmd /c \"dir \\\\\"C:\\\\Users\\\\apps1\\\\Desktop\\\\japon\\\\japon\\\\.next\\\\dev\\\\logs\\\\\"\")",
+      "Bash(cmd /c \"dir /b /s \\\\\"%TEMP%\\\\\" 2>nul | findstr /i next\")",
+      "Bash(cmd /c \"netstat -ano | findstr \\\\\":300\\\\\"\")",
+      "Bash(cmd /c \"dir /a /b /s \\\\\"C:\\\\Users\\\\apps1\\\\Desktop\\\\japon\\\\japon\\\\.next\\\\dev\\\\logs\\\\\"\")",
+      "Bash(cmd /c \"dir /a /b \\\\\"C:\\\\Users\\\\apps1\\\\Desktop\\\\japon\\\\japon\\\\.next\\\\\"\")",
+      "Bash(cmd /c \"powershell -command \\\\\"Get-Process -Id 27224 -ErrorAction SilentlyContinue\\\\\"\")",
+      "Bash(cmd /c \"powershell -NoProfile -Command \\\\\"Test-Path 'C:\\\\\\\\Users\\\\\\\\apps1\\\\\\\\Desktop\\\\\\\\japon\\\\\\\\japon\\\\\\\\.next'\\\\\"\")"
     ]
   }
 }

@@ -303,12 +303,6 @@
   --font-thunder: var(--font-thunder);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
 
 body {
   background: var(--bg);
@@ -322,6 +316,7 @@ main {
   box-sizing: border-box;
 }
 
+/* ── Lenis smooth scroll ─────────────────────────────────────── */
 html.lenis,
 html.lenis body {
   height: auto;
@@ -331,11 +326,6 @@ html.lenis body {
   scroll-behavior: auto !important;
 }
 
-.lenis.lenis-stopped {
-  overflow: hidden;
-}
-
 .lenis.lenis-smooth iframe {
   pointer-events: none;
 }
-

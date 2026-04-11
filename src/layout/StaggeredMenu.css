@@ -340,6 +340,10 @@ body {
     width: 100vw;
   }
 
+  .nav-btn {
+    display: none !important;
+  }
+
   .staggered-menu-wrapper[data-open] .sm-logo-img {
     filter: invert(100%);
   }

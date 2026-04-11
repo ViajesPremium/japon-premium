@@ -505,7 +505,9 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
           />
         </div>
         <div className="sm-toggle-container">
-          <Button variant="primary">Ver destinos</Button>
+          <Button variant="primary" className="nav-btn">
+            Ver destinos
+          </Button>
           <button
             ref={toggleBtnRef}
             className="sm-toggle"

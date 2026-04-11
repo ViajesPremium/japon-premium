@@ -9,13 +9,13 @@ import styles from "./trust-strip.module.css";
 gsap.registerPlugin(ScrollTrigger);
 
 const bentoCards = [
-  { image: "/images/kioto-japon.jpg", text: "Kyoto & Nara", wide: false },
+  { image: "/images/kioto-japon.webp", text: "Kyoto & Nara", wide: false },
   {
-    image: "/images/comida-japon.jpg",
+    image: "/images/comida-japon.webp",
     text: "Gastronomía auténtica",
     wide: false,
   },
-  { image: "/images/hotel-japon.jpg", text: "Hospedaje de lujo", wide: false },
+  { image: "/images/hotel-japon.webp", text: "Hospedaje de lujo", wide: false },
 ];
 
 export default function BentoGrid() {

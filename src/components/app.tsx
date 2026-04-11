@@ -41,15 +41,14 @@ const RADIUS_STIFFNESS = 8;
 const STAGE_PARALLAX = 3;
 
 const GHOST_CONFIG = {
-  idleThreshold: 1200,
+  idleThreshold: 700,
 
-  // el ciclo total es: intro + ida + vuelta
   introDuration: 3000,
-  travelDuration: 15600, // ida + vuelta
+  travelDuration: 12000,
   forcedRadius: 0.1,
 
-  pauseMin: 1200,
-  pauseMax: 1500,
+  pauseMin: 300,
+  pauseMax: 600,
 
   smoothing: 2,
   introSmoothing: 0.9,
@@ -795,9 +794,9 @@ export default function App() {
       id="center"
       className={isCoarsePointer ? "is-coarse" : ""}
       style={visualControlsStyle}
-      onPointerEnter={handlePointerEnter}
-      onPointerMove={handlePointerMove}
-      onPointerLeave={handlePointerLeave}
+      onPointerEnter={isCoarsePointer ? undefined : handlePointerEnter}
+      onPointerMove={isCoarsePointer ? undefined : handlePointerMove}
+      onPointerLeave={isCoarsePointer ? undefined : handlePointerLeave}
     >
       <svg
         ref={ghostSvgRef}
@@ -819,8 +818,8 @@ export default function App() {
       <div
         ref={stageRef}
         className="media-stage"
-        onMouseEnter={handleImageEnter}
-        onMouseLeave={handleImageLeave}
+        onMouseEnter={isCoarsePointer ? undefined : handleImageEnter}
+        onMouseLeave={isCoarsePointer ? undefined : handleImageLeave}
       >
         <div ref={geishaRef} className="geisha">
           <img src={geisha} alt="Geisha" className="geisha-image" />
@@ -838,99 +837,123 @@ export default function App() {
         <div className="h1">
           <div className="line">
             <div className="word-slot">
-              <TextPressure
-                text="Viaja a"
-                fontFamily="Nohemi"
-                fontUrl="/fonts/nohemi-font-family/Nohemi-VF-BF6438cc58ad63d.ttf"
-                fontWeight={100}
-                fontStyle="normal"
-                fontSize={190}
-                flex={false}
-                alpha={false}
-                stroke={false}
-                width={true}
-                weight={true}
-                italic={true}
-                weightFrom={100}
-                weightTo={400}
-                scaleFrom={1}
-                scaleTo={1}
-                textColor="#000000"
-                strokeColor="#DB2F21"
-                minFontSize={36}
-              />
+              {isCoarsePointer ? (
+                <span className="mobile-hero-word mobile-hero-word--light">
+                  Viaja a
+                </span>
+              ) : (
+                <TextPressure
+                  text="Viaja a"
+                  fontFamily="Nohemi"
+                  fontUrl="/fonts/nohemi-font-family/Nohemi-VF-BF6438cc58ad63d.ttf"
+                  fontWeight={100}
+                  fontStyle="normal"
+                  fontSize={190}
+                  flex={false}
+                  alpha={false}
+                  stroke={false}
+                  width={true}
+                  weight={true}
+                  italic={true}
+                  weightFrom={100}
+                  weightTo={400}
+                  scaleFrom={1}
+                  scaleTo={1}
+                  textColor="#000000"
+                  strokeColor="#DB2F21"
+                  minFontSize={50}
+                />
+              )}
             </div>
             <div className="word-slot">
-              <TextPressure
-                text="Japón"
-                fontFamily="Nohemi"
-                fontUrl="/fonts/nohemi-font-family/Nohemi-VF-BF6438cc58ad63d.ttf"
-                fontWeight={100}
-                fontStyle="normal"
-                fontSize={190}
-                flex={false}
-                alpha={false}
-                stroke={false}
-                width={true}
-                weight={true}
-                italic={false}
-                weightFrom={100}
-                weightTo={400}
-                scaleFrom={1}
-                scaleTo={1}
-                textColor="#000000"
-                strokeColor="#DB2F21"
-                minFontSize={36}
-              />
+              {isCoarsePointer ? (
+                <span className="mobile-hero-word mobile-hero-word--light-upright">
+                  Japón
+                </span>
+              ) : (
+                <TextPressure
+                  text="Japón"
+                  fontFamily="Nohemi"
+                  fontUrl="/fonts/nohemi-font-family/Nohemi-VF-BF6438cc58ad63d.ttf"
+                  fontWeight={100}
+                  fontStyle="normal"
+                  fontSize={190}
+                  flex={false}
+                  alpha={false}
+                  stroke={false}
+                  width={true}
+                  weight={true}
+                  italic={false}
+                  weightFrom={100}
+                  weightTo={400}
+                  scaleFrom={1}
+                  scaleTo={1}
+                  textColor="#000000"
+                  strokeColor="#DB2F21"
+                  minFontSize={50}
+                />
+              )}
             </div>
           </div>
 
           <div className="line">
             <div className="word-slot">
-              <TextPressure
-                text="desde"
-                fontFamily="Nohemi"
-                fontUrl="/fonts/nohemi-font-family/Nohemi-VF-BF6438cc58ad63d.ttf"
-                fontWeight={900}
-                fontStyle="normal"
-                fontSize={190}
-                flex={false}
-                alpha={false}
-                stroke={false}
-                width={true}
-                weight={true}
-                italic={false}
-                weightFrom={600}
-                weightTo={100}
-                scaleFrom={1.09}
-                scaleTo={1}
-                textColor="#000000"
-                strokeColor="#DB2F21"
-                minFontSize={36}
-              />
+              {isCoarsePointer ? (
+                <span className="mobile-hero-word mobile-hero-word--bold">
+                  desde
+                </span>
+              ) : (
+                <TextPressure
+                  text="desde"
+                  fontFamily="Nohemi"
+                  fontUrl="/fonts/nohemi-font-family/Nohemi-VF-BF6438cc58ad63d.ttf"
+                  fontWeight={900}
+                  fontStyle="normal"
+                  fontSize={190}
+                  flex={false}
+                  alpha={false}
+                  stroke={false}
+                  width={true}
+                  weight={true}
+                  italic={false}
+                  weightFrom={600}
+                  weightTo={100}
+                  scaleFrom={1.09}
+                  scaleTo={1}
+                  textColor="#000000"
+                  strokeColor="#DB2F21"
+                  minFontSize={50}
+                />
+              )}
             </div>
             <div className="word-slot">
-              <TextPressure
-                text="México"
-                fontFamily="Nohemi"
-                fontUrl="/fonts/nohemi-font-family/Nohemi-VF-BF6438cc58ad63d.ttf"
-                fontWeight={900}
-                fontStyle="normal"
-                fontSize={190}
-                flex={false}
-                alpha={false}
-                stroke={false}
-                width={true}
-                weight={true}
-                italic={false}
-                weightFrom={600}
-                weightTo={100}
-                scaleFrom={1.09}
-                scaleTo={1}
-                textColor="#000000"
-                strokeColor="#DB2F21"
-                minFontSize={36}
-              />
+              {isCoarsePointer ? (
+                <span className="mobile-hero-word mobile-hero-word--bold">
+                  México
+                </span>
+              ) : (
+                <TextPressure
+                  text="México"
+                  fontFamily="Nohemi"
+                  fontUrl="/fonts/nohemi-font-family/Nohemi-VF-BF6438cc58ad63d.ttf"
+                  fontWeight={900}
+                  fontStyle="normal"
+                  fontSize={190}
+                  flex={false}
+                  alpha={false}
+                  stroke={false}
+                  width={true}
+                  weight={true}
+                  italic={false}
+                  weightFrom={600}
+                  weightTo={100}
+                  scaleFrom={1.09}
+                  scaleTo={1}
+                  textColor="#000000"
+                  strokeColor="#DB2F21"
+                  minFontSize={50}
+                />
+              )}
             </div>
           </div>
         </div>

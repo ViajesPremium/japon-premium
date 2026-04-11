@@ -20,10 +20,8 @@ interface TextPressureProps {
   fontWeight?: number;
   fontStyle?: "normal" | "italic";
   fontSize?: number;
-  // Control explícito de peso: estado inicial (lejos) → estado final (cerca)
   weightFrom?: number;
   weightTo?: number;
-  // Control explícito de escala: estado inicial (lejos) → estado final (cerca)
   scaleFrom?: number;
   scaleTo?: number;
 }
@@ -113,7 +111,18 @@ const TextPressure: React.FC<TextPressureProps> = ({
     const { width: containerW, height: containerH } =
       containerRef.current.getBoundingClientRect();
 
-    let newFontSize = fixedFontSize ?? containerW / (chars.length / 2);
+    // 🔥 LA MAGIA OCURRE AQUÍ: Calculamos cuánto espacio seguro tiene cada letra sin desbordarse.
+    // 0.5 es un multiplicador seguro para el ancho promedio de las tipografías modernas.
+    const maxSafeSize = containerW / (chars.length * 0.5);
+
+    let newFontSize = fixedFontSize ?? maxSafeSize;
+
+    // Si pasaste un fontSize (ej. 190), lo usamos, PERO si la pantalla es móvil,
+    // maxSafeSize será menor que 190, forzando a la fuente a encogerse.
+    if (fixedFontSize) {
+      newFontSize = Math.min(fixedFontSize, maxSafeSize);
+    }
+
     newFontSize = Math.max(newFontSize, minFontSize);
 
     setFontSize(newFontSize);
@@ -158,15 +167,12 @@ const TextPressure: React.FC<TextPressureProps> = ({
           };
 
           const d = dist(mouseRef.current, charCenter);
-          // proximity: 0 = lejos, 1 = encima
           const proximity = Math.max(0, 1 - d / maxDist);
 
-          // Peso interpolado entre weightFrom (lejos) y weightTo (cerca)
           const wght = weight
             ? Math.round(weightFrom + (weightTo - weightFrom) * proximity)
             : fontWeight;
 
-          // Ancho variable (eje wdth) proporcional al peso
           const wdthMin = 5;
           const wdthMax = 200;
           const wdth = width
@@ -184,7 +190,6 @@ const TextPressure: React.FC<TextPressureProps> = ({
             span.style.opacity = alphaVal;
           }
 
-          // Escala interpolada entre scaleFrom (lejos) y scaleTo (cerca)
           const s = scaleFrom + (scaleTo - scaleFrom) * proximity;
           span.style.transform = `scale(${s.toFixed(3)}, ${s.toFixed(3)})`;
           span.style.transformOrigin = "bottom center";

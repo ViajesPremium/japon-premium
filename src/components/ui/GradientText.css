@@ -1,3 +1,6 @@
+/* ==========================================================================
+   ESTRUCTURA ORIGINAL
+   ========================================================================== */
 .animated-gradient-text {
   position: relative;
   margin: 0 auto;
@@ -31,8 +34,6 @@
 .gradient-overlay::before {
   content: '';
   position: absolute;
-  left: 0;
-  top: 0;
   border-radius: inherit;
   width: calc(100% - 2px);
   height: calc(100% - 2px);
@@ -50,4 +51,26 @@
   background-clip: text;
   -webkit-background-clip: text;
   color: transparent;
+}
+
+/* ==========================================================================
+   NUEVAS ANIMACIONES NATIVAS OPTIMIZADAS
+   ========================================================================== */
+
+/* Manejo del "pauseOnHover" 100% en CSS, sin tocar React */
+.animated-gradient-text.pause-on-hover:hover .gradient-overlay,
+.animated-gradient-text.pause-on-hover:hover .text-content {
+  animation-play-state: paused !important;
+}
+
+/* Desplazamiento horizontal y diagonal */
+@keyframes gradient-slide-horizontal {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 100% 50%; }
+}
+
+/* Desplazamiento vertical */
+@keyframes gradient-slide-vertical {
+  0% { background-position: 50% 0%; }
+  100% { background-position: 50% 100%; }
 }
