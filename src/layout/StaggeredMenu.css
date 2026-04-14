@@ -64,7 +64,7 @@ body {
 }
 
 .staggered-menu-header.scrolled {
-  background: rgb(255, 255, 255);
+  background: #fff;
   transition: all 0.3s ease;
 }
 
@@ -332,6 +332,102 @@ body {
 .staggered-menu-panel .sm-socials-list .sm-socials-link:hover,
 .staggered-menu-panel .sm-socials-list .sm-socials-link:focus-visible {
   opacity: 1;
+}
+
+/* ── Píldora "Abrir Menú" ────────────────────────────────────────────── */
+.sm-pill {
+  position: fixed;
+  top: 1.25rem;
+  left: 50%;
+  transform: translateX(-50%) translateY(-160%);
+  z-index: 51;
+  pointer-events: none;
+  opacity: 0;
+
+  display: inline-flex;
+  align-items: center;
+  gap: 0.7rem;
+  padding: 0.55rem 1.25rem 0.55rem 0.9rem;
+  border-radius: 999px;
+
+  /* Fondo oscuro elegante */
+  background: var(--black);
+  backdrop-filter: blur(16px) saturate(1.6);
+  -webkit-backdrop-filter: blur(16px) saturate(1.6);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow:
+    0 4px 24px rgba(0, 0, 0, 0.28);
+
+  cursor: pointer;
+  font-family: var(--font-nohemi), sans-serif;
+  font-size: 0.68rem;
+  font-weight: 400;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.88);
+  white-space: nowrap;
+
+  transition:
+    transform 0.4s cubic-bezier(0.34, 1.4, 0.64, 1),
+    opacity 0.28s ease,
+    background 0.22s ease,
+    box-shadow 0.22s ease;
+}
+
+.sm-pill--visible {
+  transform: translateX(-50%) translateY(0);
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.sm-pill:hover {
+  background: rgba(30, 30, 30, 0.97);
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.35),
+    0 1px 0 rgba(255, 255, 255, 0.08) inset;
+}
+
+.sm-pill:hover .sm-pill-icon span {
+  background: #fff;
+}
+
+
+/* Logo en la píldora */
+.sm-pill-logo {
+  height: 16px;
+  width: auto;
+  flex-shrink: 0;
+  opacity: 0.9;
+  filter: brightness(0) invert(1);
+}
+
+/* Separador vertical */
+.sm-pill-sep {
+  width: 1px;
+  height: 12px;
+  background: rgba(255, 255, 255, 0.12);
+  flex-shrink: 0;
+}
+
+/* Icono de dos líneas */
+.sm-pill-icon {
+  display: flex;
+  flex-direction: column;
+  gap: 3.5px;
+  flex-shrink: 0;
+}
+
+.sm-pill-icon span {
+  display: block;
+  width: 14px;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.65);
+  border-radius: 2px;
+  transition: background 0.22s ease;
+}
+
+.sm-pill-icon span:first-child {
+  width: 10px;
 }
 
 @media (max-width: 1024px) {

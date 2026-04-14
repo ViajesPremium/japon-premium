@@ -2,30 +2,82 @@ import Hero from "@/layout/hero";
 import Snapshot from "@/sections/snapshot/trust-strip";
 import ImgSection from "@/sections/image/image-section";
 import Itinerary from "@/sections/itinerarios/itinerary";
+import Includes from "@/sections/includes/includes";
+import Highlights from "@/sections/highlights/highlights";
+import Testimonials from "@/sections/testimonios/testimonials";
+import Faqs from "@/sections/faqs/faqs";
+import CTAForm from "@/sections/form/ctaForm";
+import Footer from "@/sections/footer/footer";
 
 export default function Home() {
   return (
-    <main>
-      {/* Añadimos relative, w-full y sobre todo overflow-hidden a cada sección */}
-      <section className="snap-section relative w-full overflow-hidden">
+    <main style={{ isolation: "isolate" }}>
+      {/* Secciones con z-index positivo para tapar el footer sticky */}
+      <section
+        className="snap-section relative w-full overflow-hidden"
+        style={{ zIndex: 2 }}
+      >
         <Hero />
       </section>
 
-      <section className="snap-section relative w-full overflow-hidden">
+      <section
+        className="snap-section relative w-full overflow-hidden"
+        style={{ zIndex: 2 }}
+      >
         <Snapshot />
       </section>
 
-      {/* Aquí ya tenías position relative, así que solo agregamos overflow-hidden y w-full */}
       <section
         className="snap-section w-full overflow-hidden"
-        style={{ height: "100vh", position: "relative" }}
+        style={{ height: "100vh", position: "relative", zIndex: 2 }}
       >
         <ImgSection />
       </section>
 
-      <section className="snap-section relative w-full overflow-hidden">
+      <section
+        className="snap-section relative w-full overflow-hidden"
+        style={{ zIndex: 2 }}
+      >
+        <Highlights />
+      </section>
+
+      <section
+        className="snap-section relative w-full overflow-hidden"
+        style={{ zIndex: 2 }}
+      >
         <Itinerary />
       </section>
+
+      <section
+        className="snap-section relative w-full overflow-hidden"
+        style={{ zIndex: 2 }}
+      >
+        <Includes />
+      </section>
+
+      <section
+        className="snap-section relative w-full overflow-hidden"
+        style={{ zIndex: 2 }}
+      >
+        <Testimonials />
+      </section>
+
+      <section
+        className="snap-section relative w-full overflow-hidden"
+        style={{ zIndex: 2 }}
+      >
+        <Faqs />
+      </section>
+
+      <section
+        className="snap-section relative w-full overflow-hidden"
+        style={{ zIndex: 2 }}
+      >
+        <CTAForm />
+      </section>
+
+      {/* Footer sticky - z-index 0, las secciones lo revelan al hacer scroll */}
+      <Footer />
     </main>
   );
 }

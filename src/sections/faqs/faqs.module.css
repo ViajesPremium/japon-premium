@@ -1,0 +1,156 @@
+/* ── FAQ Section ──────────────────────────────────────────────────────── */
+.section {
+  /* Ajusta posiciones sin recorte (solo codigo): */
+  --faq-left-x: 56%;
+  --faq-left-y: 50%;
+  --faq-right-x: 44%;
+  --faq-right-y: 50%;
+  --faq-side-scale: 1.42;
+
+  width: 100%;
+  min-height: 100vh;
+  background-color: var(--bg);
+  display: grid;
+  /* izquierda (imagen futura) | contenido | derecha (imagen futura) */
+  grid-template-columns: 1fr 2fr 1fr;
+  align-items: stretch;
+}
+
+/* ── Laterales ───────────────────────────────────────────────────────── */
+.sideLeft {
+  position: relative;
+  overflow: visible;
+  background-image: url("/images/samurai-perfil.webp");
+  background-size: contain;
+  background-position: var(--faq-left-x) var(--faq-left-y);
+  background-repeat: no-repeat;
+  transform: scale(var(--faq-side-scale));
+  transform-origin: right center;
+}
+
+.sideRight {
+  position: relative;
+  overflow: visible;
+  background-image: url("/images/geisha-perfil.webp");
+  background-size: contain;
+  background-position: var(--faq-right-x) var(--faq-right-y);
+  background-repeat: no-repeat;
+  transform: scale(var(--faq-side-scale));
+  transform-origin: left center;
+}
+
+
+
+
+/* ── Columna central ─────────────────────────────────────────────────── */
+.center {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 3rem;
+  padding: 6rem 2rem;
+}
+
+/* ── Encabezado ──────────────────────────────────────────────────────── */
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+
+.titleGradient {
+  max-width: 100% !important;
+  width: 100% !important;
+  justify-content: flex-start !important;
+  backdrop-filter: none !important;
+  cursor: default !important;
+}
+
+.title {
+  font-family: var(--font-nohemi), sans-serif;
+  font-size: clamp(2rem, 3vw, 3rem);
+  font-weight: 400;
+  line-height: 1.1;
+  margin: 0;
+  letter-spacing: -0.01em;
+}
+
+.subtitle {
+  font-family: var(--font-nohemi), sans-serif;
+  font-size: clamp(0.82rem, 1vw, 0.95rem);
+  font-weight: 300;
+  line-height: 1.7;
+  color: rgba(0, 0, 0, 0.45);
+  margin: 0;
+}
+
+.contactHint {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  margin-top: 0.25rem;
+}
+
+.contactLabel {
+  font-family: var(--font-nohemi), sans-serif;
+  font-size: 0.72rem;
+  font-weight: 300;
+  color: rgba(0, 0, 0, 0.35);
+  letter-spacing: 0.04em;
+  margin: 0;
+}
+
+.contactLink {
+  font-family: var(--font-nohemi), sans-serif;
+  font-size: 0.88rem;
+  font-weight: 500;
+  color: var(--black);
+  text-decoration: none;
+  letter-spacing: 0.01em;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+  padding-bottom: 1px;
+  transition: border-color 0.2s ease;
+  width: fit-content;
+}
+
+.contactLink:hover {
+  border-color: var(--black);
+}
+
+/* ── Acordeón ────────────────────────────────────────────────────────── */
+.accordionWrap {
+  /* sin padding extra, el accordion tiene su propio espaciado interno */
+}
+
+/* ── Responsivo ───────────────────────────────────────────────────────── */
+@media (max-width: 900px) {
+  .section {
+    grid-template-columns: 0 1fr 0;
+  }
+
+  .center {
+    padding: 5rem 2rem 4rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .section {
+    grid-template-columns: 1fr;
+    min-height: auto;
+  }
+
+  .sideLeft,
+  .sideRight {
+    display: none;
+  }
+
+  .center {
+    padding: 4rem 1.5rem 3.5rem;
+    gap: 2rem;
+  }
+
+  .title {
+    font-size: clamp(1.8rem, 7vw, 2.4rem);
+  }
+}

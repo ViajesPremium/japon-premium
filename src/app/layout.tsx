@@ -1,9 +1,17 @@
 import type { Metadata } from "next";
+import { DM_Sans } from "next/font/google";
 import MagneticCursor from "@/components/ui/MagneticCursor";
 import SmoothScroll from "@/components/ui/SmoothScroll";
 import "./globals.css";
 import "../styles/variables.css";
 import Navbar from "@/layout/navbar";
+
+const dmSans = DM_Sans({
+  subsets: ["latin"],
+  weight: ["900"],
+  variable: "--font-dm-sans",
+  display: "swap",
+});
 
 export const metadata: Metadata = {
   // metadataBase define la URL base del sitio.
@@ -98,7 +106,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="antialiased">
+    <html lang="en" className={`antialiased ${dmSans.variable}`}>
       <body className="flex flex-col">
         <Navbar />
         <SmoothScroll>

@@ -4,11 +4,11 @@
     --secondary: #95231C;
     --complementary: #2A4073;
     --black: #000;
-    --bg: #f4f4f4;
+    --bg: #f1f1f1;
     --white: #f4f4f4;
 
     /* Radius */
-    --radius-sm: 0.6rem;
+    --radius-sm: .2rem;
     --radius-md: 60px;
     --radius-lg: 80px;
 

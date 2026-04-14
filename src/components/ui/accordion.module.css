@@ -1,0 +1,80 @@
+/* ── Accordion — CSS puro, sin Tailwind ──────────────────────────────── */
+
+@keyframes accordion-down {
+  from { height: 0; opacity: 0; }
+  to   { height: var(--radix-accordion-content-height); opacity: 1; }
+}
+
+@keyframes accordion-up {
+  from { height: var(--radix-accordion-content-height); opacity: 1; }
+  to   { height: 0; opacity: 0; }
+}
+
+/* ── Item (fila) ─────────────────────────────────────────────────────── */
+.item {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+}
+
+/* ── Header + Trigger ────────────────────────────────────────────────── */
+.header {
+  display: flex;
+}
+
+.trigger {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.4rem 0;
+  text-align: left;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: var(--font-nohemi), sans-serif;
+  font-size: clamp(0.95rem, 1.3vw, 1.15rem);
+  font-weight: 400;
+  color: var(--black);
+  letter-spacing: 0.01em;
+  transition: color 0.2s ease;
+}
+
+.trigger:hover {
+  color: rgba(0, 0, 0, 0.6);
+}
+
+/* ── Icono chevron ───────────────────────────────────────────────────── */
+.chevron {
+  flex-shrink: 0;
+  opacity: 0.5;
+  transition: transform 0.25s ease, opacity 0.25s ease;
+}
+
+/* Rota cuando el item está abierto */
+.trigger[data-state="open"] .chevron {
+  transform: rotate(180deg);
+  opacity: 0.9;
+}
+
+/* ── Contenido ───────────────────────────────────────────────────────── */
+.content {
+  overflow: hidden;
+}
+
+.content[data-state="open"] {
+  animation: accordion-down 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.content[data-state="closed"] {
+  animation: accordion-up 0.24s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.contentInner {
+  padding-bottom: 1.2rem;
+  font-family: var(--font-nohemi), sans-serif;
+  font-size: clamp(0.82rem, 1.1vw, 0.98rem);
+  font-weight: 300;
+  line-height: 1.75;
+  color: rgba(0, 0, 0, 0.55);
+  letter-spacing: 0.01em;
+}

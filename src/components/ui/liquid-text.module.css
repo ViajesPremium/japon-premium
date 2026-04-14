@@ -1,0 +1,31 @@
+.container {
+  position: relative;
+  width: 100%;
+  /* La altura siempre es proporcional al font-size actual */
+  height: 1.15em;
+  font-family: var(--font-nohemi);
+  font-style: italic;
+  font-weight: 700;
+  line-height: 1;
+  filter: url(#threshold);
+  will-change: filter;
+  color: var(--white);
+  isolation: isolate;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  /* Sin márgenes automáticos — el padre decide la alineación */
+  margin: 0;
+}
+
+.textSpan {
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: inline-block;
+  width: 100%;
+  white-space: nowrap;
+}
+
+.svgFilters {
+  display: none;
+}

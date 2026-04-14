@@ -82,14 +82,14 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
       setIsScrolled(currentScrollY > 20);
 
       if (!openRef.current) {
-        if (currentScrollY < lastScrollY.current || currentScrollY <= 20) {
+        if (currentScrollY <= 20) {
+          // Al tope: siempre visible
           setIsHeaderVisible(true);
-        } else if (
-          currentScrollY > lastScrollY.current &&
-          currentScrollY > 80
-        ) {
+        } else if (currentScrollY > lastScrollY.current && currentScrollY > 80) {
+          // Bajando: ocultar
           setIsHeaderVisible(false);
         }
+        // Subiendo pero no en el tope: no hacer nada, mantener el estado actual
       }
 
       lastScrollY.current = currentScrollY;
@@ -463,6 +463,10 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
     };
   }, [closeOnClickAway, open, closeMenu]);
 
+  const showPill = !isHeaderVisible && !open;
+
+  const showHeader = () => setIsHeaderVisible(true);
+
   return (
     <div
       className={
@@ -537,6 +541,22 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
           </button>
         </div>
       </header>
+
+      {/* ── Píldora "Abrir Menú" — visible solo cuando el header está oculto ── */}
+      <button
+        className={`sm-pill ${showPill ? "sm-pill--visible" : ""}`}
+        onClick={showHeader}
+        aria-label="Abrir menú"
+        type="button"
+      >
+        <img src="/logos/jpremium-logo.svg" alt="" className="sm-pill-logo" aria-hidden="true" />
+        <span className="sm-pill-sep" aria-hidden="true" />
+        Abrir Menú
+        <span className="sm-pill-icon" aria-hidden="true">
+          <span />
+          <span />
+        </span>
+      </button>
 
       <aside
         id="staggered-menu-panel"

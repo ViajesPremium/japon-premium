@@ -1,0 +1,60 @@
+@keyframes neon-pulse {
+  0%, 100% {
+    text-shadow:
+      0 0 2px #fff,
+      0 0 8px #fff,
+      0 0 20px var(--neon-color),
+      0 0 40px var(--neon-color),
+      0 0 70px var(--neon-color);
+    opacity: 1;
+  }
+  92% {
+    text-shadow:
+      0 0 2px #fff,
+      0 0 8px #fff,
+      0 0 20px var(--neon-color),
+      0 0 40px var(--neon-color),
+      0 0 70px var(--neon-color);
+    opacity: 1;
+  }
+  93% {
+    text-shadow: none;
+    opacity: 0.12;
+  }
+  94% {
+    text-shadow:
+      0 0 2px #fff,
+      0 0 20px var(--neon-color),
+      0 0 50px var(--neon-color);
+    opacity: 1;
+  }
+  96% {
+    text-shadow: none;
+    opacity: 0.08;
+  }
+  97% {
+    text-shadow:
+      0 0 2px #fff,
+      0 0 8px #fff,
+      0 0 20px var(--neon-color),
+      0 0 40px var(--neon-color),
+      0 0 70px var(--neon-color);
+    opacity: 1;
+  }
+}
+
+.neon {
+  --neon-color: #BF953F;
+
+  display: block;
+  font-family: var(--font-nohemi), sans-serif;
+  font-style: italic;
+  font-weight: 400;
+  font-size: clamp(3.5rem, 15vw, 10rem);
+  line-height: 0.6;
+  color: #fff;
+  letter-spacing: -0.03em;
+  user-select: none;
+
+  animation: neon-pulse 6s ease-in-out infinite;
+}

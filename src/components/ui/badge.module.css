@@ -24,6 +24,13 @@
     font-weight: 300;
 }
 
+/* ── Variante dark (fondo blanco/claro) ──────────────────────────────── */
+.badgeDark {
+    color: var(--black);
+    border-right: 1px solid rgba(0, 0, 0, 0.2);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+}
+
 .text {
     margin: 0;
 }

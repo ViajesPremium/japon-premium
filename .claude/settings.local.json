@@ -15,7 +15,12 @@
       "Bash(cmd /c \"dir /a /b /s \\\\\"C:\\\\Users\\\\apps1\\\\Desktop\\\\japon\\\\japon\\\\.next\\\\dev\\\\logs\\\\\"\")",
       "Bash(cmd /c \"dir /a /b \\\\\"C:\\\\Users\\\\apps1\\\\Desktop\\\\japon\\\\japon\\\\.next\\\\\"\")",
       "Bash(cmd /c \"powershell -command \\\\\"Get-Process -Id 27224 -ErrorAction SilentlyContinue\\\\\"\")",
-      "Bash(cmd /c \"powershell -NoProfile -Command \\\\\"Test-Path 'C:\\\\\\\\Users\\\\\\\\apps1\\\\\\\\Desktop\\\\\\\\japon\\\\\\\\japon\\\\\\\\.next'\\\\\"\")"
+      "Bash(cmd /c \"powershell -NoProfile -Command \\\\\"Test-Path 'C:\\\\\\\\Users\\\\\\\\apps1\\\\\\\\Desktop\\\\\\\\japon\\\\\\\\japon\\\\\\\\.next'\\\\\"\")",
+      "Bash(netstat -ano)",
+      "Bash(findstr :3000)",
+      "Bash(taskkill /PID 20668 /F)",
+      "Bash(cmd /c \"taskkill /F /IM node.exe\")",
+      "Bash(dir \"C:\\\\Users\\\\apps1\\\\Desktop\\\\japon\\\\japon\\\\public\\\\images\")"
     ]
   }
 }

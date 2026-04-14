@@ -7,6 +7,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import styles from "./itinerary.module.css";
 import GradientText from "@/components/ui/GradientText";
 import { BlurredStagger } from "@/components/ui/blurred-stagger-text";
+import { Button } from "@/components/ui/button";
 
 const items = [
   {
@@ -58,6 +59,11 @@ export default function Itinerary() {
       const c2 = c2Refs.current;
       const info = infoRefs.current;
 
+      // Helper para obtener lenis sin repetir código
+      type LenisLike = { scrollTo: (target: number, opts: object) => void };
+      const getLenis = () =>
+        (window as unknown as Record<string, LenisLike>).__lenis;
+
       // ── Estado inicial ─────────────────────────────────────────────────
       items.forEach((_, i) => {
         if (i === 0) {
@@ -71,8 +77,9 @@ export default function Itinerary() {
         }
       });
 
-      // ── Función que anima el cambio de step ────────────────────────────
+      // ── Banderas de control de estado ──────────────────────────────────
       let isAnimating = false;
+      let isNavigating = false; // NUEVO: Evita conflictos al usar los botones
       let safetyTimer: ReturnType<typeof setTimeout> | null = null;
       let currentStepInternal = 0;
 
@@ -96,13 +103,10 @@ export default function Itinerary() {
 
         items.forEach((_, i) => {
           if (i === to) {
-            // ELEMENTO ENTRANTE (CORTINA)
             gsap.set([c1[i], c2[i]], { zIndex: 2 });
-
             const startY1 = dir === 1 ? 100 : -100;
             const startY2 = dir === 1 ? -100 : 100;
 
-            // force3D: true obliga a usar aceleración por GPU
             gsap.fromTo(
               c1[i],
               { yPercent: startY1 },
@@ -140,7 +144,6 @@ export default function Itinerary() {
               },
             });
           } else if (i === from) {
-            // ELEMENTO SALIENTE (QUEDA DEBAJO)
             gsap.set([c1[i], c2[i]], { zIndex: 1 });
             gsap.to(c1[i], {
               yPercent: 0,
@@ -167,7 +170,6 @@ export default function Itinerary() {
               force3D: true,
             });
           } else {
-            // ELEMENTOS EN ESPERA (Se reacomodan sin animación pesada)
             gsap.set(c1[i], { yPercent: i > to ? 100 : -100, zIndex: 0 });
             gsap.set(c2[i], { yPercent: i > to ? -100 : 100, zIndex: 0 });
             gsap.set(info[i], { opacity: 0 });
@@ -175,7 +177,7 @@ export default function Itinerary() {
         });
       };
 
-      // ── Pin y Detección de Scroll Nativa ────────
+      // ── Pin y Detección de Scroll ──────────────────────────────────────
       const st = ScrollTrigger.create({
         trigger: containerRef.current,
         start: "top top",
@@ -188,8 +190,34 @@ export default function Itinerary() {
           delay: 0.1,
         },
         onUpdate: (self) => {
-          const nextStep = Math.round(self.progress * (total - 1));
-          if (nextStep !== currentStepInternal) {
+          if (isNavigating) return; // Ignoramos si la animación vino de un botón
+
+          const targetStep = Math.round(self.progress * (total - 1));
+
+          if (targetStep !== currentStepInternal) {
+            if (isAnimating) {
+              // NUEVO: BLOQUEO ESTRICTO DE SCROLL
+              // Si está animando, calculamos la posición exacta del paso actual y forzamos
+              // al scroll a quedarse ahí. Esto cancela el momentum e impide saltar pasos.
+              const safeScroll =
+                self.start +
+                (currentStepInternal / (total - 1)) * (self.end - self.start);
+              const lenis = getLenis();
+
+              if (lenis) {
+                lenis.scrollTo(safeScroll, { immediate: true });
+              } else {
+                self.scroll(safeScroll);
+              }
+              return;
+            }
+
+            // NUEVO: FORZAR PROGRESIÓN DE 1 EN 1
+            // Aunque el usuario haga un scroll gigante que lo lleve al paso 3 de golpe,
+            // solo lo dejamos avanzar +1 o -1
+            const dir = targetStep > currentStepInternal ? 1 : -1;
+            const nextStep = currentStepInternal + dir;
+
             goToStep(nextStep);
           }
         },
@@ -198,17 +226,17 @@ export default function Itinerary() {
       // ── Exponer goToStep a los botones ─────────────────────────────────
       navRef.current = {
         go: (dir: number) => {
-          if (isAnimating) return;
+          if (isAnimating || isNavigating) return;
           const to = Math.max(
             0,
             Math.min(total - 1, currentStepInternal + dir),
           );
           if (to === currentStepInternal) return;
 
-          type LenisLike = { scrollTo: (target: number, opts: object) => void };
-          const lenis = (window as unknown as Record<string, LenisLike>)
-            .__lenis;
+          isNavigating = true;
+          goToStep(to); // Ejecutamos la animación visual de inmediato
 
+          const lenis = getLenis();
           const targetScroll =
             st.start + (to / (total - 1)) * (st.end - st.start);
 
@@ -217,6 +245,11 @@ export default function Itinerary() {
           } else {
             window.scrollTo({ top: targetScroll, behavior: "smooth" });
           }
+
+          // Liberamos la bandera una vez que termine el auto-scroll
+          setTimeout(() => {
+            isNavigating = false;
+          }, 1000);
         },
       };
 
@@ -241,7 +274,6 @@ export default function Itinerary() {
             alt={item.title}
             className={styles.image}
             decoding="async"
-            // Solo carga ansiosamente la primera imagen para el LCP, las demás lazy load
             loading={i === 0 ? "eager" : "lazy"}
             fetchPriority={i === 0 ? "high" : "auto"}
           />
@@ -290,6 +322,11 @@ export default function Itinerary() {
             />
           </div>
         ))}
+
+        {/* Botón estático fuera del map — evita que items invisibles bloqueen el hover */}
+        <Button variant="primary" className={styles.buttonInfo}>
+          Más información
+        </Button>
 
         <div className={styles.navButtons}>
           <button
