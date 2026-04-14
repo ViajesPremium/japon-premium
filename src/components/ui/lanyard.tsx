@@ -129,7 +129,7 @@ function Band({ maxSpeed = 50, minSpeed = 0, isMobile = false }: BandProps) {
   };
 
   const { nodes, materials } = useGLTF(cardGLB) as any;
-  const texture = useTexture(lanyard);
+  const texture = useTexture(lanyard.src);
   const [curve] = useState(
     () =>
       new THREE.CatmullRomCurve3([
@@ -281,7 +281,9 @@ function Band({ maxSpeed = 50, minSpeed = 0, isMobile = false }: BandProps) {
         </RigidBody>
       </group>
       <mesh ref={band}>
+        {/* @ts-expect-error meshline custom element registered via extend */}
         <meshLineGeometry />
+        {/* @ts-expect-error meshline custom element registered via extend */}
         <meshLineMaterial
           color="white"
           depthTest={false}

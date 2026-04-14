@@ -1,15 +1,26 @@
 /* ── FAQ Section ──────────────────────────────────────────────────────── */
 .section {
-  /* Ajusta posiciones sin recorte (solo codigo): */
-  --faq-left-x: 56%;
-  --faq-left-y: 50%;
-  --faq-right-x: 44%;
-  --faq-right-y: 50%;
-  --faq-side-scale: 1.42;
+  /* Ajusta posiciones sin recorte */
+  --faq-left-x: 165%;
+  --faq-left-y: 55%;
+  --faq-right-x: -75%;
+  --faq-right-y: 55%;
+  --faq-motion-progress: 0;
+  --faq-left-out-x: -96px;
+  --faq-right-out-x: 96px;
+  --faq-left-offset-x: 0px;
+  --faq-left-offset-y: 0px;
+  --faq-right-offset-x: 0px;
+  --faq-right-offset-y: 0px;
+  --faq-side-scale: 2.8;
+  --faq-side-image-width: 88%;
 
   width: 100%;
   min-height: 100vh;
   background-color: var(--bg);
+  position: relative;
+  overflow: visible;
+  isolation: isolate;
   display: grid;
   /* izquierda (imagen futura) | contenido | derecha (imagen futura) */
   grid-template-columns: 1fr 2fr 1fr;
@@ -18,25 +29,49 @@
 
 /* ── Laterales ───────────────────────────────────────────────────────── */
 .sideLeft {
-  position: relative;
+  position: absolute;
+  top: var(--faq-left-offset-y);
+  left: var(--faq-left-offset-x);
+  width: 25%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
   overflow: visible;
   background-image: url("/images/samurai-perfil.webp");
-  background-size: contain;
+  background-size: var(--faq-side-image-width) auto;
   background-position: var(--faq-left-x) var(--faq-left-y);
   background-repeat: no-repeat;
-  transform: scale(var(--faq-side-scale));
+  transform: translate3d(
+      calc((1 - var(--faq-motion-progress)) * var(--faq-left-out-x)),
+      0,
+      0
+    )
+    scale(var(--faq-side-scale));
   transform-origin: right center;
+  will-change: transform;
 }
 
 .sideRight {
-  position: relative;
+  position: absolute;
+  top: var(--faq-right-offset-y);
+  left: calc(75% + var(--faq-right-offset-x));
+  width: 25%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
   overflow: visible;
   background-image: url("/images/geisha-perfil.webp");
-  background-size: contain;
+  background-size: var(--faq-side-image-width) auto;
   background-position: var(--faq-right-x) var(--faq-right-y);
   background-repeat: no-repeat;
-  transform: scale(var(--faq-side-scale));
+  transform: translate3d(
+      calc((1 - var(--faq-motion-progress)) * var(--faq-right-out-x)),
+      0,
+      0
+    )
+    scale(var(--faq-side-scale));
   transform-origin: left center;
+  will-change: transform;
 }
 
 
@@ -44,6 +79,9 @@
 
 /* ── Columna central ─────────────────────────────────────────────────── */
 .center {
+  grid-column: 2;
+  position: relative;
+  z-index: 1;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -129,6 +167,11 @@
     grid-template-columns: 0 1fr 0;
   }
 
+  .sideLeft,
+  .sideRight {
+    display: none;
+  }
+
   .center {
     padding: 5rem 2rem 4rem;
   }
@@ -146,6 +189,7 @@
   }
 
   .center {
+    grid-column: 1;
     padding: 4rem 1.5rem 3.5rem;
     gap: 2rem;
   }

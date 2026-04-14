@@ -14,63 +14,56 @@ export default function Home() {
     <main style={{ isolation: "isolate" }}>
       {/* Secciones con z-index positivo para tapar el footer sticky */}
       <section
-        className="snap-section relative w-full overflow-hidden"
+        className="relative w-full overflow-hidden"
         style={{ zIndex: 2 }}
       >
         <Hero />
       </section>
 
       <section
-        className="snap-section relative w-full overflow-hidden"
+        className="relative w-full overflow-hidden"
         style={{ zIndex: 2 }}
       >
         <Snapshot />
       </section>
 
       <section
-        className="snap-section w-full overflow-hidden"
+        className="w-full overflow-hidden"
         style={{ height: "100vh", position: "relative", zIndex: 2 }}
       >
         <ImgSection />
       </section>
 
       <section
-        className="snap-section relative w-full overflow-hidden"
-        style={{ zIndex: 2 }}
-      >
-        <Highlights />
-      </section>
-
-      <section
-        className="snap-section relative w-full overflow-hidden"
+        className="relative w-full overflow-hidden"
         style={{ zIndex: 2 }}
       >
         <Itinerary />
       </section>
 
       <section
-        className="snap-section relative w-full overflow-hidden"
+        className="relative w-full overflow-hidden"
         style={{ zIndex: 2 }}
       >
         <Includes />
       </section>
 
       <section
-        className="snap-section relative w-full overflow-hidden"
+        className="relative w-full overflow-hidden"
         style={{ zIndex: 2 }}
       >
         <Testimonials />
       </section>
 
       <section
-        className="snap-section relative w-full overflow-hidden"
+        className="relative w-full overflow-hidden"
         style={{ zIndex: 2 }}
       >
         <Faqs />
       </section>
 
       <section
-        className="snap-section relative w-full overflow-hidden"
+        className="relative w-full overflow-hidden"
         style={{ zIndex: 2 }}
       >
         <CTAForm />

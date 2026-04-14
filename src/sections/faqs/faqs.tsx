@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useRef } from "react";
 import styles from "./faqs.module.css";
 import Badge from "@/components/ui/badge";
 import GradientText from "@/components/ui/GradientText";
@@ -57,8 +58,54 @@ const FAQS = [
 ];
 
 export default function Faqs() {
+  const sectionRef = useRef<HTMLElement | null>(null);
+
+  useEffect(() => {
+    const section = sectionRef.current;
+    if (!section) return;
+
+    const clamp = (value: number, min = 0, max = 1) =>
+      Math.min(max, Math.max(min, value));
+
+    let rafId: number | null = null;
+
+    const updateMotionProgress = () => {
+      const rect = section.getBoundingClientRect();
+      const viewportHeight = window.innerHeight || 1;
+
+      const sectionCenter = rect.top + rect.height / 2;
+      const viewportCenter = viewportHeight / 2;
+      const distanceToCenter = Math.abs(sectionCenter - viewportCenter);
+      const maxDistance = viewportHeight / 2 + rect.height / 2;
+
+      const progress = clamp(1 - distanceToCenter / maxDistance);
+      section.style.setProperty("--faq-motion-progress", progress.toFixed(4));
+    };
+
+    const requestUpdate = () => {
+      if (rafId !== null) return;
+      rafId = window.requestAnimationFrame(() => {
+        rafId = null;
+        updateMotionProgress();
+      });
+    };
+
+    window.addEventListener("scroll", requestUpdate, { passive: true });
+    window.addEventListener("resize", requestUpdate);
+    requestUpdate();
+
+    return () => {
+      window.removeEventListener("scroll", requestUpdate);
+      window.removeEventListener("resize", requestUpdate);
+
+      if (rafId !== null) {
+        window.cancelAnimationFrame(rafId);
+      }
+    };
+  }, []);
+
   return (
-    <section className={styles.section}>
+    <section ref={sectionRef} className={styles.section}>
 
       {/* Lateral izquierdo — samurai de perfil */}
       <div className={styles.sideLeft}>

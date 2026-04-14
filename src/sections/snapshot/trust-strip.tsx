@@ -5,7 +5,7 @@ import Badge from "@/components/ui/badge";
 
 export default function Snapshot() {
   return (
-    <section className={`${styles.snapshot} snap-section`}>
+    <section className={styles.snapshot}>
       <div className={styles.postersWrapper}></div>
       <div className={styles.snapshotContent}>
         <Badge text="Nueva seccion" variant="dark" />

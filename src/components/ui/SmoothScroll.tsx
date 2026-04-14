@@ -8,107 +8,103 @@ type SmoothScrollProps = {
   children: React.ReactNode;
 };
 
+const MAX_WHEEL_DELTA = 56;
+const MAX_TOUCH_DELTA = 24;
+
+const clamp = (value: number, min: number, max: number) =>
+  Math.min(max, Math.max(min, value));
+
+const easeOutQuint = (t: number) => 1 - Math.pow(1 - t, 5);
+
 export default function SmoothScroll({ children }: SmoothScrollProps) {
   useEffect(() => {
     const lenis = new Lenis({
-      lerp: 0.08,
+      // Low lerp + delta cap keeps the scroll very smooth and controlled.
+      lerp: 0.045,
       smoothWheel: true,
-      syncTouch: false,
-      touchMultiplier: 1,
-      wheelMultiplier: 0.9,
+      syncTouch: true,
+      syncTouchLerp: 0.06,
+      touchInertiaExponent: 1.2,
+      touchMultiplier: 0.35,
+      wheelMultiplier: 0.45,
       orientation: "vertical",
       gestureOrientation: "vertical",
       autoResize: true,
       infinite: false,
+      overscroll: false,
+      virtualScroll: (data) => {
+        const maxDelta = data.event.type.startsWith("touch")
+          ? MAX_TOUCH_DELTA
+          : MAX_WHEEL_DELTA;
+
+        data.deltaY = clamp(data.deltaY, -maxDelta, maxDelta);
+        data.deltaX = 0;
+        return true;
+      },
     });
 
     const update = (time: number) => {
       lenis.raf(time * 1000);
     };
+
+    gsap.ticker.lagSmoothing(0);
     gsap.ticker.add(update);
 
-    // Snap suave general
-    let isSnapping = false;
-    let snapTimeout: ReturnType<typeof setTimeout> | null = null;
+    const isEditableTarget = (target: EventTarget | null) => {
+      if (!(target instanceof HTMLElement)) return false;
+      if (target.isContentEditable) return true;
 
-    const handleWheel = (e: WheelEvent) => {
-      // Absorbemos la inercia del scroll después del snap
-      if (isSnapping) {
-        if (e.cancelable) e.preventDefault();
-        return;
-      }
-
-      const heroHeight = window.innerHeight;
-      const scrollY = window.scrollY;
-
-      // 1. Snap para el hero (más permisivo)
-      if (scrollY > 10 && scrollY < heroHeight - 10) {
-        isSnapping = true;
-        if (e.cancelable) e.preventDefault();
-        const target = e.deltaY > 0 ? heroHeight : 0;
-        lenis.scrollTo(target, {
-          duration: 1.4,
-          easing: (t: number) => 1 - Math.pow(1 - t, 4),
-          lock: true,
-          onComplete: () => {
-            snapTimeout = setTimeout(() => {
-              isSnapping = false;
-            }, 400);
-          },
-        });
-        return;
-      }
-
-      // 2. Snap para cualquier otra sección con la clase 'snap-section'
-      const snapSections = Array.from(
-        document.querySelectorAll(".snap-section"),
+      const tagName = target.tagName;
+      return (
+        tagName === "INPUT" || tagName === "TEXTAREA" || tagName === "SELECT"
       );
-
-      let targetSection = null;
-      let minDistance = Infinity;
-      const threshold = window.innerHeight * 0.3; // Bajamos el umbral al 30%
-
-      for (const section of snapSections) {
-        const rect = section.getBoundingClientRect();
-
-        // Si escroleamos hacia abajo y nos acercamos al top de una sección
-        if (e.deltaY > 0 && rect.top > 10 && rect.top < threshold) {
-          if (rect.top < minDistance) {
-            minDistance = rect.top;
-            targetSection = section;
-          }
-        }
-
-        // Si escroleamos hacia arriba y nos acercamos al inicio de la sección desde abajo
-        if (e.deltaY < 0 && rect.top < -10 && Math.abs(rect.top) < threshold) {
-          if (Math.abs(rect.top) < minDistance) {
-            minDistance = Math.abs(rect.top);
-            targetSection = section;
-          }
-        }
-      }
-
-      if (targetSection) {
-        isSnapping = true;
-        if (e.cancelable) e.preventDefault();
-        lenis.scrollTo(targetSection as HTMLElement, {
-          duration: 1.1,
-          easing: (t: number) => 1 - Math.pow(1 - t, 4),
-          lock: true,
-          onComplete: () => {
-            // Cooldown de 400ms reducido
-            snapTimeout = setTimeout(() => {
-              isSnapping = false;
-            }, 400);
-          },
-        });
-      }
     };
 
-    window.addEventListener("wheel", handleWheel, { passive: false });
+    const handleKeyboardScroll = (event: KeyboardEvent) => {
+      if (
+        event.defaultPrevented ||
+        event.metaKey ||
+        event.ctrlKey ||
+        event.altKey
+      ) {
+        return;
+      }
+      if (isEditableTarget(event.target)) return;
+
+      const key = event.key;
+      const isArrow = key === "ArrowDown" || key === "ArrowUp";
+      const isPage = key === "PageDown" || key === "PageUp" || key === " ";
+      const isEdge = key === "Home" || key === "End";
+
+      if (!isArrow && !isPage && !isEdge) return;
+      if (event.cancelable) event.preventDefault();
+
+      if (key === "Home") {
+        lenis.scrollTo(0, { duration: 1.3, easing: easeOutQuint });
+        return;
+      }
+
+      if (key === "End") {
+        lenis.scrollTo(lenis.limit, { duration: 1.6, easing: easeOutQuint });
+        return;
+      }
+
+      const direction = key === "ArrowUp" || key === "PageUp" ? -1 : 1;
+      const step = window.innerHeight * (isPage ? 0.45 : 0.14);
+      const next = clamp(lenis.targetScroll + direction * step, 0, lenis.limit);
+
+      lenis.scrollTo(next, {
+        duration: isPage ? 1.1 : 0.9,
+        easing: easeOutQuint,
+      });
+    };
+
+    window.addEventListener("keydown", handleKeyboardScroll, {
+      passive: false,
+    });
 
     return () => {
-      window.removeEventListener("wheel", handleWheel);
+      window.removeEventListener("keydown", handleKeyboardScroll);
       gsap.ticker.remove(update);
       lenis.destroy();
     };
