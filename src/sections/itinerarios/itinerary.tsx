@@ -4,6 +4,7 @@ import { useRef, useState } from "react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import Image from "next/image";
 import styles from "./itinerary.module.css";
 import GradientText from "@/components/ui/GradientText";
 import { BlurredStagger } from "@/components/ui/blurred-stagger-text";
@@ -43,8 +44,8 @@ const DURATION = 0.65;
 
 export default function Itinerary() {
   const containerRef = useRef<HTMLDivElement>(null);
-  const c1Refs = useRef<(HTMLImageElement | null)[]>([]);
-  const c2Refs = useRef<(HTMLImageElement | null)[]>([]);
+  const c1Refs = useRef<(HTMLDivElement | null)[]>([]);
+  const c2Refs = useRef<(HTMLDivElement | null)[]>([]);
   const infoRefs = useRef<(HTMLDivElement | null)[]>([]);
 
   const [activeStep, setActiveStep] = useState(0);
@@ -265,35 +266,43 @@ export default function Itinerary() {
     <div className={styles.container} ref={containerRef}>
       <div className={styles.content1}>
         {items.map((item, i) => (
-          <img
-            key={item.id}
+          <div
+            key={`${item.id}-content1`}
             ref={(el) => {
               c1Refs.current[i] = el;
             }}
-            src={item.image1}
-            alt={item.title}
-            className={styles.image}
-            decoding="async"
-            loading={i === 0 ? "eager" : "lazy"}
-            fetchPriority={i === 0 ? "high" : "auto"}
-          />
+            className={styles.imageFrame}
+          >
+            <Image
+              src={item.image1}
+              alt={item.title}
+              className={styles.image}
+              fill
+              sizes="(max-width: 768px) 100vw, 50vw"
+              priority={i === 0}
+            />
+          </div>
         ))}
       </div>
 
       <div className={styles.content2}>
         {items.map((item, i) => (
-          <img
-            key={item.id}
+          <div
+            key={`${item.id}-content2`}
             ref={(el) => {
               c2Refs.current[i] = el;
             }}
-            src={item.image2}
-            alt={item.title}
-            className={styles.image}
-            decoding="async"
-            loading={i === 0 ? "eager" : "lazy"}
-            fetchPriority={i === 0 ? "high" : "auto"}
-          />
+            className={styles.imageFrame}
+          >
+            <Image
+              src={item.image2}
+              alt={item.title}
+              className={styles.image}
+              fill
+              sizes="(max-width: 768px) 100vw, 50vw"
+              priority={i === 0}
+            />
+          </div>
         ))}
       </div>
 

@@ -5,6 +5,7 @@ import { motion } from "motion/react"
 import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react"
 import { Autoplay, EffectCoverflow, Navigation, Pagination } from "swiper/modules"
 import { Swiper, SwiperSlide } from "swiper/react"
+import Image from "next/image"
 import "swiper/css"
 import "swiper/css/effect-coverflow"
 import "swiper/css/navigation"
@@ -102,7 +103,13 @@ const Carrousel = ({
         >
           {images.map((image) => (
             <SwiperSlide key={`${image.src}-${image.alt}`} className="carrousel__slide">
-              <img className="carrousel__image" src={image.src} alt={image.alt} />
+              <Image
+                className="carrousel__image"
+                src={image.src}
+                alt={image.alt}
+                fill
+                sizes="(max-width: 768px) 62vw, 30vw"
+              />
             </SwiperSlide>
           ))}
 

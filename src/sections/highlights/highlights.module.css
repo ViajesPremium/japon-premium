@@ -6,12 +6,15 @@
 
 .container {
     display: flex;
+    flex-direction: column;
     height: 100%;
     justify-content: start;
-    align-items: center;
+    padding: 2rem 4rem;
 }
 
 .title {
-    font-size: 12rem;
+    font-size: 8rem;
+    text-align: start;
+    line-height: 1;
     font-family: var(--font-nohemi);
 }

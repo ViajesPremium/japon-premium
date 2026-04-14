@@ -52,11 +52,7 @@ export default function ImgSection() {
       onMouseLeave={handleMouseLeave}
     >
       {/* Background image with parallax */}
-      <motion.div
-        className={styles.img}
-        aria-hidden="true"
-        style={{ x: imgX, y: imgY, scale: 1.06 }}
-      />
+      <motion.div className={styles.img} aria-hidden="true" />
 
       {/* Optional overlay */}
       <div className={styles.imgOverlay} aria-hidden="true" />

@@ -1,6 +1,7 @@
 "use client";
 import React, { useCallback, useLayoutEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
+import Image from "next/image";
 import "./StaggeredMenu.css";
 import { Button } from "@/components/ui/button";
 
@@ -499,7 +500,7 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
         aria-label="Main navigation header"
       >
         <div className="sm-logo" aria-label="Logo">
-          <img
+          <Image
             src={logoUrl || "/src/assets/logos/reactbits-gh-white.svg"}
             alt="Logo"
             className="sm-logo-img"
@@ -549,7 +550,14 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
         aria-label="Abrir menú"
         type="button"
       >
-        <img src="/logos/jpremium-logo.svg" alt="" className="sm-pill-logo" aria-hidden="true" />
+        <Image
+          src="/logos/jpremium-logo.svg"
+          alt=""
+          className="sm-pill-logo"
+          aria-hidden="true"
+          width={76}
+          height={16}
+        />
         <span className="sm-pill-sep" aria-hidden="true" />
         Abrir Menú
         <span className="sm-pill-icon" aria-hidden="true">

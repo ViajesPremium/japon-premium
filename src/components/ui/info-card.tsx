@@ -1,6 +1,7 @@
 "use client"
 
 import React, { useRef, useState, type CSSProperties } from "react"
+import Image from "next/image"
 import "./info-card.css"
 
 function isRTL(text: string) {
@@ -102,7 +103,13 @@ export const InfoCard: React.FC<InfoCardProps> = ({
     >
       <div className="infoCard__inner">
         <div className="infoCard__media">
-          <img src={image} alt={title} className="infoCard__image" />
+          <Image
+            src={image}
+            alt={title}
+            className="infoCard__image"
+            fill
+            sizes="(max-width: 480px) 100vw, 388px"
+          />
         </div>
 
         <div className="infoCard__content">

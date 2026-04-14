@@ -19,6 +19,7 @@
 }
 
 .carrousel__slide {
+  position: relative;
   width: clamp(220px, 30vw, 940px);
   border-radius: var(--radius-sm);
   overflow: hidden;

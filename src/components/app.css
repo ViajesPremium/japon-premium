@@ -9,7 +9,7 @@
   isolation: isolate;
   background-color: transparent;
   cursor: default;
-  touch-action: none;
+  touch-action: pan-y;
   background-color: #ffffffe8;
 }
 
@@ -162,6 +162,30 @@
 
 .span-japon, .span-desde { font-weight: 500; }
 .span-mexico { color: var(--black); }
+
+.hero-static-word {
+  font-family: var(--font-nohemi), sans-serif;
+  color: #000;
+  line-height: 1;
+  white-space: nowrap;
+  display: block;
+}
+
+.hero-static-word--light {
+  font-weight: 200;
+  font-size: clamp(3rem, 10vw, 10.2rem);
+  font-style: italic;
+}
+
+.hero-static-word--light-upright {
+  font-weight: 200;
+  font-size: clamp(3rem, 10vw, 10.2rem);
+}
+
+.hero-static-word--bold {
+  font-weight: 800;
+  font-size: clamp(3rem, 10vw, 10.2rem);
+}
 
 .media-stage {
   display: flex;

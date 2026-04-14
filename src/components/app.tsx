@@ -8,15 +8,14 @@ import {
   type CSSProperties,
 } from "react";
 import * as THREE from "three";
+import Image from "next/image";
 import "./app.css";
 
 const geisha = "/images/geisha3.webp";
 const samurai = "/images/samurai3.webp";
 import { Button } from "@/components/ui/button";
 import { ArrowDown } from "lucide-react";
-import { motion } from "motion/react";
 import TextPressure from "@/components/ui/TextPressure";
-import { section } from "motion/react-client";
 
 // ====================================================================
 // DEFAULT SETTINGS
@@ -24,7 +23,8 @@ import { section } from "motion/react-client";
 
 const TRAIL_LENGTH = 16;
 const SPLASH_LENGTH = 16;
-const MAX_PIXEL_RATIO = 3;
+const MAX_PIXEL_RATIO = 2;
+const WEBGL_BOOT_TIMEOUT_MS = 1200;
 
 const MAX_RADIUS = 0.2;
 const BLOB_COLOR = "#000000";
@@ -298,6 +298,9 @@ export default function App() {
   const lastInteractionTimeRef = useRef(Date.now());
 
   const [isCoarsePointer, setIsCoarsePointer] = useState(false);
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
+  const [isHeroInView, setIsHeroInView] = useState(true);
+  const [shouldBootWebGL, setShouldBootWebGL] = useState(false);
 
   const visualControlsStyle = {
     "--geisha-scale": GEISHA_SCALE,
@@ -310,6 +313,9 @@ export default function App() {
     "--samurai-offset-x": SAMURAI_OFFSET_X,
     "--samurai-offset-y": SAMURAI_OFFSET_Y,
   } as CSSProperties;
+
+  const useStaticHeroText = isCoarsePointer || prefersReducedMotion;
+  const allowHeroInteraction = !useStaticHeroText;
 
   const startGhostCycle = useCallback(() => {
     if (!ghostPathRef.current || ghostPathLengthRef.current <= 0) return;
@@ -379,18 +385,27 @@ export default function App() {
   }, []);
 
   useEffect(() => {
-    const mediaQuery = window.matchMedia("(pointer: coarse)");
+    const coarseQuery = window.matchMedia("(pointer: coarse)");
+    const reducedMotionQuery = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    );
 
     const syncMode = () => {
-      const coarse = mediaQuery.matches;
+      const coarse = coarseQuery.matches;
+      const reducedMotion = reducedMotionQuery.matches;
       isCoarsePointerRef.current = coarse;
       setIsCoarsePointer(coarse);
+      setPrefersReducedMotion(reducedMotion);
     };
 
     syncMode();
-    mediaQuery.addEventListener("change", syncMode);
+    coarseQuery.addEventListener("change", syncMode);
+    reducedMotionQuery.addEventListener("change", syncMode);
 
-    return () => mediaQuery.removeEventListener("change", syncMode);
+    return () => {
+      coarseQuery.removeEventListener("change", syncMode);
+      reducedMotionQuery.removeEventListener("change", syncMode);
+    };
   }, []);
 
   useEffect(() => {
@@ -399,11 +414,69 @@ export default function App() {
   }, []);
 
   useEffect(() => {
+    const root = rootRef.current;
+    if (!root) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsHeroInView(entry.isIntersecting);
+      },
+      { threshold: 0.05, rootMargin: "120px 0px" },
+    );
+
+    observer.observe(root);
+
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    if (!allowHeroInteraction || !isHeroInView || shouldBootWebGL) return;
+
+    let timeoutId: number | null = null;
+    let idleId: number | null = null;
+    const windowWithIdleApi = window as Window & {
+      requestIdleCallback?: (
+        callback: () => void,
+        options?: { timeout?: number },
+      ) => number;
+      cancelIdleCallback?: (id: number) => void;
+    };
+    const bootWebGL = () => setShouldBootWebGL(true);
+
+    if (typeof windowWithIdleApi.requestIdleCallback === "function") {
+      idleId = windowWithIdleApi.requestIdleCallback(bootWebGL, {
+        timeout: WEBGL_BOOT_TIMEOUT_MS,
+      });
+    } else {
+      timeoutId = window.setTimeout(bootWebGL, 160);
+    }
+
+    return () => {
+      if (
+        idleId !== null &&
+        typeof windowWithIdleApi.cancelIdleCallback === "function"
+      ) {
+        windowWithIdleApi.cancelIdleCallback(idleId);
+      }
+      if (timeoutId !== null) {
+        window.clearTimeout(timeoutId);
+      }
+    };
+  }, [allowHeroInteraction, isHeroInView, shouldBootWebGL]);
+
+  useEffect(() => {
+    if (!allowHeroInteraction || !shouldBootWebGL) return;
+
     const container = overlayRef.current;
-    if (!container) return;
+    const root = rootRef.current;
+    if (!container || !root) return;
 
     let disposed = false;
     let resizeObserver: ResizeObserver | null = null;
+    let viewportObserver: IntersectionObserver | null = null;
+    let isStageVisible = true;
+    let isPageVisible = !document.hidden;
+    let handlePageVisibilityChange: (() => void) | null = null;
     const loader = new THREE.TextureLoader();
 
     loader.load(samurai, (texture: THREE.Texture) => {
@@ -489,6 +562,13 @@ export default function App() {
 
       resizeObserver.observe(container);
       if (geishaRef.current) resizeObserver.observe(geishaRef.current);
+
+      const stopRenderLoop = () => {
+        if (animationRef.current !== null) {
+          cancelAnimationFrame(animationRef.current);
+          animationRef.current = null;
+        }
+      };
 
       const render = () => {
         if (
@@ -770,10 +850,53 @@ export default function App() {
           );
         }
 
+        if (!isStageVisible || !isPageVisible) {
+          stopRenderLoop();
+          return;
+        }
+
         animationRef.current = requestAnimationFrame(render);
       };
 
-      render();
+      const startRenderLoop = () => {
+        if (animationRef.current !== null) return;
+        if (
+          !rendererRef.current ||
+          !sceneRef.current ||
+          !cameraRef.current ||
+          !uniformsRef.current ||
+          !clockRef.current
+        ) {
+          return;
+        }
+        clockRef.current.start();
+        animationRef.current = requestAnimationFrame(render);
+      };
+
+      const syncRenderLoop = () => {
+        if (isStageVisible && isPageVisible) {
+          startRenderLoop();
+        } else {
+          stopRenderLoop();
+        }
+      };
+
+      handlePageVisibilityChange = () => {
+        isPageVisible = !document.hidden;
+        syncRenderLoop();
+      };
+      document.addEventListener("visibilitychange", handlePageVisibilityChange);
+
+      viewportObserver = new IntersectionObserver(
+        ([entry]) => {
+          isStageVisible = entry.isIntersecting;
+          syncRenderLoop();
+        },
+        { threshold: 0.05, rootMargin: "120px 0px" },
+      );
+      viewportObserver.observe(root);
+
+      syncRenderLoop();
     });
 
     return () => {
@@ -781,12 +904,23 @@ export default function App() {
 
       if (animationRef.current !== null) {
         cancelAnimationFrame(animationRef.current);
+        animationRef.current = null;
       }
 
       resizeObserver?.disconnect();
+      viewportObserver?.disconnect();
+      if (handlePageVisibilityChange) {
+        document.removeEventListener(
+          "visibilitychange",
+          handlePageVisibilityChange,
+        );
+      }
       rendererRef.current?.dispose();
+      if (container) {
+        container.innerHTML = "";
+      }
     };
-  }, [resetGhostState, startGhostCycle]);
+  }, [allowHeroInteraction, resetGhostState, shouldBootWebGL, startGhostCycle]);
 
   return (
     <section
@@ -794,9 +928,9 @@ export default function App() {
       id="center"
       className={isCoarsePointer ? "is-coarse" : ""}
       style={visualControlsStyle}
-      onPointerEnter={isCoarsePointer ? undefined : handlePointerEnter}
-      onPointerMove={isCoarsePointer ? undefined : handlePointerMove}
-      onPointerLeave={isCoarsePointer ? undefined : handlePointerLeave}
+      onPointerEnter={allowHeroInteraction ? handlePointerEnter : undefined}
+      onPointerMove={allowHeroInteraction ? handlePointerMove : undefined}
+      onPointerLeave={allowHeroInteraction ? handlePointerLeave : undefined}
     >
       <svg
         ref={ghostSvgRef}
@@ -818,16 +952,25 @@ export default function App() {
       <div
         ref={stageRef}
         className="media-stage"
-        onMouseEnter={isCoarsePointer ? undefined : handleImageEnter}
-        onMouseLeave={isCoarsePointer ? undefined : handleImageLeave}
+        onMouseEnter={allowHeroInteraction ? handleImageEnter : undefined}
+        onMouseLeave={allowHeroInteraction ? handleImageLeave : undefined}
       >
         <div ref={geishaRef} className="geisha">
-          <img src={geisha} alt="Geisha" className="geisha-image" />
-          <div
-            ref={overlayRef}
-            className="samurai-overlay"
-            aria-hidden="true"
+          <Image
+            src={geisha}
+            alt="Geisha"
+            className="geisha-image"
+            fill
+            sizes="100vw"
+            preload
           />
+          {allowHeroInteraction && shouldBootWebGL ? (
+            <div
+              ref={overlayRef}
+              className="samurai-overlay"
+              aria-hidden="true"
+            />
+          ) : null}
         </div>
       </div>
 
@@ -837,8 +980,14 @@ export default function App() {
         <div className="h1">
           <div className="line">
             <div className="word-slot">
-              {isCoarsePointer ? (
-                <span className="mobile-hero-word mobile-hero-word--light">
+              {useStaticHeroText ? (
+                <span
+                  className={
+                    isCoarsePointer
+                      ? "mobile-hero-word mobile-hero-word--light"
+                      : "hero-static-word hero-static-word--light"
+                  }
+                >
                   Viaja a
                 </span>
               ) : (
@@ -866,8 +1015,14 @@ export default function App() {
               )}
             </div>
             <div className="word-slot">
-              {isCoarsePointer ? (
-                <span className="mobile-hero-word mobile-hero-word--light-upright">
+              {useStaticHeroText ? (
+                <span
+                  className={
+                    isCoarsePointer
+                      ? "mobile-hero-word mobile-hero-word--light-upright"
+                      : "hero-static-word hero-static-word--light-upright"
+                  }
+                >
                   Japón
                 </span>
               ) : (
@@ -898,8 +1053,14 @@ export default function App() {
 
           <div className="line">
             <div className="word-slot">
-              {isCoarsePointer ? (
-                <span className="mobile-hero-word mobile-hero-word--bold">
+              {useStaticHeroText ? (
+                <span
+                  className={
+                    isCoarsePointer
+                      ? "mobile-hero-word mobile-hero-word--bold"
+                      : "hero-static-word hero-static-word--bold"
+                  }
+                >
                   desde
                 </span>
               ) : (
@@ -927,8 +1088,14 @@ export default function App() {
               )}
             </div>
             <div className="word-slot">
-              {isCoarsePointer ? (
-                <span className="mobile-hero-word mobile-hero-word--bold">
+              {useStaticHeroText ? (
+                <span
+                  className={
+                    isCoarsePointer
+                      ? "mobile-hero-word mobile-hero-word--bold"
+                      : "hero-static-word hero-static-word--bold"
+                  }
+                >
                   México
                 </span>
               ) : (

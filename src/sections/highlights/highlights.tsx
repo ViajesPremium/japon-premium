@@ -6,6 +6,7 @@ export default function Highlights() {
     <section className={styles.highlights}>
       <div className={styles.container}>
         <BlurredStagger text="Ofreciendo" className={styles.title} />
+        <BlurredStagger text="Experiencias" className={styles.title} />
       </div>
     </section>
   );

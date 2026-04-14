@@ -38,6 +38,13 @@ export default function Home() {
         className="relative w-full overflow-hidden"
         style={{ zIndex: 2 }}
       >
+        <Highlights />
+      </section>
+
+      <section
+        className="relative w-full overflow-hidden"
+        style={{ zIndex: 2 }}
+      >
         <Itinerary />
       </section>
 
