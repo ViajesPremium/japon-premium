@@ -315,7 +315,6 @@ export default function Itinerary() {
             }}
             className={styles.infoItem}
           >
-            <span className={styles.day}>{item.day}</span>
             <GradientText
               className={styles.titleGradient}
               colors={["#BF953F", "#FCF6BA", "#B38728", "#FCF6BA"]}

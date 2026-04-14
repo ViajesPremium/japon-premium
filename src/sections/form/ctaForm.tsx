@@ -76,7 +76,12 @@ export default function CTAForm() {
         filter: "blur(0px)",
         force3D: true,
       });
-      gsap.set(shoji, { autoAlpha: 1, scale: 1, filter: "blur(0px)", force3D: true });
+      gsap.set(shoji, {
+        autoAlpha: 1,
+        scale: 1,
+        filter: "blur(0px)",
+        force3D: true,
+      });
       gsap.set(form, { autoAlpha: 1, scale: 1, y: 0 });
       gsap.set(roomGlow, { autoAlpha: 0.26, scale: 0.9 });
 
@@ -129,10 +134,9 @@ export default function CTAForm() {
           { autoAlpha: 0, filter: "blur(4px)", duration: 0.42 },
           1.86,
         )
-        .to(base, { autoAlpha: 0, filter: "blur(6px)", duration: 0.56 }, 1.9)
-        .to(roomGlow, { autoAlpha: 0.06, duration: 0.8 }, 1.72);
+        .to(base, { autoAlpha: 0, filter: "blur(6px)", duration: 0.56 }, 1.5)
+        .to(roomGlow, { autoAlpha: 0.06, duration: 0.1 }, 1.72);
 
-      // Hold final: mantiene el form visible y bloqueado un tramo extra antes de soltar scroll.
       timeline.to({}, { duration: getHoldDuration() });
     },
     { scope: sectionRef },

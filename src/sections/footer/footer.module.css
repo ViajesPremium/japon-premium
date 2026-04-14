@@ -1,20 +1,19 @@
-/* ==========================================================================
-   FOOTER STRUCTURE: BRUTALIST & LAYERED (CORRECTED)
-   ========================================================================== */
+/* ========================================================================== */
+/* FOOTER STRUCTURE: BRUTALIST & LAYERED                                     */
+/* ========================================================================== */
 
 .footerWrapper {
   width: 100%;
   position: relative;
-  background-color: #000000; /* Fondo Negro Puro */
+  background-color: #000000;
   padding: 0;
   margin: 0;
   font-family: var(--font-nohemi), sans-serif;
   color: #fff;
   isolation: isolate;
-  overflow: hidden; /* Evita que nada sobresalga */
+  overflow: hidden;
 }
 
-/* --- EL "CORTE" SUPERIOR --- */
 .topCap {
   position: absolute;
   top: 0;
@@ -25,14 +24,13 @@
   background-color: var(--bg);
   border-bottom-left-radius: 40px;
   border-bottom-right-radius: 40px;
-  z-index: 10; 
+  z-index: 10;
 }
 
-/* --- ÁREA PRINCIPAL --- */
 .mainContent {
   position: relative;
   width: 100%;
-  height: 100svh; /* Ocupa toda la pantalla vertical */
+  height: 100svh;
   min-height: 800px;
   display: flex;
   flex-direction: column;
@@ -40,23 +38,32 @@
   align-items: center;
 }
 
-/* --- TEXTO BRUTALISTA (Únicamente DETRÁS) --- */
 .textContainer {
   position: absolute;
   top: 40%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 65%; /* LIMITAMOS EL ANCHO para que no toque los bordes */
-  max-width: 1200px; /* Ancho máximo en pantallas gigantes */
+  width: 65%;
+  max-width: 1200px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  z-index: 1; /* Al fondo */
+  z-index: 1;
   pointer-events: none;
 }
 
-/* Slots para TextPressure */
+.brandLogoWrap {
+  position: relative;
+  width: min(52vw, 920px);
+  aspect-ratio: 3 / 1;
+}
+
+.brandLogo {
+  object-fit: contain;
+  object-position: center;
+}
+
 .pressureWordSlot {
   width: 100%;
   height: auto;
@@ -65,43 +72,67 @@
   align-items: center;
 }
 
-.secondLine {
-  margin-top: -4%; /* Superposición vertical apretada */
+.footerWord {
+  display: block;
+  font-family: var(--font-nohemi), sans-serif;
+  line-height: 0.9;
+  white-space: nowrap;
+  user-select: none;
 }
 
-/* --- SAMURAI CENTRAL (Gigante y desde abajo) --- */
+.footerWordLight {
+  color: var(--white);
+  font-size: clamp(2.8rem, 12vw, 10.5rem);
+  font-weight: 200;
+  font-style: italic;
+}
+
+.footerWordBold {
+  color: var(--secondary);
+  font-size: clamp(2.8rem, 12vw, 10.5rem);
+  font-weight: 800;
+}
+
+.secondLine {
+  margin-top: -4%;
+}
+
 .samuraiContainer {
   position: absolute;
-  bottom: 0; /* ANCLADO AL FONDO, no flota */
+  bottom: 0;
   left: 50%;
   transform: translateX(-50%);
-  z-index: 2; /* ENFRENTE DEL TEXTO */
+  z-index: 2;
   width: 100%;
-  height: 85svh; /* GIGANTE, ocupa casi toda la pantalla hacia arriba */
+  height: 85svh;
   display: flex;
   justify-content: center;
-  align-items: flex-end; /* Fuerza a la imagen a pegarse abajo */
+  align-items: flex-end;
   pointer-events: none;
 }
 
 .samuraiImg {
+  position: relative;
   height: 100%;
-  width: auto;
-  object-fit: contain;
-  object-position: bottom center; /* Asegura que la base del PNG toque el borde inferior */
+  width: min(92vw, 900px);
+  will-change: transform, opacity;
 }
 
-/* --- NAVEGACIÓN LATERAL --- */
+.samuraiImg :global(img) {
+  object-fit: contain;
+  object-position: bottom center;
+}
+
 .sideNavWrapper {
   position: absolute;
-  top: 50%; /* Centrado verticalmente */
+  top: 50%;
   transform: translateY(-50%);
   width: 90%;
   max-width: 1400px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  z-index: 3; /* Encima de todo para poder hacer clic */
+  z-index: 3;
   pointer-events: auto;
 }
 
@@ -111,13 +142,20 @@
   gap: 15px;
 }
 
-.alignLeft { align-items: flex-start; text-align: left; }
-.alignRight { align-items: flex-end; text-align: right; }
+.alignLeft {
+  align-items: flex-start;
+  text-align: left;
+}
+
+.alignRight {
+  align-items: flex-end;
+  text-align: right;
+}
 
 .navLabel {
   font-size: 0.75rem;
   text-transform: uppercase;
-  color: #DB2F21; /* Acento rojo */
+  color: #db2f21;
   letter-spacing: 2px;
   font-weight: 700;
   margin-bottom: 5px;
@@ -142,10 +180,9 @@
 
 .navList a:hover {
   opacity: 1;
-  color: #DB2F21;
+  color: #db2f21;
 }
 
-/* --- LOGO SUPERIOR Y BARRA INFERIOR --- */
 .centerHeaderNav {
   position: absolute;
   top: 80px;
@@ -161,8 +198,18 @@
   backdrop-filter: blur(8px);
 }
 
-.centerLogo { font-weight: 700; color: #fff; text-transform: uppercase; letter-spacing: 1px; font-size: 0.8rem;}
-.accent { color: rgba(255, 255, 255, 0.5); font-weight: 400; }
+.centerLogo {
+  font-weight: 700;
+  color: #fff;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-size: 0.8rem;
+}
+
+.accent {
+  color: rgba(255, 255, 255, 0.5);
+  font-weight: 400;
+}
 
 .bottomBar {
   position: absolute;
@@ -176,28 +223,89 @@
   justify-content: space-between;
   align-items: center;
   border-top: 1px solid rgba(255, 255, 255, 0.1);
-  z-index: 4; /* Delante del samurai para que se lea el copyright */
+  z-index: 4;
 }
 
-.copyText { font-size: 0.7rem; opacity: 0.4; color: #fff; }
-.legalLinks { display: flex; gap: 20px; }
-.legalLinks a { color: #fff; text-decoration: none; font-size: 0.7rem; opacity: 0.4; text-transform: uppercase; }
+.copyText {
+  font-size: 0.7rem;
+  opacity: 0.4;
+  color: #fff;
+}
 
-/* ==========================================================================
-   RESPONSIVE
-   ========================================================================== */
+.legalLinks {
+  display: flex;
+  gap: 20px;
+}
+
+.legalLinks a {
+  color: #fff;
+  text-decoration: none;
+  font-size: 0.7rem;
+  opacity: 0.4;
+  text-transform: uppercase;
+}
 
 @media (max-width: 1024px) {
-  .textContainer { width: 85%; }
-  .samuraiContainer { height: 75svh; }
+  .textContainer {
+    width: 85%;
+  }
+
+  .brandLogoWrap {
+    width: min(84vw, 760px);
+  }
+
+  .samuraiContainer {
+    height: 75svh;
+  }
+
+  .samuraiImg {
+    width: min(94vw, 760px);
+  }
 }
 
 @media (max-width: 768px) {
-  .mainContent { min-height: 100vh; }
-  .textContainer { top: 25%; width: 90%; }
-  .secondLine { margin-top: 0; }
-  .samuraiContainer { height: 60svh; } /* En móvil el samurai baja un poco para dejar ver el texto */
-  .sideNavWrapper { top: auto; bottom: 80px; transform: none; flex-direction: row; align-items: flex-start; }
-  .navList a { font-size: 1.1rem; }
-  .bottomBar { flex-direction: column; justify-content: center; gap: 10px; height: 70px; border: none; }
+  .mainContent {
+    min-height: 100vh;
+  }
+
+  .textContainer {
+    top: 25%;
+    width: 90%;
+  }
+
+  .brandLogoWrap {
+    width: min(88vw, 520px);
+  }
+
+  .secondLine {
+    margin-top: 0;
+  }
+
+  .samuraiContainer {
+    height: 60svh;
+  }
+
+  .samuraiImg {
+    width: min(96vw, 560px);
+  }
+
+  .sideNavWrapper {
+    top: auto;
+    bottom: 80px;
+    transform: none;
+    flex-direction: row;
+    align-items: flex-start;
+  }
+
+  .navList a {
+    font-size: 1.1rem;
+  }
+
+  .bottomBar {
+    flex-direction: column;
+    justify-content: center;
+    gap: 10px;
+    height: 70px;
+    border: none;
+  }
 }

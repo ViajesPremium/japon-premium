@@ -112,7 +112,7 @@ const SvgFilters: React.FC = () => (
     preserveAspectRatio="xMidYMid slice"
   >
     <defs>
-      <filter id="threshold" color-interpolation-filters="sRGB">
+      <filter id="threshold" colorInterpolationFilters="sRGB">
         <feGaussianBlur in="SourceGraphic" stdDeviation="0.9" result="blur" />
         <feComponentTransfer in="blur">
           <feFuncA

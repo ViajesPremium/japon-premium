@@ -1,87 +1,49 @@
 "use client";
 
-import React from "react";
-import styles from "./footer.module.css";
-import TextPressure from "@/components/ui/TextPressure";
+import Image from "next/image";
 import { motion } from "motion/react";
+import styles from "./footer.module.css";
 
-const samuraiMain = "/images/samurai3.webp";
+const samuraiMain = "/images/samurai4.webp";
+const footerBrandLogo = "/logos/japon-grande-logo.png";
 
 export default function Footer() {
-  const brutallFontUrl =
-    "/fonts/nohemi-font-family/Nohemi-VF-BF6438cc58ad63d.ttf";
-
   return (
     <footer className={styles.footerWrapper}>
-      {/* CORTE SUPERIOR */}
       <div className={styles.topCap} />
 
-      {/* ÁREA DE CONTENIDO */}
       <div className={styles.mainContent}>
-        {/* ESTRATO 1: Texto (Detrás del Samurai, ancho controlado) */}
-        <div className={styles.textContainer}>
-          <div className={styles.pressureWordSlot}>
-            <TextPressure
-              text="Japón"
-              fontFamily="Nohemi"
-              fontUrl="/fonts/nohemi-font-family/Nohemi-VF-BF6438cc58ad63d.ttf"
-              fontWeight={100}
-              fontStyle="normal"
-              fontSize={190}
-              flex={false}
-              alpha={false}
-              stroke={false}
-              width={true}
-              weight={true}
-              italic={true}
-              weightFrom={100}
-              weightTo={400}
-              scaleFrom={1}
-              scaleTo={1}
-              textColor="var(--white)"
-              strokeColor="var(--white)"
-              minFontSize={80}
-            />
-          </div>
-          <div className={`${styles.pressureWordSlot} ${styles.secondLine}`}>
-            <TextPressure
-              text="Premium"
-              fontFamily="Nohemi"
-              fontUrl="/fonts/nohemi-font-family/Nohemi-VF-BF6438cc58ad63d.ttf"
-              fontWeight={900}
-              fontStyle="normal"
-              fontSize={190}
-              flex={false}
-              alpha={false}
-              stroke={false}
-              width={true}
-              weight={true}
-              italic={false}
-              weightFrom={600}
-              weightTo={100}
-              scaleFrom={1.09}
-              scaleTo={1}
-              textColor="var(--secondary)"
-              strokeColor="var(--secondary)"
-              minFontSize={80}
+        <div className={styles.textContainer} aria-hidden="true">
+          <div className={styles.brandLogoWrap}>
+            <Image
+              src={footerBrandLogo}
+              alt="Viaja a Japon Premium"
+              fill
+              sizes="(max-width: 768px) 86vw, 60vw"
+              loading="lazy"
+              className={styles.brandLogo}
             />
           </div>
         </div>
 
-        {/* ESTRATO 2: Samurai (En frente del texto, anclado abajo) */}
         <div className={styles.samuraiContainer}>
-          <motion.img
+          <motion.div
             initial={{ y: 150, opacity: 0 }}
             whileInView={{ y: 0, opacity: 1 }}
             transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
             viewport={{ once: true }}
-            src={samuraiMain}
-            alt="Samurai Central"
             className={styles.samuraiImg}
-          />
+          >
+            <Image
+              src={samuraiMain}
+              alt="Samurai Central"
+              fill
+              sizes="(max-width: 768px) 80vw, 40vw"
+              loading="lazy"
+            />
+          </motion.div>
         </div>
 
-        {/* ESTRATO 3: Navegación Lateral (Frente a todo) */}
         <div className={styles.sideNavWrapper}>
           <div className={`${styles.navBlock} ${styles.alignLeft}`}>
             <span className={styles.navLabel}>PÁGINAS</span>
@@ -104,7 +66,6 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* BARRA INFERIOR */}
         <div className={styles.bottomBar}>
           <div className={styles.copyText}>
             <p>© 2026 Viaja a Japón Premium. Todos los derechos reservados.</p>

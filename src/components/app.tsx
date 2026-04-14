@@ -12,7 +12,7 @@ import Image from "next/image";
 import "./app.css";
 
 const geisha = "/images/geisha3.webp";
-const samurai = "/images/samurai3.webp";
+const samurai = "/images/samurai4.webp";
 import { Button } from "@/components/ui/button";
 import { ArrowDown } from "lucide-react";
 import TextPressure from "@/components/ui/TextPressure";
