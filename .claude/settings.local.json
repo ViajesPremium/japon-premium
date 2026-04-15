@@ -24,7 +24,10 @@
       "Bash(cmd /c \"taskkill /PID 37488 /F\")",
       "Bash(powershell -Command \"Get-Process -Id 37488 -ErrorAction SilentlyContinue | Select-Object Id, Name, Path\")",
       "Bash(powershell -Command \"Stop-Process -Id 37488 -Force; Start-Sleep 1; Get-Process -Id 37488 -ErrorAction SilentlyContinue | Select-Object Id, Name\")",
-      "Bash(powershell -Command \"Stop-Process -Id 40648 -Force -ErrorAction SilentlyContinue; Start-Sleep 1\")"
+      "Bash(powershell -Command \"Stop-Process -Id 40648 -Force -ErrorAction SilentlyContinue; Start-Sleep 1\")",
+      "Bash(powershell -Command \"Stop-Process -Id 14152 -Force -ErrorAction SilentlyContinue; Start-Sleep 1\")",
+      "Bash(powershell -Command \"Stop-Process -Id 7176 -Force; Start-Sleep 1\")",
+      "Bash(powershell -Command \"Stop-Process -Id 27364 -Force; Start-Sleep 1\")"
     ]
   }
 }

@@ -1,59 +1,94 @@
-import styles from "./highlights.module.css";
 import Badge from "@/components/ui/badge";
-import { BlurredStagger } from "@/components/ui/blurred-stagger-text";
-import { HoverImageGallery } from "@/components/hover-image-gallery";
+import Skiper54 from "@/components/skiper54";
 import { Button } from "@/components/ui/button";
-import TextType from "@/components/ui/TextType";
+import styles from "./highlights.module.css";
 
-const HIGHLIGHT_IMAGES = [
-  "/images/gallery-7.webp",
-  "/images/gallery-2.webp",
-  "/images/gallery-3.webp",
-  "/images/gallery-4.webp",
-  "/images/gallery-5.webp",
-  "/images/gallery-6.webp",
-  "/images/gallery-1.webp",
+const SKIPER_IMAGES = [
+  {
+    src: "/images/gallery-1.webp",
+    alt: "Kyoto Privado",
+    title: "Kyoto Privado",
+  },
+  {
+    src: "/images/gallery-2.webp",
+    alt: "Tokyo Nocturno",
+    title: "Tokyo Nocturno",
+  },
+  {
+    src: "/images/gallery-3.webp",
+    alt: "Onsen Premium",
+    title: "Onsen Premium",
+  },
+  {
+    src: "/images/gallery-4.webp",
+    alt: "Sabores Omakase",
+    title: "Sabores Omakase",
+  },
+  {
+    src: "/images/gallery-5.webp",
+    alt: "Paisajes Iconicos",
+    title: "Paisajes Iconicos",
+  },
+  {
+    src: "/images/gallery-6.webp",
+    alt: "Experiencia Ryokan",
+    title: "Experiencia Ryokan",
+  },
 ];
 
 export default function Highlights() {
   return (
     <section className={styles.highlights}>
       <div className={styles.container}>
-        <div className={styles.copyColumn}>
-          <BlurredStagger
-            text="Creando"
-            className={`${styles.title} ${styles.titleGradient}`}
-            highlights={[
-              {
-                word: "Creando",
-                useGradient: true,
-                gradientColors: ["#BF953F", "#FCF6BA", "#B38728", "#FCF6BA"],
-                gradientSpeed: 6,
-              },
-            ]}
-          />
-
-          <TextType
-            as="h2"
-            text="Experiencias"
-            className={`${styles.title} ${styles.titleType}`}
-            showCursor={true}
-            loop={true}
-            startOnVisible
-            typingSpeed={120}
-            deletingSpeed={35}
-            initialDelay={120}
-          />
+        <div className={styles.badgeRow}>
+          <Badge text="Por que Japon Premium?" variant="dark" />
         </div>
 
-        <p className={styles.subtitle}>
-          Diseñamos momentos inolvidables en Japón, con curaduría premium y
-          acompañamiento de principio a fin.
-        </p>
+        <header className={styles.kicker}>
+          <p className={styles.kickerTop}>Trabajamos con las mejores marcas</p>
+          <p className={styles.kickerBottom}>De todo el mundo</p>
+        </header>
 
-        <Button variant="primary" className={styles.cta}>
-          Quiero mi viaje
-        </Button>
+        <div className={styles.editorialGrid}>
+          <p className={`${styles.megaText} ${styles.weHelp}`}>TODA</p>
+
+          <div className={`${styles.bracketBox} ${styles.standard}`}>
+            <span>The Standard</span>
+          </div>
+
+          <h2 className={`${styles.megaText} ${styles.rightLine}`}>
+            LA CALIDAD,
+          </h2>
+
+          <div className={`${styles.bracketBox} ${styles.epochalWrap}`}>
+            <p className={styles.epochal}>epochal</p>
+          </div>
+
+          <h2 className={`${styles.megaText} ${styles.rightLine}`}>
+            EXPERIENCIA,
+          </h2>
+
+          <p className={`${styles.megaText} ${styles.andWord}`}>Y EL</p>
+
+          <div className={`${styles.bracketBox} ${styles.otWrap}`}>
+            <p className={styles.ot}>OT</p>
+          </div>
+
+          <h2 className={`${styles.megaText} ${styles.rightLine}`}>CUIDADO</h2>
+        </div>
+      </div>
+
+      <div className={styles.skiperSection}>
+        <Skiper54
+          images={SKIPER_IMAGES}
+          autoplay={false}
+          loop={false}
+          showNavigation={false}
+        />
+      </div>
+      <p className={styles.footerCopy}>Y estamos contigo hasta el final</p>
+      <div className={styles.ctaRow}>
+        <Button variant="primary">Diseña tu viaje</Button>
       </div>
     </section>
   );

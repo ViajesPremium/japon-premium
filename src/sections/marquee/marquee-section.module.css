@@ -24,6 +24,20 @@
   align-items: flex-start;
 }
 
+.logoIntro {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logoIntroImage {
+  width: min(100%, 250px);
+  height: auto;
+  margin-top: 2.5rem;
+  object-fit: contain;
+}
+
 .title {
   margin: 0;
   margin-top: 2rem;

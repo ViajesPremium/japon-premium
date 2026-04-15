@@ -28,30 +28,6 @@ export default function ImgSection() {
       />
 
       <div className={styles.imgOverlay} aria-hidden="true" />
-
-      <div className={styles.inner}>
-      <div className={styles.left}>
-        <Badge text="Nuestra promesa" />
-
-        <div className={styles.titles}>
-          <h2 className={`${styles.titleJapon} ${styles.titleJaponGold}`}>
-            Japón
-          </h2>
-
-          <MorphingText
-            className={styles.titlePremium}
-            texts={["Auténtico", "Premium", "Exclusivo"]}
-          />
-        </div>
-
-        <div className={styles.ctas}>
-          <Button variant="primary">Diseña tu viaje</Button>
-          <Button variant="secondary">Ver destinos</Button>
-        </div>
-      </div>
-
-      <div className={styles.right} />
-      </div>
     </section>
   );
 }

@@ -1,141 +1,269 @@
 .highlights {
   width: 100%;
-  min-height: 200vh;
-  background-color: var(--bg);
+  background: var(--bg);
+  padding-bottom: clamp(3rem, 6vw, 5rem);
+  padding-bottom: 15rem;
 }
 
+/* ── Contenido centrado ──────────────────────────────────────────────── */
 .container {
   width: 100%;
   max-width: var(--site-max);
   margin-inline: auto;
-  padding: clamp(2rem, 4vw, 4rem) var(--site-px);
+  padding: clamp(2rem, 3.2vw, 3.2rem) var(--site-px) clamp(1.5rem, 3vw, 2.5rem);
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
 }
 
-.layout {
+.badgeRow {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 2rem;
+  justify-content: flex-start;
+  margin-bottom: clamp(0.7rem, 1.6vw, 1.2rem);
 }
 
-.copyColumn {
-  display: flex;
-  gap: 2rem;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
+.kicker {
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.1rem;
+  margin-top: 3rem;
 }
 
-
-.title {
-  font-size: clamp(3rem, 9vw, 7rem);
-  line-height: 1.02;
-  width: 100%;
-  font-style: italic;
-  font-family: var(--font-nohemi);
-  text-align: center;
-  justify-content: center;
-
-}
-
-.titleGradient :global(.animated-gradient-text) {
-  margin: 0 auto;
-  cursor: default;
-  overflow: visible;
-  max-width: 100%;
-  justify-content: center;
-}
-
-.titleGradient :global(.text-content) {
-  font-weight: 500;
-}
-
-.titleType {
-  display: block;
-  min-height: 1.06em;
-  width: 12ch;
-  max-width: 100%;
+.kickerTop {
+  margin: 0;
+  font-family: var(--font-nohemi), sans-serif;
+  font-weight: 600;
   color: var(--black);
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  font-size: clamp(0.9rem, 1vw, 1.2rem);
+}
+
+.kickerBottom {
+  margin: 0;
+  font-family: var(--font-nohemi), sans-serif;
+  color: var(--secondary);
+  font-style: italic;
+  line-height: 0.95;
+  font-size: clamp(0.92rem, 1.6vw, 1.85rem);
+}
+
+/* ── Editorial grid ──────────────────────────────────────────────────── */
+.editorialGrid {
+  margin-top: clamp(4.4rem, 10vh, 8.5rem);
+  display: grid;
+  grid-template-columns: auto auto 1fr;
+  grid-template-rows: auto auto auto;
+  column-gap: clamp(0.7rem, 1.6vw, 1.7rem);
+  row-gap: clamp(0.35rem, 1vh, 0.8rem);
+  align-items: start;
+  width: fit-content;
+  margin-inline: auto;
+}
+
+.megaText {
+  margin: 0;
+  font-family: var(--font-thunder-lc), sans-serif;
+  font-weight: 800;
+  color: var(--black);
+  text-transform: uppercase;
+  letter-spacing: 0.008em;
+  line-height: 0.86;
+  white-space: nowrap;
+  font-size: clamp(3.4rem, 8.4vw, 8rem);
+}
+
+.weHelp  { grid-column: 1; grid-row: 1; }
+.andWord { grid-column: 1; grid-row: 3; }
+.rightLine { grid-column: 3; }
+
+.standard {
+  grid-column: 2; grid-row: 1;
+  justify-self: center; align-self: center;
+  transform: rotate(180deg);
+}
+.epochalWrap { grid-column: 2; grid-row: 2; justify-self: center; }
+.otWrap      { grid-column: 2; grid-row: 3; justify-self: center; }
+
+.bracketBox {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.bracketBox::before,
+.bracketBox::after {
+  content: "";
+  position: absolute;
+  width: 11px; height: 11px;
+  border-style: solid;
+  border-color: rgba(7, 20, 45, 0.58);
+}
+.bracketBox::before { top: -9px; left: -9px; border-width: 1px 0 0 1px; }
+.bracketBox::after  { right: -9px; bottom: -9px; border-width: 0 1px 1px 0; }
+
+.standard span {
+  display: inline-block;
+  background: #07142d;
+  color: #eff4fa;
+  font-family: var(--font-nohemi), sans-serif;
+  font-size: clamp(0.62rem, 0.82vw, 0.8rem);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 0.3rem 0.56rem;
+  transform: rotate(180deg);
+}
+
+.epochal, .ot {
+  margin: 0;
+  color: #07142d;
+  font-family: var(--font-nohemi), sans-serif;
+  line-height: 1;
+}
+.epochal {
+  font-size: clamp(1.7rem, 2.5vw, 2.45rem);
   font-weight: 500;
-  font-style: normal;
-  white-space: nowrap;
-  margin: 0 auto;
+  letter-spacing: -0.03em;
+}
+.ot {
+  font-size: clamp(3rem, 5.5vw, 5.2rem);
+  font-weight: 500;
+  letter-spacing: -0.03em;
+}
+
+.footerCopy {
+  margin: clamp(2.2rem, 8vh, 6.2rem) 0 0;
   text-align: center;
+  margin-top: 10rem;
+  color: var(--secondary);
+  font-family: var(--font-nohemi), sans-serif;
+  font-style: italic;
+  font-size: clamp(1.5rem, 2.25vw, 2.55rem);
 }
 
-.titleType :global(.text-type) {
-  display: block;
-  width: 100%;
-  white-space: nowrap;
-  margin: 0 auto;
-  text-align: center;
-}
-
-.subtitle {
-  margin-top: clamp(1rem, 1.8vw, 1.6rem);
-  max-width: 56ch;
-  color: rgba(0, 0, 0, 0.74);
-  font-size: clamp(1rem, 1.3vw, 1.25rem);
-  font-weight: 300;
-  line-height: 1.5;
-}
-
-.cta {
-  margin-top: clamp(1rem, 2vw, 1.6rem);
-}
-
-.galleryColumn {
+.ctaRow {
+  margin-top: clamp(1rem, 2.4vw, 1.8rem);
   display: flex;
-  justify-content: flex-end;
+  justify-content: center;
 }
 
-.gallery {
-  width: min(100%, 560px);
+/* ── Marquee ─────────────────────────────────────────────────────────── */
+.marqueeWrapper {
+  margin-top: clamp(2rem, 6vw, 8rem);
+  width: 100%;
+  overflow: hidden;
+  mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    black 8%,
+    black 92%,
+    transparent 100%
+  );
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    black 8%,
+    black 92%,
+    transparent 100%
+  );
 }
 
-@media (max-width: 1024px) {
-  .layout {
-    grid-template-columns: minmax(0, 1fr) minmax(0, 0.95fr);
-    gap: 1.25rem;
-  }
+.marqueeTrack {
+  display: flex;
+  gap: 8rem;
+  width: max-content;
+  will-change: transform;
+}
 
-  .subtitle {
-    max-width: 44ch;
+.marqueeCard {
+  position: relative;
+  width: clamp(180px, 16vw, 260px);
+  aspect-ratio: 3 / 4;
+  border-radius: 12px;
+  overflow: hidden;
+  flex-shrink: 0;
+  cursor: default;
+}
+
+.marqueeImage {
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.marqueeCard:hover .marqueeImage {
+  transform: scale(1.05);
+}
+
+.marqueeOverlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.55) 0%, transparent 55%);
+  pointer-events: none;
+}
+
+.marqueeLabel {
+  position: absolute;
+  bottom: 0.75rem;
+  left: 0.85rem;
+  right: 0.85rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.marqueeLabelTitle {
+  font-family: var(--font-nohemi), sans-serif;
+  font-size: clamp(0.78rem, 0.85vw, 0.9rem);
+  font-weight: 600;
+  color: #fff;
+  line-height: 1.2;
+}
+
+.marqueeLabelSub {
+  font-family: var(--font-nohemi), sans-serif;
+  font-size: clamp(0.65rem, 0.7vw, 0.74rem);
+  font-weight: 300;
+  color: rgba(255,255,255,0.72);
+}
+
+/* ── Responsive ──────────────────────────────────────────────────────── */
+@media (max-width: 1200px) {
+  .editorialGrid {
+    grid-template-columns: 1fr;
+    margin-top: clamp(2rem, 5vh, 3.5rem);
+    row-gap: 0.7rem;
+    justify-items: center;
+    text-align: center;
   }
+  .weHelp, .andWord, .standard, .epochalWrap, .otWrap, .rightLine {
+    grid-column: 1;
+    justify-self: center;
+  }
+  .weHelp       { grid-row: 1; }
+  .standard     { grid-row: 2; }
+  .epochalWrap  { grid-row: 4; }
+  .andWord      { grid-row: 6; }
+  .otWrap       { grid-row: 7; }
+  .megaText { font-size: clamp(3rem, 11vw, 6rem); }
 }
 
 @media (max-width: 768px) {
   .container {
-    padding: 1.25rem 1rem 2rem;
+    padding: 1.5rem var(--site-px) 1.5rem;
   }
+  .badgeRow { margin-bottom: 0.7rem; }
+  .megaText {
+    font-size: clamp(2.4rem, 13.8vw, 4.6rem);
+    line-height: 0.88;
+  }
+  .kickerBottom { font-size: clamp(1rem, 5vw, 1.35rem); }
+  .footerCopy   { font-size: clamp(1.12rem, 6vw, 1.55rem); }
+  .ctaRow { margin-top: 0.9rem; }
+  .marqueeWrapper { margin-top: 1.5rem; }
+  .marqueeCard { width: clamp(150px, 42vw, 200px); }
+}
 
-  .layout {
-    grid-template-columns: 1fr;
-    gap: 1.25rem;
-  }
-
-  .subtitle {
-    max-width: 100%;
-    margin-top: 0.8rem;
-  }
-
-  .titleType {
-    min-height: 1.1em;
-    width: 100%;
-  }
-
-  .galleryColumn {
-    justify-content: flex-start;
-  }
-
-  .gallery {
-    width: 100%;
-  }
+@media (prefers-reduced-motion: reduce) {
+  .marqueeTrack { animation: none; }
 }

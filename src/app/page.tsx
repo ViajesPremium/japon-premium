@@ -35,10 +35,7 @@ export default function Home() {
         <ImgSection />
       </section>
 
-      <section
-        className="relative w-full overflow-hidden"
-        style={{ zIndex: 2 }}
-      >
+      <section className="w-full overflow-visible" style={{ zIndex: 2 }}>
         <Highlights />
       </section>
 

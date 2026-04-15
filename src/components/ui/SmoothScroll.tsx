@@ -2,11 +2,22 @@
 
 import { useEffect } from "react";
 import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Lenis from "lenis";
+
+gsap.registerPlugin(ScrollTrigger);
 
 type SmoothScrollProps = {
   children: React.ReactNode;
 };
+
+type LenisInstance = InstanceType<typeof Lenis>;
+
+declare global {
+  interface Window {
+    __lenis?: LenisInstance;
+  }
+}
 
 const MAX_WHEEL_DELTA = 56;
 const MAX_TOUCH_DELTA = 24;
@@ -42,6 +53,19 @@ export default function SmoothScroll({ children }: SmoothScrollProps) {
         return true;
       },
     });
+
+    // Puente crítico: mantiene ScrollTrigger en sincronía con la
+    // posición interpolada de Lenis en cada frame.
+    lenis.on("scroll", ScrollTrigger.update);
+
+    // Cuando ScrollTrigger refresca (resize, pin recalc…), Lenis
+    // recalcula su scroll limit para que no queden desajustes.
+    const handleRefresh = () => lenis.resize();
+    ScrollTrigger.addEventListener("refresh", handleRefresh);
+
+    // Exponer instancia para que secciones con scroll programático
+    // (itinerary, nav) puedan llamar a lenis.scrollTo directamente.
+    window.__lenis = lenis;
 
     const update = (time: number) => {
       lenis.raf(time * 1000);
@@ -105,8 +129,11 @@ export default function SmoothScroll({ children }: SmoothScrollProps) {
 
     return () => {
       window.removeEventListener("keydown", handleKeyboardScroll);
+      ScrollTrigger.removeEventListener("refresh", handleRefresh);
+      lenis.off("scroll", ScrollTrigger.update);
       gsap.ticker.remove(update);
       lenis.destroy();
+      delete window.__lenis;
     };
   }, []);
 

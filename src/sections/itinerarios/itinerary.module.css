@@ -55,24 +55,6 @@
 
 }
 
-/* Línea superior decorativa — gradiente dorado horizontal */
-.itineraryInfo::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 6%;
-  right: 6%;
-  height: 1px;
-  background: linear-gradient(
-    to right,
-    transparent,
-    rgba(191, 149, 63, 0.5) 20%,
-    rgba(252, 246, 186, 0.4) 50%,
-    rgba(191, 149, 63, 0.5) 80%,
-    transparent
-  );
-  z-index: 1;
-}
 
 /* ── Contenido deslizante (GSAP anima este div) ───────────────────────── */
 .infoItem {
@@ -87,51 +69,6 @@
   pointer-events: none; /* los items ocultos (opacity:0) no deben interceptar eventos */
 }
 
-/* Barra de acento dorada vertical — izquierda del contenido */
-.infoItem::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  top: 18%;
-  bottom: 18%;
-  width: 2px;
-  background: linear-gradient(
-    to bottom,
-    transparent,
-    rgba(191, 149, 63, 0.85) 25%,
-    rgba(252, 246, 186, 1) 50%,
-    rgba(179, 135, 40, 0.85) 75%,
-    transparent
-  );
-  border-radius: 2px;
-}
-
-/* ── Etiqueta de categoría ────────────────────────────────────────────── */
-.day {
-  display: flex;
-  align-items: center;
-  gap: 0.55rem;
-  font-size: 0.9rem;
-  font-family: var(--font-bigcaslon), sans-serif;
-  font-weight: 700;
-  font-style: italic;
-  letter-spacing: 0.3em;
-  color: rgba(228, 173, 62, 0.65);
-}
-
-/* Línea decorativa antes del label */
-.day::before {
-  content: '';
-  display: inline-block;
-  width: 18px;
-  height: 1px;
-  background: linear-gradient(
-    to right,
-    rgba(191, 149, 63, 0.9),
-    rgba(191, 149, 63, 0.2)
-  );
-  flex-shrink: 0;
-}
 
 /* ── Título (GradientText envuelve esto) ──────────────────────────────── */
 .titleGradient {
@@ -143,7 +80,7 @@
 }
 
 .titleText {
-  font-family: var(--font-nohemi);
+  font-family: var(--font-bigcaslon);
   font-weight: 500;
   font-size: clamp(2.2rem, 3.8vw, 3.2rem);
   line-height: 1;

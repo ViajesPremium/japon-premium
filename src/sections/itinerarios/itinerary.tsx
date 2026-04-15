@@ -96,7 +96,7 @@ export default function Itinerary() {
             snapTo: (value: number) =>
               Math.round(value * (total - 1)) / (total - 1),
             duration: { min: SNAP_MIN_DURATION, max: SNAP_MAX_DURATION },
-            delay: 0,
+            delay: 0.25,
             ease: "power3.out",
             inertia: false,
           },

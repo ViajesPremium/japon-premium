@@ -6,7 +6,7 @@
   width: 200px;
   height: 2.8rem;
   border: 0;
-  border-radius: 9999px;
+  border-radius: var(--radius-sm);
   cursor: pointer;
   overflow: hidden;
   white-space: nowrap;
@@ -59,7 +59,7 @@
   height: 2.3rem;
   align-items: center;
   justify-content: center;
-  border-radius: 9999px;
+  border-radius: var(--radius-sm);
   background-color: var(--bg);
   color: var(--black);
   transition: all 500ms ease;
@@ -67,5 +67,4 @@
 
 .buttonPrimary:hover .buttonIcon {
   right: calc(100% - 41px);
-  transform: rotate(45deg);
 }

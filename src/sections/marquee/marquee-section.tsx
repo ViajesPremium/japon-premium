@@ -1,7 +1,9 @@
 import LogoLoop, { type LogoItem } from "@/components/marquee";
 import Badge from "@/components/ui/badge";
-import { BlurredStagger } from "@/components/ui/blurred-stagger-text";
 import styles from "./marquee-section.module.css";
+import Image from "next/image";
+
+const JAPAN_ENDLESS_DISCOVERY_SRC = "/images/JED.svg";
 
 const MARQUEE_LOGOS: LogoItem[] = [
   {
@@ -36,6 +38,16 @@ export default function MarqueeSection() {
       <div className={styles.container}>
         <div className={styles.header}>
           <Badge text="Nuestras alianzas" variant="dark" />
+        </div>
+
+        <div className={styles.logoIntro}>
+          <Image
+            src={JAPAN_ENDLESS_DISCOVERY_SRC}
+            alt="Japan Endless Discovery"
+            width={460}
+            height={96}
+            className={styles.logoIntroImage}
+          />
         </div>
 
         <div className={styles.stage}>
