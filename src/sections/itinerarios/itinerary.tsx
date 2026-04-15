@@ -40,8 +40,6 @@ const items = [
   },
 ];
 
-const DURATION = 0.65;
-
 export default function Itinerary() {
   const containerRef = useRef<HTMLDivElement>(null);
   const c1Refs = useRef<(HTMLDivElement | null)[]>([]);
@@ -50,6 +48,7 @@ export default function Itinerary() {
 
   const [activeStep, setActiveStep] = useState(0);
   const navRef = useRef<{ go: (dir: number) => void } | null>(null);
+  const currentStepRef = useRef(0);
 
   useGSAP(
     () => {
@@ -60,202 +59,107 @@ export default function Itinerary() {
       const c2 = c2Refs.current;
       const info = infoRefs.current;
 
-      // Helper para obtener lenis sin repetir código
       type LenisLike = { scrollTo: (target: number, opts: object) => void };
       const getLenis = () =>
         (window as unknown as Record<string, LenisLike>).__lenis;
 
+      const SCRUB_SMOOTHNESS = 0.12;
+      const SNAP_MIN_DURATION = 0.03;
+      const SNAP_MAX_DURATION = 0.09;
+
       // ── Estado inicial ─────────────────────────────────────────────────
+      // Items posteriores tienen z-index mayor: al deslizarse cubren al anterior.
       items.forEach((_, i) => {
         if (i === 0) {
-          gsap.set(c1[i], { yPercent: 0, zIndex: 2, force3D: true });
-          gsap.set(c2[i], { yPercent: 0, zIndex: 2, force3D: true });
+          gsap.set(c1[i], { yPercent: 0, zIndex: 1, force3D: true });
+          gsap.set(c2[i], { yPercent: 0, zIndex: 1, force3D: true });
           gsap.set(info[i], { yPercent: 0, opacity: 1, force3D: true });
         } else {
-          gsap.set(c1[i], { yPercent: 100, zIndex: 0, force3D: true });
-          gsap.set(c2[i], { yPercent: -100, zIndex: 0, force3D: true });
+          gsap.set(c1[i], { yPercent: 100, zIndex: i + 1, force3D: true });
+          gsap.set(c2[i], { yPercent: -100, zIndex: i + 1, force3D: true });
           gsap.set(info[i], { yPercent: 40, opacity: 0, force3D: true });
         }
       });
 
-      // ── Banderas de control de estado ──────────────────────────────────
-      let isAnimating = false;
-      let isNavigating = false; // NUEVO: Evita conflictos al usar los botones
-      let safetyTimer: ReturnType<typeof setTimeout> | null = null;
-      let currentStepInternal = 0;
-
-      const goToStep = (to: number) => {
-        if (to === currentStepInternal) return;
-
-        isAnimating = true;
-        const from = currentStepInternal;
-        const dir = to > from ? 1 : -1;
-
-        currentStepInternal = to;
-        setActiveStep(to);
-
-        if (safetyTimer) clearTimeout(safetyTimer);
-        safetyTimer = setTimeout(
-          () => {
-            isAnimating = false;
+      // ── Timeline principal — scrubbed por scroll ───────────────────────
+      // Cada transición ocupa 1 unidad en el timeline.
+      // El scroll mueve el progreso directamente, sin animaciones con duración propia.
+      const masterTl = gsap.timeline({
+        scrollTrigger: {
+          trigger: containerRef.current,
+          start: "top top",
+          end: `+=${window.innerHeight * (total - 1)}`,
+          pin: true,
+          pinSpacing: true,
+          scrub: SCRUB_SMOOTHNESS,
+          snap: {
+            snapTo: (value: number) =>
+              Math.round(value * (total - 1)) / (total - 1),
+            duration: { min: SNAP_MIN_DURATION, max: SNAP_MAX_DURATION },
+            delay: 0,
+            ease: "power3.out",
+            inertia: false,
           },
-          (DURATION + 0.3) * 1000,
-        );
-
-        items.forEach((_, i) => {
-          if (i === to) {
-            gsap.set([c1[i], c2[i]], { zIndex: 2 });
-            const startY1 = dir === 1 ? 100 : -100;
-            const startY2 = dir === 1 ? -100 : 100;
-
-            gsap.fromTo(
-              c1[i],
-              { yPercent: startY1 },
-              {
-                yPercent: 0,
-                duration: DURATION,
-                ease: "power2.inOut",
-                overwrite: "auto",
-                force3D: true,
-              },
-            );
-            gsap.fromTo(
-              c2[i],
-              { yPercent: startY2 },
-              {
-                yPercent: 0,
-                duration: DURATION,
-                ease: "power2.inOut",
-                overwrite: "auto",
-                force3D: true,
-              },
-            );
-
-            gsap.to(info[i], {
-              yPercent: 0,
-              opacity: 1,
-              duration: DURATION * 0.55,
-              ease: "power2.out",
-              delay: DURATION * 0.45,
-              overwrite: "auto",
-              force3D: true,
-              onComplete: () => {
-                if (safetyTimer) clearTimeout(safetyTimer);
-                isAnimating = false;
-              },
-            });
-          } else if (i === from) {
-            gsap.set([c1[i], c2[i]], { zIndex: 1 });
-            gsap.to(c1[i], {
-              yPercent: 0,
-              duration: DURATION,
-              ease: "power2.inOut",
-              overwrite: "auto",
-              force3D: true,
-            });
-            gsap.to(c2[i], {
-              yPercent: 0,
-              duration: DURATION,
-              ease: "power2.inOut",
-              overwrite: "auto",
-              force3D: true,
-            });
-
-            const infoY = dir === 1 ? -40 : 40;
-            gsap.to(info[i], {
-              yPercent: infoY,
-              opacity: 0,
-              duration: DURATION * 0.55,
-              ease: "power2.in",
-              overwrite: "auto",
-              force3D: true,
-            });
-          } else {
-            gsap.set(c1[i], { yPercent: i > to ? 100 : -100, zIndex: 0 });
-            gsap.set(c2[i], { yPercent: i > to ? -100 : 100, zIndex: 0 });
-            gsap.set(info[i], { opacity: 0 });
-          }
-        });
-      };
-
-      // ── Pin y Detección de Scroll ──────────────────────────────────────
-      const st = ScrollTrigger.create({
-        trigger: containerRef.current,
-        start: "top top",
-        end: `+=${window.innerHeight * (total - 1)}`,
-        pin: true,
-        pinSpacing: true,
-        snap: {
-          snapTo: 1 / (total - 1),
-          duration: { min: 0.2, max: 0.6 },
-          delay: 0.1,
-        },
-        onUpdate: (self) => {
-          if (isNavigating) return; // Ignoramos si la animación vino de un botón
-
-          const targetStep = Math.round(self.progress * (total - 1));
-
-          if (targetStep !== currentStepInternal) {
-            if (isAnimating) {
-              // NUEVO: BLOQUEO ESTRICTO DE SCROLL
-              // Si está animando, calculamos la posición exacta del paso actual y forzamos
-              // al scroll a quedarse ahí. Esto cancela el momentum e impide saltar pasos.
-              const safeScroll =
-                self.start +
-                (currentStepInternal / (total - 1)) * (self.end - self.start);
-              const lenis = getLenis();
-
-              if (lenis) {
-                lenis.scrollTo(safeScroll, { immediate: true });
-              } else {
-                self.scroll(safeScroll);
-              }
-              return;
+          onUpdate: (self) => {
+            const step = Math.round(self.progress * (total - 1));
+            if (step !== currentStepRef.current) {
+              currentStepRef.current = step;
+              setActiveStep(step);
             }
-
-            // NUEVO: FORZAR PROGRESIÓN DE 1 EN 1
-            // Aunque el usuario haga un scroll gigante que lo lleve al paso 3 de golpe,
-            // solo lo dejamos avanzar +1 o -1
-            const dir = targetStep > currentStepInternal ? 1 : -1;
-            const nextStep = currentStepInternal + dir;
-
-            goToStep(nextStep);
-          }
+          },
+          invalidateOnRefresh: true,
         },
       });
 
-      // ── Exponer goToStep a los botones ─────────────────────────────────
+      for (let i = 1; i < total; i++) {
+        const pos = i - 1; // posición de inicio en el timeline
+
+        // Imágenes entrantes se deslizan hasta cubrirla anterior
+        masterTl.to(c1[i], { yPercent: 0, ease: "none", duration: 1 }, pos);
+        masterTl.to(c2[i], { yPercent: 0, ease: "none", duration: 1 }, pos);
+
+        // Info saliente: sale en la primera mitad de la transición
+        masterTl.to(
+          info[i - 1],
+          { yPercent: -40, opacity: 0, ease: "none", duration: 0.4 },
+          pos,
+        );
+
+        // Info entrante: aparece en la segunda mitad
+        masterTl.to(
+          info[i],
+          { yPercent: 0, opacity: 1, ease: "none", duration: 0.4 },
+          pos + 0.6,
+        );
+      }
+
+      // ── Botones de navegación ──────────────────────────────────────────
       navRef.current = {
         go: (dir: number) => {
-          if (isAnimating || isNavigating) return;
           const to = Math.max(
             0,
-            Math.min(total - 1, currentStepInternal + dir),
+            Math.min(total - 1, currentStepRef.current + dir),
           );
-          if (to === currentStepInternal) return;
+          if (to === currentStepRef.current) return;
 
-          isNavigating = true;
-          goToStep(to); // Ejecutamos la animación visual de inmediato
+          const st = masterTl.scrollTrigger;
+          if (!st) return;
 
-          const lenis = getLenis();
           const targetScroll =
             st.start + (to / (total - 1)) * (st.end - st.start);
+          const lenis = getLenis();
 
           if (lenis) {
-            lenis.scrollTo(targetScroll, { duration: 1 });
+            lenis.scrollTo(targetScroll, { duration: 0.45 });
           } else {
             window.scrollTo({ top: targetScroll, behavior: "smooth" });
           }
-
-          // Liberamos la bandera una vez que termine el auto-scroll
-          setTimeout(() => {
-            isNavigating = false;
-          }, 1000);
         },
       };
 
       return () => {
-        if (safetyTimer) clearTimeout(safetyTimer);
+        masterTl.scrollTrigger?.kill();
+        masterTl.kill();
         navRef.current = null;
       };
     },

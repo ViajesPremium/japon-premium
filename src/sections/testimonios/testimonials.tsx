@@ -346,6 +346,7 @@ export default function Testimonials({ googleRating }: TestimonialsProps) {
         ))}
       </div>
 
+      <div className={styles.inner}>
       <div className={styles.photo}>
         <div className={styles.photoBadgeWrap}>
           <Badge text="Testimonios" variant="dark" />
@@ -448,6 +449,7 @@ export default function Testimonials({ googleRating }: TestimonialsProps) {
           <GoogleBadge data={ratingData} />
           <Button variant="primary">Planea tu viaje</Button>
         </div>
+      </div>
       </div>
     </section>
   );

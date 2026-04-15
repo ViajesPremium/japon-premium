@@ -20,7 +20,11 @@
       "Bash(findstr :3000)",
       "Bash(taskkill /PID 20668 /F)",
       "Bash(cmd /c \"taskkill /F /IM node.exe\")",
-      "Bash(dir \"C:\\\\Users\\\\apps1\\\\Desktop\\\\japon\\\\japon\\\\public\\\\images\")"
+      "Bash(dir \"C:\\\\Users\\\\apps1\\\\Desktop\\\\japon\\\\japon\\\\public\\\\images\")",
+      "Bash(cmd /c \"taskkill /PID 37488 /F\")",
+      "Bash(powershell -Command \"Get-Process -Id 37488 -ErrorAction SilentlyContinue | Select-Object Id, Name, Path\")",
+      "Bash(powershell -Command \"Stop-Process -Id 37488 -Force; Start-Sleep 1; Get-Process -Id 37488 -ErrorAction SilentlyContinue | Select-Object Id, Name\")",
+      "Bash(powershell -Command \"Stop-Process -Id 40648 -Force -ErrorAction SilentlyContinue; Start-Sleep 1\")"
     ]
   }
 }

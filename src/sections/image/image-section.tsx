@@ -29,6 +29,7 @@ export default function ImgSection() {
 
       <div className={styles.imgOverlay} aria-hidden="true" />
 
+      <div className={styles.inner}>
       <div className={styles.left}>
         <Badge text="Nuestra promesa" />
 
@@ -50,6 +51,7 @@ export default function ImgSection() {
       </div>
 
       <div className={styles.right} />
+      </div>
     </section>
   );
 }

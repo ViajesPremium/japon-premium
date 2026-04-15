@@ -1,11 +1,20 @@
 .testimonials {
-  display: flex;
+  display: block;
   width: 100%;
   height: 100vh;
   background-color: #fff;
   position: relative;
   overflow: hidden;
   isolation: isolate;
+}
+
+.inner {
+  max-width: var(--site-max);
+  margin-inline: auto;
+  height: 100%;
+  display: flex;
+  position: relative;
+  z-index: 5;
 }
 
 .sakuraLayer {
@@ -111,7 +120,7 @@
   align-items: center;
   justify-content: start;
   gap: 1.5rem;
-  padding: 2rem 1.5rem;
+  padding: 2rem 1.5rem 2rem var(--site-px);
   overflow: hidden;
 }
 

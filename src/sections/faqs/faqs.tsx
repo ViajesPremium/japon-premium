@@ -67,19 +67,44 @@ export default function Faqs() {
     const clamp = (value: number, min = 0, max = 1) =>
       Math.min(max, Math.max(min, value));
 
+    const easeOutCubic = (t: number) => 1 - Math.pow(1 - t, 3);
+    const easeInCubic = (t: number) => t * t * t;
+
+    // Curva de movimiento:
+    // - Entrada visible: desde que el top toca casi el borde inferior
+    //   hasta que sube hacia la zona media del viewport.
+    // - Hold largo en pantalla.
+    // - Salida tardia solo casi al final.
+    const ENTRY_START_TOP_VH = 0.7;
+    const ENTRY_END_TOP_VH = 0.3;
+    const EXIT_START_BOTTOM_VH = 0.86;
+
     let rafId: number | null = null;
 
     const updateMotionProgress = () => {
       const rect = section.getBoundingClientRect();
       const viewportHeight = window.innerHeight || 1;
+      const entryStartTop = viewportHeight * ENTRY_START_TOP_VH;
+      const entryEndTop = viewportHeight * ENTRY_END_TOP_VH;
+      const entryRange = Math.max(entryStartTop - entryEndTop, 1);
 
-      const sectionCenter = rect.top + rect.height / 2;
-      const viewportCenter = viewportHeight / 2;
-      const distanceToCenter = Math.abs(sectionCenter - viewportCenter);
-      const maxDistance = viewportHeight / 2 + rect.height / 2;
+      // Entrada perceptible en un tramo mas largo del viewport.
+      const entryRaw = clamp((entryStartTop - rect.top) / entryRange);
+      const entryProgress = easeOutCubic(entryRaw);
 
-      const progress = clamp(1 - distanceToCenter / maxDistance);
-      section.style.setProperty("--faq-motion-progress", progress.toFixed(4));
+      // Salida tardia: solo cuando el bottom ya va muy abajo en viewport.
+      const exitRaw = clamp(
+        (viewportHeight * EXIT_START_BOTTOM_VH - rect.bottom) /
+          (viewportHeight * EXIT_START_BOTTOM_VH),
+      );
+      const exitProgress = easeInCubic(exitRaw);
+
+      const motionProgress = clamp(entryProgress * (1 - exitProgress));
+
+      section.style.setProperty(
+        "--faq-motion-progress",
+        motionProgress.toFixed(4),
+      );
     };
 
     const requestUpdate = () => {
@@ -106,7 +131,6 @@ export default function Faqs() {
 
   return (
     <section ref={sectionRef} className={styles.section}>
-
       {/* Lateral izquierdo — samurai de perfil */}
       <div className={styles.sideLeft}>
         <div className={styles.sideImgFadeLeft} />
@@ -114,7 +138,6 @@ export default function Faqs() {
 
       {/* ── Contenido central ── */}
       <div className={styles.center}>
-
         {/* Encabezado */}
         <div className={styles.header}>
           <Badge text="Preguntas frecuentes" variant="dark" />
@@ -135,7 +158,10 @@ export default function Faqs() {
 
           <div className={styles.contactHint}>
             <p className={styles.contactLabel}>¿Otra pregunta?</p>
-            <a href="mailto:hola@japonpremium.com" className={styles.contactLink}>
+            <a
+              href="mailto:hola@japonpremium.com"
+              className={styles.contactLink}
+            >
               hola@japonpremium.com
             </a>
           </div>
@@ -152,14 +178,12 @@ export default function Faqs() {
             ))}
           </Accordion>
         </div>
-
       </div>
 
       {/* Lateral derecho — geisha de perfil */}
       <div className={styles.sideRight}>
         <div className={styles.sideImgFade} />
       </div>
-
     </section>
   );
 }

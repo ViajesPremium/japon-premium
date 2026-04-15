@@ -9,13 +9,13 @@
 
 .pinLayer {
   width: 100%;
+  max-width: var(--site-max);
+  margin-inline: auto;
   height: 100vh;
   display: flex;
   flex-direction: column;
   gap: 1rem;
-  padding: clamp(1rem, 2.1vw, 1.75rem) clamp(1rem, 2.4vw, 2.25rem)
-    clamp(1.25rem, 2vw, 1.75rem);
-
+  padding: clamp(1rem, 2.1vw, 1.75rem) var(--site-px) clamp(1.25rem, 2vw, 1.75rem);
 }
 
 .header {

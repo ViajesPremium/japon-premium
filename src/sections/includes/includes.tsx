@@ -65,13 +65,14 @@ const INCLUDE_ITEMS: IncludeItem[] = [
 // - horizontalFactor: mayor valor = cards avanzan mas lento
 // - holdVh: tiempo extra pinneado antes de liberar scroll vertical
 const INCLUDES_SCROLL_TUNING = {
-  horizontalFactor: 1.8,
-  holdVh: 2.2,
+  horizontalFactor: 0.2,
+  holdVh: 1,
 } as const;
 
 export default function Includes() {
   const sectionRef = useRef<HTMLElement>(null);
   const pinRef = useRef<HTMLDivElement>(null);
+  const viewportRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
   const progressRef = useRef<HTMLSpanElement>(null);
 
@@ -81,15 +82,17 @@ export default function Includes() {
 
       const section = sectionRef.current;
       const pinLayer = pinRef.current;
+      const viewport = viewportRef.current;
       const track = trackRef.current;
       const progressFill = progressRef.current;
 
-      if (!section || !pinLayer || !track || !progressFill) return;
+      if (!section || !pinLayer || !viewport || !track || !progressFill) return;
 
       gsap.set(progressFill, { scaleX: 0, transformOrigin: "left center" });
 
-      const getShift = () =>
-        Math.max(track.scrollWidth - pinLayer.clientWidth, 0);
+      // Debe calcularse con el ancho visible del carrusel (viewport),
+      // no con pinLayer, para que la ultima card llegue completa.
+      const getShift = () => Math.max(track.scrollWidth - viewport.clientWidth, 0);
       const getEndDistance = () =>
         getShift() * INCLUDES_SCROLL_TUNING.horizontalFactor +
         window.innerHeight * INCLUDES_SCROLL_TUNING.holdVh;
@@ -145,7 +148,7 @@ export default function Includes() {
           </Button>
         </header>
 
-        <div className={styles.viewport}>
+        <div ref={viewportRef} className={styles.viewport}>
           <div ref={trackRef} className={styles.track}>
             {INCLUDE_ITEMS.map((item) => (
               <article key={item.id} className={styles.card}>

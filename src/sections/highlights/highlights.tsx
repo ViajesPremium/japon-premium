@@ -19,61 +19,41 @@ export default function Highlights() {
   return (
     <section className={styles.highlights}>
       <div className={styles.container}>
-        <div className={styles.layout}>
-          <div className={styles.copyColumn}>
-            <div className={styles.badgeWrap}>
-              <Badge text="Experiencias Destacadas" variant="dark" />
-            </div>
+        <div className={styles.copyColumn}>
+          <BlurredStagger
+            text="Creando"
+            className={`${styles.title} ${styles.titleGradient}`}
+            highlights={[
+              {
+                word: "Creando",
+                useGradient: true,
+                gradientColors: ["#BF953F", "#FCF6BA", "#B38728", "#FCF6BA"],
+                gradientSpeed: 6,
+              },
+            ]}
+          />
 
-            <div>
-              <BlurredStagger
-                text="Creando"
-                className={`${styles.title} ${styles.titleGradient}`}
-                highlights={[
-                  {
-                    word: "Creando",
-                    useGradient: true,
-                    gradientColors: [
-                      "#BF953F",
-                      "#FCF6BA",
-                      "#B38728",
-                      "#FCF6BA",
-                    ],
-                    gradientSpeed: 6,
-                  },
-                ]}
-              />
-
-              <TextType
-                as="h2"
-                text="Experiencias"
-                className={`${styles.title} ${styles.titleType}`}
-                showCursor={true}
-                loop={true}
-                startOnVisible
-                typingSpeed={120}
-                deletingSpeed={35}
-                initialDelay={120}
-              />
-            </div>
-
-            <p className={styles.subtitle}>
-              Diseñamos momentos inolvidables en Japón, con curaduría premium y
-              acompañamiento de principio a fin.
-            </p>
-
-            <Button variant="primary" className={styles.cta}>
-              Quiero mi viaje
-            </Button>
-          </div>
-
-          <div className={styles.galleryColumn}>
-            <HoverImageGallery
-              images={HIGHLIGHT_IMAGES}
-              className={styles.gallery}
-            />
-          </div>
+          <TextType
+            as="h2"
+            text="Experiencias"
+            className={`${styles.title} ${styles.titleType}`}
+            showCursor={true}
+            loop={true}
+            startOnVisible
+            typingSpeed={120}
+            deletingSpeed={35}
+            initialDelay={120}
+          />
         </div>
+
+        <p className={styles.subtitle}>
+          Diseñamos momentos inolvidables en Japón, con curaduría premium y
+          acompañamiento de principio a fin.
+        </p>
+
+        <Button variant="primary" className={styles.cta}>
+          Quiero mi viaje
+        </Button>
       </div>
     </section>
   );

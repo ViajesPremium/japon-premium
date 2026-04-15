@@ -7,6 +7,7 @@ import Highlights from "@/sections/highlights/highlights";
 import Testimonials from "@/sections/testimonios/testimonials";
 import Faqs from "@/sections/faqs/faqs";
 import CTAForm from "@/sections/form/ctaForm";
+import MarqueeSection from "@/sections/marquee/marquee-section";
 import Footer from "@/sections/footer/footer";
 
 export default function Home() {
@@ -74,6 +75,13 @@ export default function Home() {
         style={{ zIndex: 2 }}
       >
         <CTAForm />
+      </section>
+
+      <section
+        className="relative w-full overflow-hidden"
+        style={{ zIndex: 2 }}
+      >
+        <MarqueeSection />
       </section>
 
       {/* Footer sticky - z-index 0, las secciones lo revelan al hacer scroll */}

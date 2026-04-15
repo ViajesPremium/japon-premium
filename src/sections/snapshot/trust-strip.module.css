@@ -33,8 +33,10 @@
 }
 
 .snapshotContent {
-    width: 90%;
-    max-width: 1200px;
+    width: 100%;
+    max-width: var(--site-max);
+    padding-inline: var(--site-px);
+    margin-inline: auto;
     display: flex;
     flex-direction: column;
     gap: 2rem;
