@@ -235,7 +235,6 @@ export default function Itinerary() {
           </div>
         ))}
 
-        {/* Botón estático fuera del map — evita que items invisibles bloqueen el hover */}
         <Button variant="primary" className={styles.buttonInfo}>
           Más información
         </Button>

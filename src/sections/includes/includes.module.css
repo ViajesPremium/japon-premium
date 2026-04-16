@@ -3,8 +3,9 @@
   width: 100%;
   min-height: 100vh;
   height: auto;
-  overflow: hidden;
   background: var(--bg);
+  /* overflow: hidden eliminado del root — .viewport ya lo tiene
+     para el carrusel horizontal; aquí bloqueaba el compositor GPU */
 }
 
 .pinLayer {
@@ -91,7 +92,7 @@
 
 .card:hover {
   transform: translateY(-4px);
-  box-shadow: 0 18px 40px -30px rgba(0, 0, 0, 0.35);
+  box-shadow: 0 18px 20px -30px rgba(0, 0, 0, 0.35);
 }
 
 .cardMedia {

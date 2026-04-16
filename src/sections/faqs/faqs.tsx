@@ -1,16 +1,13 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
+import { AnimatePresence, motion } from "motion/react";
+import { ChevronDownIcon } from "@radix-ui/react-icons";
 import styles from "./faqs.module.css";
+import accordionStyles from "@/components/ui/accordion.module.css";
 import Badge from "@/components/ui/badge";
 import GradientText from "@/components/ui/GradientText";
 import { BlurredStagger } from "@/components/ui/blurred-stagger-text";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
 
 const FAQS = [
   {
@@ -59,6 +56,7 @@ const FAQS = [
 
 export default function Faqs() {
   const sectionRef = useRef<HTMLElement | null>(null);
+  const [openFaqId, setOpenFaqId] = useState<string>(() => FAQS[0]?.id ?? "");
 
   useEffect(() => {
     const section = sectionRef.current;
@@ -129,6 +127,11 @@ export default function Faqs() {
     };
   }, []);
 
+  const handleFaqOpen = (faqId: string) => {
+    if (faqId === openFaqId) return;
+    setOpenFaqId(faqId);
+  };
+
   return (
     <section ref={sectionRef} className={styles.section}>
       {/* Lateral izquierdo — samurai de perfil */}
@@ -169,14 +172,67 @@ export default function Faqs() {
 
         {/* Acordeón */}
         <div className={styles.accordionWrap}>
-          <Accordion type="single" collapsible>
-            {FAQS.map((faq) => (
-              <AccordionItem key={faq.id} value={faq.id}>
-                <AccordionTrigger>{faq.question}</AccordionTrigger>
-                <AccordionContent>{faq.answer}</AccordionContent>
-              </AccordionItem>
-            ))}
-          </Accordion>
+          <div role="list" aria-label="Preguntas frecuentes">
+            {FAQS.map((faq) => {
+              const isOpen = openFaqId === faq.id;
+              const triggerId = `faq-trigger-${faq.id}`;
+              const contentId = `faq-content-${faq.id}`;
+
+              return (
+                <div key={faq.id} className={accordionStyles.item} role="listitem">
+                  <h3 className={accordionStyles.header}>
+                    <button
+                      id={triggerId}
+                      type="button"
+                      className={accordionStyles.trigger}
+                      aria-expanded={isOpen}
+                      aria-controls={contentId}
+                      onClick={() => handleFaqOpen(faq.id)}
+                    >
+                      {faq.question}
+                      <motion.span
+                        className={accordionStyles.chevron}
+                        animate={{
+                          rotate: isOpen ? 180 : 0,
+                          opacity: isOpen ? 0.9 : 0.5,
+                        }}
+                        transition={{
+                          duration: 0.28,
+                          ease: [0.22, 1, 0.36, 1],
+                        }}
+                        aria-hidden="true"
+                      >
+                        <ChevronDownIcon width={16} height={16} />
+                      </motion.span>
+                    </button>
+                  </h3>
+
+                  <AnimatePresence initial={false}>
+                    {isOpen && (
+                      <motion.div
+                        id={contentId}
+                        role="region"
+                        aria-labelledby={triggerId}
+                        className={accordionStyles.content}
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: "auto", opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{
+                          height: { duration: 0.34, ease: [0.22, 1, 0.36, 1] },
+                          opacity: { duration: 0.22, ease: "easeOut" },
+                        }}
+                        style={{ overflow: "hidden" }}
+                      >
+                        <div className={accordionStyles.contentInner}>
+                          {faq.answer}
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+              );
+            })}
+          </div>
         </div>
       </div>
 

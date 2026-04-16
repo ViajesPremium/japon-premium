@@ -6,7 +6,7 @@
   width: 200px;
   height: 2.8rem;
   border: 0;
-  border-radius: var(--radius-sm);
+  border-radius: 0.1rem;
   cursor: pointer;
   overflow: hidden;
   white-space: nowrap;
@@ -59,7 +59,7 @@
   height: 2.3rem;
   align-items: center;
   justify-content: center;
-  border-radius: var(--radius-sm);
+  border-radius: 0.1rem;
   background-color: var(--bg);
   color: var(--black);
   transition: all 500ms ease;

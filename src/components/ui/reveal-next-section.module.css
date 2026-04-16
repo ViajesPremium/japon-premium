@@ -1,0 +1,20 @@
+.pair {
+  --reveal-overlap: 0vh;
+  position: relative;
+  width: 100%;
+  isolation: isolate;
+}
+
+.top {
+  position: relative;
+  z-index: 2;
+  overflow: hidden;
+  will-change: transform, clip-path;
+}
+
+.bottom {
+  position: relative;
+  z-index: 1;
+  margin-top: calc(var(--reveal-overlap) * -1);
+  padding-top: var(--reveal-overlap);
+}

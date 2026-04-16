@@ -96,32 +96,44 @@ export default function Includes() {
       const getEndDistance = () =>
         getShift() * INCLUDES_SCROLL_TUNING.horizontalFactor +
         window.innerHeight * INCLUDES_SCROLL_TUNING.holdVh;
+      // El pin se extiende un viewport-height extra para que '.testimonials'
+      // suba desde abajo y cubra '.includes' mientras esta queda fija.
+      const getTotalEnd = () => getEndDistance() + window.innerHeight;
 
-      const tween = gsap.to(track, {
-        x: () => -getShift(),
-        ease: "none",
-        scrollTrigger: {
-          trigger: section,
-          start: "top top",
-          end: () => `+=${getEndDistance()}`,
-          // Pinneamos la seccion completa para que el espacio del recorrido
-          // horizontal quede correctamente reservado en el flujo del documento.
-          pin: section,
-          // Con pinSpacing activo garantizamos que no se avance de seccion
-          // antes de terminar todo el recorrido horizontal + hold final.
-          pinSpacing: true,
-          scrub: 0.9,
-          anticipatePin: 1,
-          invalidateOnRefresh: true,
-          onUpdate: (self) => {
-            gsap.set(progressFill, { scaleX: self.progress });
-          },
-        },
+      // Las duraciones de las fases se calculan al montar con la medida real
+      // del track. invalidateOnRefresh actualiza los valores funcionales (x)
+      // en resize, aunque el ratio de fases permanece fijo al del montaje.
+      const animFrac = getEndDistance() / getTotalEnd();
+      const holdFrac = 1 - animFrac;
+
+      // Timeline con dos fases:
+      //   Fase 1 (animFrac): el carrusel se desplaza y la barra de progreso llena.
+      //   Fase 2 (holdFrac): hold vacío — todo congelado mientras testimonials sube.
+      // Al enlazarlo con ScrollTrigger via `animation`, scrub:0.9 tiene un
+      // proxy real al que suavizar, lo que da el movimiento fluido correcto.
+      const tl = gsap.timeline();
+      tl.to(track, { x: () => -getShift(), ease: "none", duration: animFrac }, 0);
+      tl.to(progressFill, { scaleX: 1, ease: "none", duration: animFrac }, 0);
+      // Fase de hold: extiende el timeline sin mover nada.
+      tl.to({}, { duration: holdFrac }, animFrac);
+
+      const st = ScrollTrigger.create({
+        animation: tl,
+        trigger: section,
+        start: "top top",
+        end: () => `+=${getTotalEnd()}`,
+        // Pinneamos la sección completa para que todo el recorrido
+        // horizontal + el hold de reveal queden reservados en el flujo.
+        pin: section,
+        pinSpacing: true,
+        scrub: 0.9,
+        anticipatePin: 1,
+        invalidateOnRefresh: true,
       });
 
       return () => {
-        tween.scrollTrigger?.kill();
-        tween.kill();
+        st.kill();
+        tl.kill();
       };
     },
     { scope: sectionRef },

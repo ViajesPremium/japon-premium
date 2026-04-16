@@ -98,6 +98,15 @@
   column-gap: 0.28em !important;
 }
 
+.buttonContainer {
+  position: absolute;
+  bottom: 1.2rem;
+  left: 1.5rem;
+  width: 100%;
+  z-index: 20;
+  background-color: red !important;
+}
+
 .buttonInfo {
   position: absolute;
   bottom: 1.2rem;

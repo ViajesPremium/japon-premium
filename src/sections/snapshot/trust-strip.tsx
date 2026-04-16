@@ -10,11 +10,11 @@ export default function Snapshot() {
       <div className={styles.snapshotContent}>
         <Badge text="Nueva seccion" variant="dark" />
         <BlurredStagger
-          text="Más de 19 años creando experiencias premium."
+          text="Más de 21 años creando experiencias premium."
           className={styles.trustStrip}
           highlights={[
             {
-              word: "19",
+              word: "21",
               useGradient: true,
             },
             {

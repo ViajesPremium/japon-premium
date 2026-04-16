@@ -2,8 +2,8 @@ import Hero from "@/layout/hero";
 import Snapshot from "@/sections/snapshot/trust-strip";
 import ImgSection from "@/sections/image/image-section";
 import Itinerary from "@/sections/itinerarios/itinerary";
-import Includes from "@/sections/includes/includes";
 import Highlights from "@/sections/highlights/highlights";
+import Includes from "@/sections/includes/includes";
 import Testimonials from "@/sections/testimonios/testimonials";
 import Faqs from "@/sections/faqs/faqs";
 import CTAForm from "@/sections/form/ctaForm";
@@ -13,7 +13,6 @@ import Footer from "@/sections/footer/footer";
 export default function Home() {
   return (
     <main style={{ isolation: "isolate" }}>
-      {/* Secciones con z-index positivo para tapar el footer sticky */}
       <section
         className="relative w-full overflow-hidden"
         style={{ zIndex: 2 }}
@@ -46,16 +45,22 @@ export default function Home() {
         <Itinerary />
       </section>
 
-      <section
-        className="relative w-full overflow-hidden"
-        style={{ zIndex: 2 }}
-      >
+      {/* overflow-hidden eliminado: el pin-spacer de GSAP necesita
+          expandir el wrapper sin que overflow lo interfiera */}
+      <section className="relative w-full" style={{ zIndex: 2 }}>
         <Includes />
       </section>
 
+      {/* 1. marginTop: "-100vh" jala la sección hacia arriba para que suba y cubra a .includes
+        2. background: "#ffffff" (o tu color) es VITAL para que tape lo de abajo
+      */}
       <section
-        className="relative w-full overflow-hidden"
-        style={{ zIndex: 2 }}
+        className="relative w-full overflow-hidden bg-white dark:bg-black"
+        style={{
+          zIndex: 3,
+          transform: "translateZ(0)",
+          marginTop: "-100vh" /* <-- ESTA ES LA MAGIA */,
+        }}
       >
         <Testimonials />
       </section>
@@ -67,10 +72,7 @@ export default function Home() {
         <Faqs />
       </section>
 
-      <section
-        className="relative w-full overflow-hidden"
-        style={{ zIndex: 2 }}
-      >
+      <section className="w-full overflow-hidden" style={{ zIndex: 2 }}>
         <CTAForm />
       </section>
 

@@ -1,38 +1,61 @@
 import Badge from "@/components/ui/badge";
-import Skiper54 from "@/components/skiper54";
+import { FocusRail, type FocusRailItem } from "@/components/ui/focus-rail";
 import { Button } from "@/components/ui/button";
+import GradientText from "@/components/ui/GradientText";
+import BracketHoverBox from "./bracket-hover-box";
 import styles from "./highlights.module.css";
 
-const SKIPER_IMAGES = [
+const FOCUS_RAIL_ITEMS: FocusRailItem[] = [
   {
-    src: "/images/gallery-1.webp",
-    alt: "Kyoto Privado",
+    id: "kyoto-privado",
     title: "Kyoto Privado",
+    description:
+      "Accesos reservados, tiempos cuidados y acompanamiento premium.",
+    meta: "Cultura",
+    imageSrc: "/images/gallery-1.webp",
+    href: "#contacto",
   },
   {
-    src: "/images/gallery-2.webp",
-    alt: "Tokyo Nocturno",
+    id: "tokyo-nocturno",
     title: "Tokyo Nocturno",
+    description: "Ciudad viva con rutas curated para cada estilo de viaje.",
+    meta: "Urbano",
+    imageSrc: "/images/gallery-2.webp",
+    href: "#contacto",
   },
   {
-    src: "/images/gallery-3.webp",
-    alt: "Onsen Premium",
+    id: "onsen-premium",
     title: "Onsen Premium",
+    description:
+      "Rituales de descanso con hospedajes seleccionados por nuestro equipo.",
+    meta: "Bienestar",
+    imageSrc: "/images/gallery-3.webp",
+    href: "#contacto",
   },
   {
-    src: "/images/gallery-4.webp",
-    alt: "Sabores Omakase",
+    id: "sabores-omakase",
     title: "Sabores Omakase",
+    description: "Experiencias gastronomicas privadas con enfoque autentico.",
+    meta: "Gastronomia",
+    imageSrc: "/images/gallery-4.webp",
+    href: "#contacto",
   },
   {
-    src: "/images/gallery-5.webp",
-    alt: "Paisajes Iconicos",
+    id: "paisajes-iconicos",
     title: "Paisajes Iconicos",
+    description: "Escenarios emblema de Japon en momentos de baja saturacion.",
+    meta: "Naturaleza",
+    imageSrc: "/images/gallery-5.webp",
+    href: "#contacto",
   },
   {
-    src: "/images/gallery-6.webp",
-    alt: "Experiencia Ryokan",
+    id: "experiencia-ryokan",
     title: "Experiencia Ryokan",
+    description:
+      "Hospitalidad tradicional con estandares premium de principio a fin.",
+    meta: "Tradicion",
+    imageSrc: "/images/gallery-6.webp",
+    href: "#contacto",
   },
 ];
 
@@ -50,45 +73,81 @@ export default function Highlights() {
         </header>
 
         <div className={styles.editorialGrid}>
-          <p className={`${styles.megaText} ${styles.weHelp}`}>TODA</p>
-
-          <div className={`${styles.bracketBox} ${styles.standard}`}>
-            <span>The Standard</span>
+          <div className={styles.lineRow}>
+            <p className={`${styles.megaText} ${styles.lineText}`}>
+              TE LLEVAMOS
+            </p>
+            <BracketHoverBox
+              className={styles.inlineBracket}
+              imageSrc="/images/gallery-2.webp"
+              imageAlt="Vista urbana de Osaka"
+            >
+              <p className={`${styles.ot} ${styles.flipInner}`}>OSAKA</p>
+            </BracketHoverBox>
+            <p className={`${styles.megaText} ${styles.lineText}`}>A</p>
           </div>
 
-          <h2 className={`${styles.megaText} ${styles.rightLine}`}>
-            LA CALIDAD,
-          </h2>
-
-          <div className={`${styles.bracketBox} ${styles.epochalWrap}`}>
-            <p className={styles.epochal}>epochal</p>
+          <div className={styles.lineRow}>
+            <p className={`${styles.megaText} ${styles.lineText}`}>
+              VIVIR{" "}
+              <GradientText
+                as="span"
+                className={styles.goldWord}
+                colors={["#BF953F", "#FCF6BA", "#B38728", "#FCF6BA"]}
+                animationSpeed={6}
+                direction="horizontal"
+              >
+                JAPÓN
+              </GradientText>
+            </p>
+            <BracketHoverBox
+              className={styles.inlineBracket}
+              imageSrc="/images/kioto-japon.webp"
+              imageAlt="Escena tradicional de Kioto"
+            >
+              <p className={`${styles.epochal} ${styles.flipInner}`}>KIOTO</p>
+            </BracketHoverBox>
+            <p className={`${styles.megaText} ${styles.lineText}`}>CON</p>
           </div>
 
-          <h2 className={`${styles.megaText} ${styles.rightLine}`}>
-            EXPERIENCIA,
-          </h2>
-
-          <p className={`${styles.megaText} ${styles.andWord}`}>Y EL</p>
-
-          <div className={`${styles.bracketBox} ${styles.otWrap}`}>
-            <p className={styles.ot}>OT</p>
+          <div className={styles.lineRow}>
+            <p className={`${styles.megaText} ${styles.lineText}`}>
+              EL RESPALDO
+            </p>
+            <BracketHoverBox
+              className={styles.inlineBracket}
+              imageSrc="/images/gallery-1.webp"
+              imageAlt="Paisaje iconico de Tokio"
+            >
+              <p className={`${styles.ot} ${styles.flipInner}`}>TOKIO</p>
+            </BracketHoverBox>
+            <p className={`${styles.megaText} ${styles.lineText}`}>Y LA</p>
           </div>
 
-          <h2 className={`${styles.megaText} ${styles.rightLine}`}>CUIDADO</h2>
+          <div className={styles.lineRow}>
+            <p className={`${styles.megaText} ${styles.lineText}`}>
+              ATENCIÓN QUE{" "}
+              <GradientText
+                as="span"
+                className={styles.goldWord}
+                colors={["#BF953F", "#FCF6BA", "#B38728", "#FCF6BA"]}
+                animationSpeed={6}
+                direction="horizontal"
+              >
+                MERECES
+              </GradientText>
+            </p>
+          </div>
         </div>
       </div>
 
       <div className={styles.skiperSection}>
-        <Skiper54
-          images={SKIPER_IMAGES}
-          autoplay={false}
-          loop={false}
-          showNavigation={false}
-        />
+        <FocusRail items={FOCUS_RAIL_ITEMS} autoPlay={false} loop={true} />
       </div>
-      <p className={styles.footerCopy}>Y estamos contigo hasta el final</p>
+
       <div className={styles.ctaRow}>
-        <Button variant="primary">Diseña tu viaje</Button>
+        <Button variant="primary">Crear mi viaje</Button>
+        <Button variant="secondary">Faqs</Button>
       </div>
     </section>
   );
