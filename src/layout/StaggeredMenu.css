@@ -343,6 +343,7 @@ body {
   z-index: 51;
   pointer-events: none;
   opacity: 0;
+  border: 1px solid var(--white);
 
   display: inline-flex;
   align-items: center;

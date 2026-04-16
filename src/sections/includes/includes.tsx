@@ -92,7 +92,8 @@ export default function Includes() {
 
       // Debe calcularse con el ancho visible del carrusel (viewport),
       // no con pinLayer, para que la ultima card llegue completa.
-      const getShift = () => Math.max(track.scrollWidth - viewport.clientWidth, 0);
+      const getShift = () =>
+        Math.max(track.scrollWidth - viewport.clientWidth, 0);
       const getEndDistance = () =>
         getShift() * INCLUDES_SCROLL_TUNING.horizontalFactor +
         window.innerHeight * INCLUDES_SCROLL_TUNING.holdVh;
@@ -112,7 +113,11 @@ export default function Includes() {
       // Al enlazarlo con ScrollTrigger via `animation`, scrub:0.9 tiene un
       // proxy real al que suavizar, lo que da el movimiento fluido correcto.
       const tl = gsap.timeline();
-      tl.to(track, { x: () => -getShift(), ease: "none", duration: animFrac }, 0);
+      tl.to(
+        track,
+        { x: () => -getShift(), ease: "none", duration: animFrac },
+        0,
+      );
       tl.to(progressFill, { scaleX: 1, ease: "none", duration: animFrac }, 0);
       // Fase de hold: extiende el timeline sin mover nada.
       tl.to({}, { duration: holdFrac }, animFrac);
@@ -144,7 +149,7 @@ export default function Includes() {
       <div ref={pinRef} className={styles.pinLayer}>
         <header className={styles.header}>
           <div className={styles.headerLeft}>
-            <Badge text="Incluimos" variant="dark" />
+            <Badge text="Incluimos" />
             <BlurredStagger
               text="Lo que incluye tu experiencia Premium"
               className={styles.title}
@@ -152,11 +157,11 @@ export default function Includes() {
           </div>
 
           <Button
-            variant="secondary"
+            variant="primary"
             className={styles.headerButton}
             type="button"
           >
-            Empezar mi viaje
+            Empezar
           </Button>
         </header>
 
