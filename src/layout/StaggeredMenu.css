@@ -25,7 +25,6 @@ body {
 .staggered-menu-wrapper {
   position: relative;
   width: 100%;
-  z-index: 40;
   pointer-events: none;
   overflow-x: clip;
 }
@@ -34,7 +33,6 @@ body {
   position: fixed;
   inset: 0 auto auto 0;
   width: 100%;
-  z-index: 40;
   overflow-x: clip;
 }
 
@@ -51,6 +49,7 @@ body {
   pointer-events: none;
   z-index: 50;
   box-sizing: border-box;
+  mix-blend-mode: difference;
 
   transition:
     background-color 0.3s ease,
@@ -58,16 +57,6 @@ body {
     backdrop-filter 0.3s ease,
     transform 0.35s ease;
 }
-
-.staggered-menu-header.header-hidden {
-  transform: translateY(-100%);
-}
-
-.staggered-menu-header.scrolled {
-  background: #fff;
-  transition: all 0.3s ease;
-}
-
 
 .staggered-menu-header > * {
   pointer-events: auto;
@@ -86,6 +75,7 @@ body {
   width: auto;
   max-width: 100%;
   object-fit: contain;
+  filter: brightness(0) invert(1);
 }
 
 .sm-toggle {
@@ -102,6 +92,15 @@ body {
   flex-shrink: 0;
   padding: 10px;
   font-family: var(--font-nohemi);
+  color: #fff;
+}
+
+.staggered-menu-wrapper[data-open] .sm-logo-img {
+  filter: none;
+}
+
+.staggered-menu-wrapper[data-open] .staggered-menu-header {
+  mix-blend-mode: normal;
 }
 
 .sm-toggle:focus-visible {
@@ -437,9 +436,7 @@ body {
     display: none !important;
   }
 
-  .staggered-menu-wrapper[data-open] .sm-logo-img {
-    filter: invert(100%);
-  }
+  .staggered-menu-wrapper[data-open] .sm-logo-img { filter: none; }
 }
 
 @media (max-width: 640px) {

@@ -1,4 +1,3 @@
-import Badge from "@/components/ui/badge";
 import { FocusRail, type FocusRailItem } from "@/components/ui/focus-rail";
 import { Button } from "@/components/ui/button";
 import GradientText from "@/components/ui/GradientText";
@@ -63,10 +62,6 @@ export default function Highlights() {
   return (
     <section className={styles.highlights}>
       <div className={styles.container}>
-        <div className={styles.badgeRow}>
-          <Badge text="Por que Japon Premium?" variant="dark" />
-        </div>
-
         <header className={styles.kicker}>
           <p className={styles.kickerTop}>Trabajamos con las mejores marcas</p>
           <p className={styles.kickerBottom}>De todo el mundo</p>
@@ -152,3 +147,4 @@ export default function Highlights() {
     </section>
   );
 }
+

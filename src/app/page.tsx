@@ -9,81 +9,103 @@ import Faqs from "@/sections/faqs/faqs";
 import CTAForm from "@/sections/form/ctaForm";
 import MarqueeSection from "@/sections/marquee/marquee-section";
 import Footer from "@/sections/footer/footer";
+import PageSectionBadge from "@/components/ui/page-section-badge";
 
 export default function Home() {
   return (
-    <main style={{ isolation: "isolate" }}>
+    <main className="isolate">
+      <PageSectionBadge />
+
       <section
-        className="relative w-full overflow-hidden"
-        style={{ zIndex: 2 }}
+        id="home-hero"
+        data-page-badge="Inicio"
+        data-badge-variant="light"
+        className="relative z-[1] w-full overflow-hidden"
       >
         <Hero />
       </section>
 
       <section
-        className="relative w-full overflow-hidden"
-        style={{ zIndex: 2 }}
+        id="home-snapshot"
+        data-page-badge="Nueva seccion"
+        data-badge-variant="dark"
+        className="relative z-[2] w-full overflow-hidden"
       >
         <Snapshot />
       </section>
 
       <section
-        className="w-full overflow-hidden"
-        style={{ height: "100vh", position: "relative", zIndex: 2 }}
+        id="home-image"
+        data-page-badge="Nuestra promesa"
+        data-badge-variant="light"
+        className="relative z-[3] h-screen w-full overflow-hidden bg-white dark:bg-black"
       >
         <ImgSection />
       </section>
 
-      <section className="w-full overflow-visible" style={{ zIndex: 2 }}>
+      <section
+        id="home-highlights"
+        data-page-badge="Por que Japon Premium"
+        data-badge-variant="dark"
+        className="relative z-[3] w-full overflow-visible bg-white dark:bg-black"
+      >
         <Highlights />
       </section>
 
       <section
-        className="relative w-full overflow-hidden"
-        style={{ zIndex: 2 }}
+        id="home-itinerary"
+        data-page-badge="Itinerario"
+        data-badge-variant="light"
+        className="relative z-[2] -mt-[100vh] w-full overflow-hidden bg-black"
       >
         <Itinerary />
       </section>
 
-      {/* overflow-hidden eliminado: el pin-spacer de GSAP necesita
-          expandir el wrapper sin que overflow lo interfiera */}
-      <section className="relative w-full" style={{ zIndex: 2 }}>
+      <section
+        id="home-includes"
+        data-page-badge="Incluimos"
+        data-badge-variant="light"
+        className="relative z-[3] w-full bg-black"
+      >
         <Includes />
       </section>
 
-      {/* 1. marginTop: "-100vh" jala la sección hacia arriba para que suba y cubra a .includes
-        2. background: "#ffffff" (o tu color) es VITAL para que tape lo de abajo
-      */}
       <section
-        className="relative w-full overflow-hidden bg-white dark:bg-black"
-        style={{
-          zIndex: 3,
-          transform: "translateZ(0)",
-          marginTop: "-100vh" /* <-- ESTA ES LA MAGIA */,
-        }}
+        id="home-testimonials"
+        data-page-badge="Testimonios"
+        data-badge-variant="dark"
+        className="relative z-[2] -mt-[100vh] w-full overflow-hidden bg-white dark:bg-black"
       >
         <Testimonials />
       </section>
 
       <section
-        className="relative w-full overflow-hidden"
-        style={{ zIndex: 2 }}
+        id="home-faqs"
+        data-page-badge="Preguntas frecuentes"
+        data-badge-variant="dark"
+        className="relative z-[2] w-full overflow-hidden"
       >
         <Faqs />
       </section>
 
-      <section className="w-full overflow-hidden" style={{ zIndex: 2 }}>
+      <section
+        id="home-form"
+        data-page-badge="Disena tu viaje"
+        data-badge-variant="dark"
+        className="relative z-[2] w-full overflow-hidden"
+      >
         <CTAForm />
       </section>
 
       <section
-        className="relative w-full overflow-hidden"
-        style={{ zIndex: 2 }}
+        id="home-marquee"
+        data-page-badge="Alianzas"
+        data-badge-variant="dark"
+        className="relative z-[2] w-full overflow-hidden"
       >
         <MarqueeSection />
       </section>
 
-      {/* Footer sticky - z-index 0, las secciones lo revelan al hacer scroll */}
       <Footer />
     </main>
   );

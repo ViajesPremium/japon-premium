@@ -3,7 +3,6 @@ import React, { useCallback, useLayoutEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import Image from "next/image";
 import "./StaggeredMenu.css";
-import { Button } from "@/components/ui/button";
 
 export interface StaggeredMenuItem {
   label: string;
@@ -44,8 +43,8 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
   displayItemNumbering = true,
   className,
   logoUrl = "/logos/jp-negro.svg",
-  menuButtonColor = "#000",
-  openMenuButtonColor = "#000000",
+  menuButtonColor = "#ffffff",
+  openMenuButtonColor = "#111111",
   changeMenuColorOnOpen = true,
   accentColor = "var(--secondary)",
   isFixed = false,
@@ -54,9 +53,6 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
   onMenuClose,
 }: StaggeredMenuProps) => {
   const [open, setOpen] = useState(false);
-  const [isScrolled, setIsScrolled] = useState(false);
-  const [isHeaderVisible, setIsHeaderVisible] = useState(true);
-  const lastScrollY = useRef(0);
   const openRef = useRef(false);
   const panelRef = useRef<HTMLDivElement | null>(null);
   const preLayersRef = useRef<HTMLDivElement | null>(null);
@@ -77,35 +73,6 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
   const busyRef = useRef(false);
   const itemEntranceTweenRef = useRef<gsap.core.Tween | null>(null);
 
-  React.useEffect(() => {
-    const handleScroll = () => {
-      const currentScrollY = window.scrollY;
-      setIsScrolled(currentScrollY > 20);
-
-      if (!openRef.current) {
-        if (currentScrollY <= 20) {
-          // Al tope: siempre visible
-          setIsHeaderVisible(true);
-        } else if (
-          currentScrollY > lastScrollY.current &&
-          currentScrollY > 80
-        ) {
-          // Bajando: ocultar
-          setIsHeaderVisible(false);
-        }
-        // Subiendo pero no en el tope: no hacer nada, mantener el estado actual
-      }
-
-      lastScrollY.current = currentScrollY;
-    };
-
-    handleScroll();
-    window.addEventListener("scroll", handleScroll, { passive: true });
-
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, []);
   React.useEffect(() => {
     if (open) {
       document.body.style.overflow = "hidden";
@@ -467,8 +434,6 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
     };
   }, [closeOnClickAway, open, closeMenu]);
 
-  const showPill = !isHeaderVisible && !open;
-
   return (
     <div
       className={
@@ -496,10 +461,7 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
           ));
         })()}
       </div>
-      <header
-        className={`staggered-menu-header ${isScrolled ? "scrolled" : ""} ${!isHeaderVisible ? "header-hidden" : ""}`}
-        aria-label="Main navigation header"
-      >
+      <header className="staggered-menu-header" aria-label="Main navigation header">
         <div className="sm-logo" aria-label="Logo">
           <Image
             src={logoUrl || "/src/assets/logos/reactbits-gh-white.svg"}
@@ -540,24 +502,6 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
           </button>
         </div>
       </header>
-
-      <button
-        className={`sm-pill ${showPill ? "sm-pill--visible" : ""}`}
-        onClick={toggleMenu}
-        aria-label="Abrir menú"
-        type="button"
-      >
-        <Image
-          src="/logos/jpremium-logo.svg"
-          alt=""
-          className="sm-pill-logo"
-          aria-hidden="true"
-          width={76}
-          height={16}
-        />
-        <span className="sm-pill-sep" aria-hidden="true" />
-        Abrir Menú
-      </button>
 
       <aside
         id="staggered-menu-panel"

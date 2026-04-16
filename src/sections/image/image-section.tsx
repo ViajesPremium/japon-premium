@@ -2,9 +2,6 @@
 
 import { useRef } from "react";
 import { motion, useMotionValue, useSpring, useTransform } from "motion/react";
-import Badge from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { MorphingText } from "@/components/ui/liquid-text";
 import styles from "./image-section.module.css";
 
 const STRENGTH = 18;

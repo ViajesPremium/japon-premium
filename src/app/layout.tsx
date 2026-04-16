@@ -108,7 +108,6 @@ export default function RootLayout({
   return (
     <html lang="en" className={`antialiased ${dmSans.variable}`}>
       <body className="flex flex-col">
-        <Navbar />
         <SmoothScroll>
           <MagneticCursor
             blendMode="exclusion"
@@ -117,6 +116,7 @@ export default function RootLayout({
             contrastBoost={1.5}
             disableOnTouch
           >
+            <Navbar />
             {children}
           </MagneticCursor>
         </SmoothScroll>

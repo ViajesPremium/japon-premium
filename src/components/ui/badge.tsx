@@ -2,21 +2,31 @@
 
 import styles from "./badge.module.css";
 import { motion } from "motion/react";
-import Image from "next/image";
 
 interface BadgeProps {
   text: string;
   variant?: "light" | "dark";
+  align?: "left" | "center";
 }
 
-export default function Badge({ text, variant = "light" }: BadgeProps) {
-  const badgeClass = [
-    styles.badge,
-    variant === "dark" ? styles.badgeDark : "",
-  ].filter(Boolean).join(" ");
+export default function Badge({
+  text,
+  variant = "light",
+  align = "left",
+}: BadgeProps) {
+  const containerClass = [
+    styles.badgeContainer,
+    align === "center" ? styles.badgeContainerCentered : "",
+  ]
+    .filter(Boolean)
+    .join(" ");
+
+  const badgeClass = [styles.badge, variant === "dark" ? styles.badgeDark : ""]
+    .filter(Boolean)
+    .join(" ");
 
   return (
-    <div className={styles.badgeContainer}>
+    <div className={containerClass}>
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -25,14 +35,6 @@ export default function Badge({ text, variant = "light" }: BadgeProps) {
       >
         <p className={styles.text}>{text}</p>
       </motion.div>
-      <Image
-        priority
-        src={variant === "dark" ? "/logos/HORIZONTAL NEGRO.svg" : "/logos/logo-japon.png"}
-        width={100}
-        height={50}
-        className={styles.badgeLogo}
-        alt="Japón Premium"
-      />
     </div>
   );
 }

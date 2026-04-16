@@ -8,13 +8,15 @@ import {
   useMemo,
   type CSSProperties,
 } from "react";
+import { useGSAP } from "@gsap/react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Image from "next/image";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import { BlurredStagger } from "@/components/ui/blurred-stagger-text";
 import type { GoogleRatingData } from "@/lib/google-reviews";
 import { GOOGLE_RATING_FALLBACK } from "@/lib/google-reviews";
-import Badge from "@/components/ui/badge";
 import styles from "./testimonials.module.css";
 import { Button } from "@/components/ui/button";
 
@@ -214,6 +216,28 @@ export default function Testimonials({ googleRating }: TestimonialsProps) {
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const sectionRef = useRef<HTMLElement>(null);
 
+  useGSAP(
+    () => {
+      gsap.registerPlugin(ScrollTrigger);
+
+      const section = sectionRef.current;
+      if (!section) return;
+
+      const st = ScrollTrigger.create({
+        trigger: section,
+        start: "top top",
+        end: "+=100%",
+        pin: true,
+        pinSpacing: true,
+        anticipatePin: 1,
+        invalidateOnRefresh: true,
+      });
+
+      return () => st.kill();
+    },
+    { scope: sectionRef },
+  );
+
   const [sectionHeight, setSectionHeight] = useState(0);
 
   const resetTimer = useCallback(() => {
@@ -348,10 +372,6 @@ export default function Testimonials({ googleRating }: TestimonialsProps) {
 
       <div className={styles.inner}>
       <div className={styles.photo}>
-        <div className={styles.photoBadgeWrap}>
-          <Badge text="Testimonios" variant="dark" />
-        </div>
-
         <div className={styles.photoSquare}>
           <AnimatePresence mode="wait">
             <motion.div
@@ -454,3 +474,4 @@ export default function Testimonials({ googleRating }: TestimonialsProps) {
     </section>
   );
 }
+

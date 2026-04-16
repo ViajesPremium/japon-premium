@@ -291,7 +291,7 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
-  --site-max: 90%;
+  --site-max: 1620px;
   --site-px: clamp(1.5rem, 4vw, 3.5rem);
 }
 

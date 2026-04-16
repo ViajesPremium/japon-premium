@@ -66,9 +66,16 @@ export default function Itinerary() {
       const SCRUB_SMOOTHNESS = 0.12;
       const SNAP_MIN_DURATION = 0.03;
       const SNAP_MAX_DURATION = 0.09;
+      const ENTRY_HOLD_VH = 1;
+      const REVEAL_PIN_VH = 1;
+      const TRANSITION_UNITS = total - 1;
+      const TOTAL_UNITS = ENTRY_HOLD_VH + TRANSITION_UNITS + REVEAL_PIN_VH;
+      const getTotalPinDistance = () => window.innerHeight * TOTAL_UNITS;
+      const getTransitionStartProgress = () => ENTRY_HOLD_VH / TOTAL_UNITS;
+      const getTransitionEndProgress = () =>
+        (ENTRY_HOLD_VH + TRANSITION_UNITS) / TOTAL_UNITS;
 
       // ── Estado inicial ─────────────────────────────────────────────────
-      // Items posteriores tienen z-index mayor: al deslizarse cubren al anterior.
       items.forEach((_, i) => {
         if (i === 0) {
           gsap.set(c1[i], { yPercent: 0, zIndex: 1, force3D: true });
@@ -77,31 +84,50 @@ export default function Itinerary() {
         } else {
           gsap.set(c1[i], { yPercent: 100, zIndex: i + 1, force3D: true });
           gsap.set(c2[i], { yPercent: -100, zIndex: i + 1, force3D: true });
-          gsap.set(info[i], { yPercent: 40, opacity: 0, force3D: true });
+          // Ajustado a 20% para que el deslizamiento del texto sea más sutil y premium
+          gsap.set(info[i], { yPercent: 20, opacity: 0, force3D: true });
         }
       });
 
-      // ── Timeline principal — scrubbed por scroll ───────────────────────
-      // Cada transición ocupa 1 unidad en el timeline.
-      // El scroll mueve el progreso directamente, sin animaciones con duración propia.
+      // ── Timeline principal ──────────────────────────────────────────────
       const masterTl = gsap.timeline({
         scrollTrigger: {
           trigger: containerRef.current,
           start: "top top",
-          end: `+=${window.innerHeight * (total - 1)}`,
+          end: () => `+=${getTotalPinDistance()}`,
           pin: true,
           pinSpacing: true,
           scrub: SCRUB_SMOOTHNESS,
           snap: {
-            snapTo: (value: number) =>
-              Math.round(value * (total - 1)) / (total - 1),
+            snapTo: (value: number) => {
+              const stops = [
+                0,
+                ...Array.from(
+                  { length: total },
+                  (_, i) => (ENTRY_HOLD_VH + i) / TOTAL_UNITS,
+                ),
+                1,
+              ];
+              return stops.reduce((closest, stop) =>
+                Math.abs(stop - value) < Math.abs(closest - value)
+                  ? stop
+                  : closest,
+              );
+            },
             duration: { min: SNAP_MIN_DURATION, max: SNAP_MAX_DURATION },
             delay: 0.25,
             ease: "power3.out",
             inertia: false,
           },
           onUpdate: (self) => {
-            const step = Math.round(self.progress * (total - 1));
+            const transitionStart = getTransitionStartProgress();
+            const transitionEnd = getTransitionEndProgress();
+            const transitionProgress = Math.min(
+              Math.max(self.progress - transitionStart, 0) /
+                (transitionEnd - transitionStart),
+              1,
+            );
+            const step = Math.round(transitionProgress * (total - 1));
             if (step !== currentStepRef.current) {
               currentStepRef.current = step;
               setActiveStep(step);
@@ -112,26 +138,32 @@ export default function Itinerary() {
       });
 
       for (let i = 1; i < total; i++) {
-        const pos = i - 1; // posición de inicio en el timeline
+        const pos = ENTRY_HOLD_VH + (i - 1);
 
-        // Imágenes entrantes se deslizan hasta cubrirla anterior
         masterTl.to(c1[i], { yPercent: 0, ease: "none", duration: 1 }, pos);
         masterTl.to(c2[i], { yPercent: 0, ease: "none", duration: 1 }, pos);
 
-        // Info saliente: sale en la primera mitad de la transición
         masterTl.to(
           info[i - 1],
-          { yPercent: -40, opacity: 0, ease: "none", duration: 0.4 },
+          { yPercent: -20, opacity: 0, ease: "none", duration: 0.4 },
           pos,
         );
 
-        // Info entrante: aparece en la segunda mitad
         masterTl.to(
           info[i],
           { yPercent: 0, opacity: 1, ease: "none", duration: 0.4 },
           pos + 0.6,
         );
       }
+
+      // Hold de entrada: la seccion ya esta visible, pero aun no transiciona.
+      masterTl.to({}, { duration: ENTRY_HOLD_VH }, 0);
+      // Hold de salida para el efecto de reveal de la siguiente seccion.
+      masterTl.to(
+        {},
+        { duration: REVEAL_PIN_VH },
+        ENTRY_HOLD_VH + TRANSITION_UNITS,
+      );
 
       // ── Botones de navegación ──────────────────────────────────────────
       navRef.current = {
@@ -145,8 +177,8 @@ export default function Itinerary() {
           const st = masterTl.scrollTrigger;
           if (!st) return;
 
-          const targetScroll =
-            st.start + (to / (total - 1)) * (st.end - st.start);
+          const targetProgress = (ENTRY_HOLD_VH + to) / TOTAL_UNITS;
+          const targetScroll = st.start + targetProgress * (st.end - st.start);
           const lenis = getLenis();
 
           if (lenis) {
@@ -168,6 +200,7 @@ export default function Itinerary() {
 
   return (
     <div className={styles.container} ref={containerRef}>
+      {/* ── Imágenes Izquierda ── */}
       <div className={styles.content1}>
         {items.map((item, i) => (
           <div
@@ -189,6 +222,7 @@ export default function Itinerary() {
         ))}
       </div>
 
+      {/* ── Imágenes Derecha ── */}
       <div className={styles.content2}>
         {items.map((item, i) => (
           <div
@@ -210,60 +244,98 @@ export default function Itinerary() {
         ))}
       </div>
 
-      <div className={styles.itineraryInfo}>
-        {items.map((item, i) => (
-          <div
-            key={item.id}
-            ref={(el) => {
-              infoRefs.current[i] = el;
-            }}
-            className={styles.infoItem}
-          >
-            <GradientText
-              className={styles.titleGradient}
-              colors={["#BF953F", "#FCF6BA", "#B38728", "#FCF6BA"]}
-              animationSpeed={6}
-              direction="horizontal"
-            >
-              <span className={styles.titleText}>{item.title}</span>
-            </GradientText>
-            <BlurredStagger
-              text={item.description}
-              className={styles.descriptionBlur}
-              isActive={activeStep === i}
-            />
+      {/* ── Card Central Premium ── */}
+      <div className={styles.premiumCard}>
+        <div className={styles.cardOverlay} />
+
+        <div className={styles.contentWrapper}>
+          {/* Textos que se deslizan */}
+          <div className={styles.infoContainer}>
+            {items.map((item, i) => (
+              <div
+                key={item.id}
+                ref={(el) => {
+                  infoRefs.current[i] = el;
+                }}
+                className={`${styles.infoItem} ${
+                  activeStep === i ? styles.active : ""
+                }`}
+              >
+                <div className={styles.header}>
+                  <span className={styles.eyebrow}>
+                    Día {String(item.id).padStart(2, "0")} • {item.day}
+                  </span>
+                  <GradientText
+                    className={styles.titleGradient}
+                    colors={["#BF953F", "#FCF6BA", "#B38728", "#FCF6BA"]}
+                    animationSpeed={6}
+                    direction="horizontal"
+                  >
+                    <h2 className={styles.titleText}>{item.title}</h2>
+                  </GradientText>
+                </div>
+
+                <div className={styles.body}>
+                  <BlurredStagger
+                    text={item.description}
+                    className={styles.descriptionBlur}
+                    isActive={activeStep === i}
+                  />
+                </div>
+              </div>
+            ))}
           </div>
-        ))}
 
-        <Button variant="primary" className={styles.buttonInfo}>
-          Más información
-        </Button>
+          {/* Footer Fijo de la Card */}
+          <div className={styles.cardFooter}>
+            <Button variant="primary" className={styles.ctaButton}>
+              Lo quiero
+            </Button>
 
-        <div className={styles.navButtons}>
-          <button
-            className={styles.navBtn}
-            onClick={() => navRef.current?.go(-1)}
-            disabled={activeStep === 0}
-            aria-label="Anterior"
-          >
-            ↑
-          </button>
-          <button
-            className={styles.navBtn}
-            onClick={() => navRef.current?.go(1)}
-            disabled={activeStep === items.length - 1}
-            aria-label="Siguiente"
-          >
-            ↓
-          </button>
+            <div className={styles.controls}>
+              <div className={styles.counterGroup}>
+                <span className={styles.current}>
+                  {String(activeStep + 1).padStart(2, "0")}
+                </span>
+                <div className={styles.divider} />
+                <span className={styles.total}>
+                  {String(items.length).padStart(2, "0")}
+                </span>
+              </div>
+
+              <div className={styles.navGroup}>
+                <button
+                  className={styles.navArrow}
+                  onClick={() => navRef.current?.go(-1)}
+                  disabled={activeStep === 0}
+                  aria-label="Anterior"
+                >
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path
+                      d="M19 15l-7-7-7 7"
+                      strokeWidth="1.5"
+                      strokeLinecap="square"
+                    />
+                  </svg>
+                </button>
+                <button
+                  className={styles.navArrow}
+                  onClick={() => navRef.current?.go(1)}
+                  disabled={activeStep === items.length - 1}
+                  aria-label="Siguiente"
+                >
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path
+                      d="M5 9l7 7 7-7"
+                      strokeWidth="1.5"
+                      strokeLinecap="square"
+                    />
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
-
-        <span className={styles.stepCounter}>
-          {String(activeStep + 1).padStart(2, "0")}
-          <span className={styles.stepTotal}>
-            /{String(items.length).padStart(2, "0")}
-          </span>
-        </span>
       </div>
     </div>
   );

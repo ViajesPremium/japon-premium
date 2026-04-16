@@ -37,12 +37,12 @@
   color: var(--black);
   text-transform: uppercase;
   letter-spacing: 0.02em;
-  font-size: clamp(0.9rem, 1vw, 1.2rem);
+  font-size: clamp(0.9rem, 2vw, 1.2rem);
 }
 
 .kickerBottom {
   margin: 0;
-  font-family: var(--font-nohemi), sans-serif;
+  font-family: var(--font-bigcaslon), sans-serif;
   color: var(--secondary);
   font-style: italic;
   line-height: 0.95;
@@ -62,14 +62,14 @@
 
 .megaText {
   margin: 0;
-  font-family: var(--font-thunder-lc), sans-serif;
-  font-weight: 800;
+  font-family: var(--font-nohemi), sans-serif;
+  font-weight: 700;
   color: var(--black);
   text-transform: uppercase;
   letter-spacing: 0.008em;
-  line-height: 1;
+  line-height: 0.95;
   white-space: nowrap;
-  font-size: clamp(3.4rem, 8.4vw, 8rem);
+  font-size: clamp(3.4rem, 6.4vw, 6.4rem);
 }
 
 .lineRow {
