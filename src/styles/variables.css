@@ -1,20 +1,20 @@
 :root {
-    /* Colors */
-    --primary: #DB2F21;
-    --secondary: #95231C;
-    --complementary: #2A4073;
-    --black: #16181b;
-    --bg: #f3f3f0;
-    --white: #f3f3f0;
+  /* Colors */
+  --primary: #db2f21;
+  --secondary: #95231c;
+  --complementary: #8c8380;
+  --black: #16181b;
+  --bg: #f3f3f0;
+  --white: #f3f3f0;
 
-    /* Radius */
-    --radius-sm: .2rem;
-    --radius-md: 60px;
-    --radius-lg: 80px;
+  /* Radius */
+  --radius-sm: 0.2rem;
+  --radius-md: 60px;
+  --radius-lg: 80px;
 
-    /* Fonts */
-    --font-nohemi: 'Nohemi', sans-serif;
-    --font-bigcaslon: 'BigCaslon', serif;
-    --font-thunder: 'Thunder', sans-serif;
-    --font-thunder-lc: 'ThunderLC', sans-serif;
+  /* Fonts */
+  --font-nohemi: "Nohemi", sans-serif;
+  --font-bigcaslon: "BigCaslon", serif;
+  --font-thunder: "Thunder", sans-serif;
+  --font-thunder-lc: "ThunderLC", sans-serif;
 }

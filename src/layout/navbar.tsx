@@ -62,7 +62,7 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
   const iconRef = useRef<HTMLSpanElement | null>(null);
   const textInnerRef = useRef<HTMLSpanElement | null>(null);
   const textWrapRef = useRef<HTMLSpanElement | null>(null);
-  const [textLines, setTextLines] = useState<string[]>(["Menu", "Close"]);
+  const [textLines, setTextLines] = useState<string[]>(["Menú", "Close"]);
 
   const openTlRef = useRef<gsap.core.Timeline | null>(null);
   const closeTweenRef = useRef<gsap.core.Tween | null>(null);
@@ -461,7 +461,10 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
           ));
         })()}
       </div>
-      <header className="staggered-menu-header" aria-label="Main navigation header">
+      <header
+        className="staggered-menu-header"
+        aria-label="Main navigation header"
+      >
         <div className="sm-logo" aria-label="Logo">
           <Image
             src={logoUrl || "/src/assets/logos/reactbits-gh-white.svg"}

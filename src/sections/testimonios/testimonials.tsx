@@ -224,17 +224,23 @@ export default function Testimonials({ googleRating }: TestimonialsProps) {
       const section = sectionRef.current;
       if (!section) return;
 
-      const st = ScrollTrigger.create({
-        trigger: section,
-        start: "top top",
-        end: "+=100%",
-        pin: true,
-        pinSpacing: true,
-        anticipatePin: 1,
-        invalidateOnRefresh: true,
+      const mm = gsap.matchMedia();
+
+      mm.add("(min-width: 769px)", () => {
+        const st = ScrollTrigger.create({
+          trigger: section,
+          start: "top top",
+          end: "+=100%",
+          pin: true,
+          pinSpacing: true,
+          anticipatePin: 1,
+          invalidateOnRefresh: true,
+        });
+
+        return () => st.kill();
       });
 
-      return () => st.kill();
+      return () => mm.revert();
     },
     { scope: sectionRef },
   );
@@ -400,27 +406,29 @@ export default function Testimonials({ googleRating }: TestimonialsProps) {
         </div>
 
         <div className={styles.content}>
-          <div className={styles.testimonialNumber}>
-            <p className={styles.number}>
-              {pad(current + 1)}/{pad(TESTIMONIALS.length)}
-            </p>
-          </div>
+          <div className={styles.controlsBar}>
+            <div className={styles.testimonialNumber}>
+              <p className={styles.number}>
+                {pad(current + 1)}/{pad(TESTIMONIALS.length)}
+              </p>
+            </div>
 
-          <div className={styles.arrows}>
-            <button
-              className={styles.arrow}
-              onClick={prev}
-              aria-label="Anterior"
-            >
-              <ArrowLeft size={18} strokeWidth={1.5} />
-            </button>
-            <button
-              className={styles.arrow}
-              onClick={next}
-              aria-label="Siguiente"
-            >
-              <ArrowRight size={18} strokeWidth={1.5} />
-            </button>
+            <div className={styles.arrows}>
+              <button
+                className={styles.arrow}
+                onClick={prev}
+                aria-label="Anterior"
+              >
+                <ArrowLeft size={18} strokeWidth={1.5} />
+              </button>
+              <button
+                className={styles.arrow}
+                onClick={next}
+                aria-label="Siguiente"
+              >
+                <ArrowRight size={18} strokeWidth={1.5} />
+              </button>
+            </div>
           </div>
 
           <div className={styles.container}>

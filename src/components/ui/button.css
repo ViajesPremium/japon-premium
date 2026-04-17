@@ -3,7 +3,7 @@
   align-items: center;
   justify-content: center;
   position: relative;
-  width: 200px;
+  width: 260px;
   height: 2.8rem;
   border: 0;
   border-radius: 0.1rem;
@@ -24,7 +24,7 @@
 }
 
 .buttonPrimary {
-  padding: 0.15rem 3.5rem 0.15rem 2rem;
+  padding: 0.15rem 4.2rem 0.15rem 2rem;
   background-color: var(--primary);
 }
 
@@ -41,13 +41,13 @@
 
 .buttonSecondary:hover {
   background-color: var(--complementary);
-   transition: all 3ms ease-in-out;
+  transition: all 3ms ease-in-out;
 }
 
 .buttonLabel {
   position: relative;
   z-index: 10;
-    padding-top: 2px;
+  padding-top: 2px;
   transition: all 500ms ease;
 }
 
@@ -67,4 +67,27 @@
 
 .buttonPrimary:hover .buttonIcon {
   right: calc(100% - 41px);
+}
+
+@media (max-width: 768px) {
+  .buttonBase {
+    font-size: 0.8rem;
+    height: 2rem;
+  }
+  .buttonPrimary {
+    padding: 0.15rem 3.5rem 0.15rem 2rem;
+    background-color: var(--primary);
+  }
+  .buttonPrimary:hover {
+    padding-left: 3rem;
+    padding-right: 1rem;
+    background-color: var(--secondary);
+  }
+  .buttonIcon {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+  .buttonPrimary:hover .buttonIcon {
+    right: calc(100% - 41px);
+  }
 }

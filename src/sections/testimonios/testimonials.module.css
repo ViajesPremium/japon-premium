@@ -205,10 +205,20 @@
   background-position: center;
 }
 
-.testimonialNumber {
+.controlsBar {
   position: absolute;
   top: 1rem;
   left: 2rem;
+  right: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  z-index: 8;
+}
+
+.testimonialNumber {
+  position: static;
 }
 
 .number {
@@ -221,9 +231,7 @@
 }
 
 .arrows {
-  position: absolute;
-  top: 1rem;
-  right: 1rem;
+  position: static;
   display: flex;
   gap: 0.6rem;
 }
@@ -410,104 +418,169 @@
   }
 }
 
+/* =========================================
+   DISEÑO MÓVIL REIMAGINADO
+========================================= */
+
 @media (max-width: 768px) {
   .testimonials {
-    flex-direction: column;
     height: auto;
-    min-height: 100vh;
+    min-height: 100svh;
+    /* Damos espacio arriba para el badge y abajo para respirar */
+    padding: 6rem 1.5rem 4rem;
+    overflow: hidden;
   }
 
   .sectionBadge {
-    top: 0.75rem;
+    position: absolute;
+    top: 1.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    width: max-content;
+    margin: 0;
+  }
+
+  /* Traemos de vuelta los pétalos, pero más sutiles */
+  .sakuraLayer {
+    display: block;
+    opacity: 0.35;
+  }
+
+  .inner {
+    height: auto;
+    min-height: 100%;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 2rem;
   }
 
   .photo {
     width: 100%;
     height: auto;
-    flex-direction: row;
+    max-height: none;
+    padding-top: 0;
+    flex-direction: column;
     align-items: center;
-    justify-content: flex-start;
-    padding: 0;
-    gap: 0;
-    border-right: none;
-    border-bottom: 2px solid var(--black);
+    border: none;
   }
 
-  .photoBadgeWrap {
-    position: static;
-    flex-shrink: 0;
-  }
-
+  /* Convertimos la foto en una tarjeta elegante */
   .photoSquare {
-    width: 90px;
-    height: 90px;
-    aspect-ratio: 1 / 1;
-    border-radius: 0;
-    flex-shrink: 0;
+    width: 180px;
+    height: auto;
+    aspect-ratio: 4 / 5;
   }
 
   .content {
-    flex: 1;
-    padding: 4rem 1.5rem 7rem;
-    justify-content: flex-start;
-    padding-top: 3.5rem;
+    width: 100%;
+    flex: none;
+    padding: 0;
+    background-image: none;
+    display: flex;
+    flex-direction: column;
   }
 
-  .testimonialNumber {
-    top: 0.85rem;
-    left: 1.5rem;
-  }
-
-  .number {
-    font-size: 0.9rem;
-  }
-
-  .arrows {
-    top: 0.75rem;
-    right: 1rem;
-  }
-
-  .arrow {
-    width: 34px;
-    height: 34px;
-  }
-
+  /* LA MAGIA: Reordenamos los elementos visualmente */
   .container {
+    order: 1; /* El testimonio va primero */
     width: 100%;
     gap: 1.5rem;
   }
 
+  .testimonial {
+    flex-direction: column;
+    align-items: center;
+    gap: 1.25rem;
+    text-align: center;
+  }
+
   .quoteMark {
-    font-size: 2.5rem;
+    width: 2.2rem;
+    opacity: 0.8;
   }
 
   .text {
-    font-size: clamp(1rem, 4.5vw, 1.3rem) !important;
+    font-size: 1.25rem !important;
+    line-height: 1.45;
+  }
+
+  .testimonialFooter {
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+  }
+
+  .author {
+    align-items: center;
+    gap: 0.25rem;
   }
 
   .name {
-    font-size: 1.15rem;
+    font-size: 1.4rem;
   }
 
   .location {
-    font-size: 0.85rem;
+    font-size: 0.9rem;
+    letter-spacing: 0.02em;
   }
 
-  .bottomRow {
-    left: 50%;
-    right: auto;
-    transform: translateX(-50%);
-    bottom: 1.25rem;
-    flex-wrap: wrap;
-    gap: 0.75rem;
-    justify-content: center;
-  }
-
+  /* Badge de Google tipo píldora premium */
   .googleBadge {
-    padding: 0.25rem 0.6rem;
+    padding: 0.5rem 1rem;
+    background: rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(4px);
+    border-radius: 2rem;
+    border: 1px solid rgba(0, 0, 0, 0.08);
   }
 
   .googleLabel {
-    display: none;
+    display: block; /* Mostramos el texto de nuevo */
+    font-size: 0.65rem;
+  }
+
+  /* Controles abajo, fáciles de tocar */
+  .controlsBar {
+    position: static;
+    order: 2; /* Debajo del testimonio */
+    width: 100%;
+    max-width: 320px;
+    margin: 2rem auto 0;
+    justify-content: center;
+    gap: 2rem;
+    padding: 0;
+  }
+
+  .arrow {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%; /* Círculos se ven más sofisticados */
+  }
+
+  .bottomRow {
+    position: static;
+    order: 3; /* El botón va hasta el final */
+    transform: none;
+    margin-top: 2rem;
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 420px) {
+  .testimonials {
+    padding: 5rem 1rem 3rem;
+  }
+
+  .photoSquare {
+    width: 150px;
+  }
+
+  .text {
+    font-size: 1.15rem !important;
+  }
+
+  .controlsBar {
+    gap: 1.5rem;
   }
 }

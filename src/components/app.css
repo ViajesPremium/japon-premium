@@ -32,11 +32,11 @@
 
 .scroll-content svg {
   padding-top: 6px;
-  color: #00000060 !important; 
+  color: #00000060 !important;
 }
 
 .scroll-text {
-  color: #00000060 !important; 
+  color: #00000060 !important;
   font-size: 1.5rem;
   font-weight: 500;
   opacity: 0.6;
@@ -46,8 +46,8 @@
 .scroll-indicator {
   width: 28px;
   height: 46px;
-  border: 1px solid #00000080; 
-  border-radius: 20px; 
+  border: 1px solid #00000080;
+  border-radius: 20px;
   position: relative;
   display: flex;
   justify-content: center;
@@ -58,14 +58,23 @@
   height: 8px;
   background-color: #000000;
   border-radius: 4px;
-  margin-top: 8px; 
+  margin-top: 8px;
   animation: scrollBounce 2s infinite ease-in-out;
 }
 
 @keyframes scrollBounce {
-  0% { transform: translateY(0); opacity: 1; }
-  50% { transform: translateY(16px); opacity: 0; }
-  100% { transform: translateY(0); opacity: 0; }
+  0% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  50% {
+    transform: translateY(16px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 0;
+  }
 }
 
 .button-container {
@@ -160,8 +169,13 @@
   width: 100%;
 }
 
-.span-japon, .span-desde { font-weight: 500; }
-.span-mexico { color: var(--black); }
+.span-japon,
+.span-desde {
+  font-weight: 500;
+}
+.span-mexico {
+  color: var(--black);
+}
 
 .hero-static-word {
   font-family: var(--font-nohemi), sans-serif;
@@ -196,7 +210,8 @@
   top: 50%;
   width: 100%;
   height: 100%;
-  transform: translate(-50%, -50%) translate3d(var(--stage-shift-x), var(--stage-shift-y), 0);
+  transform: translate(-50%, -50%)
+    translate3d(var(--stage-shift-x), var(--stage-shift-y), 0);
   transform-origin: center center;
   will-change: transform;
   z-index: 1;
@@ -216,7 +231,8 @@
   inset: 0;
   width: 100%;
   height: 100%;
-  transform: translate(var(--geisha-offset-x, 0px), var(--geisha-offset-y, 0px)) scale(var(--geisha-scale, 1));
+  transform: translate(var(--geisha-offset-x, 0px), var(--geisha-offset-y, 0px))
+    scale(var(--geisha-scale, 1));
   transform-origin: center center;
   z-index: 2;
   will-change: transform;
@@ -249,7 +265,11 @@
   inset: 0;
   z-index: 3;
   pointer-events: none;
-  transform: translate(var(--samurai-offset-x, 0px), var(--samurai-offset-y, 0px)) scale(var(--samurai-scale, 1));
+  transform: translate(
+      var(--samurai-offset-x, 0px),
+      var(--samurai-offset-y, 0px)
+    )
+    scale(var(--samurai-scale, 1));
   transform-origin: center center;
   will-change: transform;
 }
@@ -313,7 +333,9 @@
   transform: translateX(calc(100% + 40px));
 }
 
-.editor-panel.open { transform: translateX(0); }
+.editor-panel.open {
+  transform: translateX(0);
+}
 
 .editor-toggle {
   position: absolute;
@@ -334,17 +356,38 @@
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
-.editor-content { padding: 20px; overflow-y: auto; max-height: calc(100vh - 80px); }
-.editor-section { margin-bottom: 20px; display: flex; flex-direction: column; gap: 8px; }
-.editor-section label { font-size: 0.8rem; color: rgba(255, 255, 255, 0.6); text-transform: uppercase; }
-.input-group { margin-left: 10px; margin-top: 5px; }
-.editor-panel input[type="range"] { width: 100%; accent-color: #ff0000; }
+.editor-content {
+  padding: 20px;
+  overflow-y: auto;
+  max-height: calc(100vh - 80px);
+}
+.editor-section {
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.editor-section label {
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.6);
+  text-transform: uppercase;
+}
+.input-group {
+  margin-left: 10px;
+  margin-top: 5px;
+}
+.editor-panel input[type="range"] {
+  width: 100%;
+  accent-color: #ff0000;
+}
 
 /* ==========================================================================
    2. PANTALLAS TÁCTILES BASE
    ========================================================================== */
 @media (hover: none), (pointer: coarse) {
-  #center { height: 100svh; }
+  #center {
+    height: 100svh;
+  }
 }
 
 /* ==========================================================================
@@ -352,11 +395,27 @@
    Ajuste suave intermedio antes de pasar a móvil completo.
    ========================================================================== */
 @media (max-width: 1024px) {
-  .title-container { padding-top: 80px; }
-  .word-slot { height: 10rem; margin-top: -30px; } /* Reduce la compresión de desktop */
-  .description { left: 5%; width: 250px; top: 75%; }
-  .cta-row { right: 5%; width: 250px; top: 75%; }
-  .circle { width: 350px; height: 350px; }
+  .title-container {
+    padding-top: 80px;
+  }
+  .word-slot {
+    height: 10rem;
+    margin-top: -30px;
+  } /* Reduce la compresión de desktop */
+  .description {
+    left: 5%;
+    width: 250px;
+    top: 75%;
+  }
+  .cta-row {
+    right: 5%;
+    width: 250px;
+    top: 75%;
+  }
+  .circle {
+    width: 300px;
+    height: 300px;
+  }
 }
 
 /* ==========================================================================
@@ -368,25 +427,26 @@
     height: 100svh;
     min-height: 100svh;
     overflow: hidden;
-    display: block; 
+    display: block;
   }
 
   /* --- 4.1 H1 Y TEXTOS (Arriba, centrados y lectura normal) --- */
   .title-container {
     position: absolute;
-    top: 12svh; 
+    top: 7svh;
     left: 50%;
     transform: translateX(-50%);
     padding-top: 0;
     height: auto;
-    z-index: 5; 
+    width: 94vw;
+    z-index: 2;
     pointer-events: none;
   }
 
   .h1 {
-    width: 90%;
-    line-height: 1.1; /* ADIÓS al 0.3 de desktop. Flujo normal */
-    gap: 1.5rem; /* Separación vertical entre líneas */
+    width: 100%;
+    line-height: 0.9;
+    gap: 0.35rem;
   }
 
   .line {
@@ -394,50 +454,50 @@
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    gap: 0.8rem; /* Separación horizontal entre palabras */
+    gap: 0.45rem;
     width: 100%;
-    flex-wrap: wrap; /* Permite que bajen de línea si no caben */
+    flex-wrap: wrap;
   }
 
   .word-slot {
-    height: auto; 
-    min-height: 45px;
-    margin-top: 0; /* ADIÓS a los márgenes negativos */
-    flex: 0 1 auto; /* Deja que el contenido respire */
+    height: auto;
+    min-height: 52px;
+    margin-top: 0;
+    flex: 0 1 auto;
     display: flex;
     justify-content: center;
     align-items: center;
   }
-  
-  /* Fuerza al componente SVG/Canvas interno a escalar si es necesario */
-  .word-slot > div, .word-slot svg, .word-slot canvas {
-    max-height: 10svh !important;
+
+  /* Permite texto más grande en móvil sin recorte agresivo */
+  .word-slot > div,
+  .word-slot svg,
+  .word-slot canvas {
+    max-height: 16svh !important;
     width: auto !important;
   }
 
   /* --- 4.1b TEXTO PLANO (reemplaza TextPressure en móvil) --- */
   .mobile-hero-word {
     font-family: var(--font-nohemi), sans-serif;
-    color: #000;
+    color: var(--black);
     line-height: 1;
     white-space: nowrap;
     display: block;
   }
 
-  .mobile-hero-word--light {
-    font-weight: 100;
-    font-size: clamp(2.4rem, 11vw, 4rem);
-    font-style: italic;
-  }
-
+  .mobile-hero-word--light,
   .mobile-hero-word--light-upright {
     font-weight: 100;
-    font-size: clamp(2.4rem, 11vw, 4rem);
+    font-size: clamp(2.1rem, 12vw, 4.7rem);
+    font-style: italic;
+    letter-spacing: -0.02em;
   }
 
   .mobile-hero-word--bold {
     font-weight: 700;
-    font-size: clamp(2.4rem, 11vw, 4rem);
+    font-size: clamp(3rem, 10vw, 5rem);
+    letter-spacing: -0.02em;
   }
 
   /* --- 4.2 DESCRIPCIÓN Y BOTONES (Abajo) --- */
@@ -473,33 +533,44 @@
   .media-stage {
     position: absolute;
     top: auto;
-    bottom: 0;
+    bottom: -5svh;
     left: 50%;
     transform: translateX(-50%);
     width: 100vw;
-    height: 60svh; /* Un poco más alta para que el fade no corte contenido */
-    z-index: 1;
-    /* Fade suave arriba — elimina el corte duro de la máscara */
-    -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 18%);
-    mask-image: linear-gradient(to bottom, transparent 0%, black 18%);
+    height: 100svh;
+    z-index: 4;
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 14%);
+    mask-image: linear-gradient(to bottom, transparent 0%, black 14%);
   }
 
   .geisha {
-    transform: translate(var(--geisha-mobile-offset-x, 0px), var(--geisha-mobile-offset-y, 0px)) scale(var(--geisha-mobile-scale, 1.8));
+    transform: translate(
+        var(--geisha-mobile-offset-x, 0px),
+        var(--geisha-mobile-offset-y, 0px)
+      )
+      scale(var(--geisha-mobile-scale, 1.8));
     transform-origin: center bottom;
   }
 
   .geisha-image {
-    object-position: center bottom; 
+    object-position: center bottom;
+  }
+
+  .samurai-overlay {
+    transform: translate(
+        var(--samurai-mobile-offset-x, var(--samurai-offset-x, 0px)),
+        var(--samurai-mobile-offset-y, var(--samurai-offset-y, 0px))
+      )
+      scale(var(--samurai-scale, 1));
   }
 
   .circle {
     top: auto;
-    bottom: 15%; 
+    bottom: 1%;
     width: 80vw;
     height: 80vw;
-    max-width: 300px;
-    max-height: 300px;
+    max-width: 250px;
+    max-height: 250px;
     z-index: -1;
   }
 }
@@ -509,18 +580,21 @@
    ========================================================================== */
 @media (max-width: 480px) {
   .title-container {
-    top: 10svh; /* Un poco más arriba en pantallas muy chicas */
+    top: 10svh;
   }
-  
-  .h1 { gap: 1rem; }
-  .line { gap: 0.5rem; }
+
+  .h1 {
+    gap: 0.25rem;
+  }
+  .line {
+    gap: 0.35rem;
+  }
 
   .cta-row {
     flex-direction: column;
     width: 60%;
-
   }
-  
+
   .cta-row > * {
     width: 100%;
   }

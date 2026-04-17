@@ -207,7 +207,12 @@
 }
 
 @media (max-width: 768px) {
+  .includes {
+    min-height: auto;
+  }
+
   .pinLayer {
+    height: auto;
     padding: 1rem 0.9rem 1.1rem;
     gap: 0.9rem;
   }
@@ -225,9 +230,30 @@
     max-width: 260px;
   }
 
+  .viewport {
+    flex: none;
+    min-height: auto;
+    overflow: visible;
+  }
+
+  .track {
+    height: auto;
+    flex-direction: column;
+    gap: 0.85rem;
+    padding-right: 0;
+    will-change: auto;
+  }
+
   .card {
-    width: 84vw;
-    min-width: 84vw;
+    width: 100%;
+    min-width: 0;
+    height: auto;
+    margin-top: 0;
+    max-height: none;
+  }
+
+  .cardMedia {
+    height: clamp(180px, 56vw, 270px);
   }
 
   .cardBody {
@@ -244,5 +270,9 @@
 
   .progressTrack {
     width: 100%;
+  }
+
+  .progressWrap {
+    display: none;
   }
 }

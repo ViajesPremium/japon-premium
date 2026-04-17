@@ -19,17 +19,23 @@ export default function Snapshot() {
       const section = sectionRef.current;
       if (!section) return;
 
-      const st = ScrollTrigger.create({
-        trigger: section,
-        start: "top top",
-        end: "bottom top",
-        pin: true,
-        pinSpacing: false,
-        anticipatePin: 1,
-        invalidateOnRefresh: true,
+      const mm = gsap.matchMedia();
+
+      mm.add("(min-width: 769px)", () => {
+        const st = ScrollTrigger.create({
+          trigger: section,
+          start: "top top",
+          end: "bottom top",
+          pin: true,
+          pinSpacing: false,
+          anticipatePin: 1,
+          invalidateOnRefresh: true,
+        });
+
+        return () => st.kill();
       });
 
-      return () => st.kill();
+      return () => mm.revert();
     },
     { scope: sectionRef },
   );
@@ -40,7 +46,7 @@ export default function Snapshot() {
       <div className={styles.snapshotContent}>
         <Badge text="Nueva seccion" variant="dark" align="center" />
         <BlurredStagger
-          text="Más de 21 años creando experiencias premium."
+          text="Más de 21 años diseñando experiencias premium."
           className={styles.trustStrip}
           highlights={[
             {

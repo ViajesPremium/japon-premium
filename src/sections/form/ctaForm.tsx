@@ -54,10 +54,11 @@ export default function CTAForm() {
       const getOpenDistance = () => (isMobile() ? 10 : 18);
       const getExitDistance = () => (isMobile() ? 76 : 108);
       const getPinDistance = () =>
-        window.innerHeight * (isMobile() ? 2.25 : 3.15);
-      const getHoldDuration = () => (isMobile() ? 0.95 : 1.15);
+        window.innerHeight * (isMobile() ? 1.55 : 3.15);
+      const getHoldDuration = () => (isMobile() ? 0.45 : 1.15);
       const getFinalScale = () => (isMobile() ? 1.34 : 1.55);
       const getFinalBlur = () => (isMobile() ? "5px" : "8px");
+      const scrubStrength = isMobile() ? 0.55 : 1;
 
       if (prefersReducedMotion) {
         gsap.set(shoji, { autoAlpha: 0 });
@@ -69,8 +70,8 @@ export default function CTAForm() {
       }
 
       gsap.set(base, { autoAlpha: 1, filter: "blur(0px)", force3D: true });
-      gsap.set(leftDoor, { xPercent: 0 });
-      gsap.set(rightDoor, { xPercent: 0 });
+      gsap.set(leftDoor, { xPercent: -2 });
+      gsap.set(rightDoor, { xPercent: 2 });
       gsap.set([leftDoor, rightDoor], {
         autoAlpha: 1,
         filter: "blur(0px)",
@@ -93,7 +94,7 @@ export default function CTAForm() {
           end: () => `+=${getPinDistance()}`,
           pin: true,
           pinSpacing: true,
-          scrub: 1,
+          scrub: scrubStrength,
           invalidateOnRefresh: true,
         },
       });
@@ -238,4 +239,3 @@ export default function CTAForm() {
     </section>
   );
 }
-

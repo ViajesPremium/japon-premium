@@ -88,36 +88,50 @@ export default function Includes() {
         return;
       }
 
-      gsap.set(progressFill, { scaleX: 0, transformOrigin: "left center" });
+      const mm = gsap.matchMedia();
 
-      // Debe calcularse con el ancho visible del carrusel (viewport),
-      // no con pinLayer, para que la ultima card llegue completa.
-      const getShift = () =>
-        Math.max(track.scrollWidth - viewport.clientWidth, 0);
-      const getEndDistance = () =>
-        getShift() * INCLUDES_SCROLL_TUNING.horizontalFactor;
+      mm.add("(max-width: 768px)", () => {
+        // Mobile: sin pin ni desplazamiento horizontal.
+        gsap.set(track, { clearProps: "transform" });
+        gsap.set(progressFill, { clearProps: "transform" });
+      });
 
-      // Timeline de una sola fase: solo desplazamiento horizontal.
-      // Se elimina la pausa final para liberar el pin en cuanto termina.
-      const tl = gsap.timeline();
-      tl.to(track, { x: () => -getShift(), ease: "none", duration: 1 }, 0);
-      tl.to(progressFill, { scaleX: 1, ease: "none", duration: 1 }, 0);
+      mm.add("(min-width: 769px)", () => {
+        gsap.set(progressFill, { scaleX: 0, transformOrigin: "left center" });
 
-      const st = ScrollTrigger.create({
-        animation: tl,
-        trigger: section,
-        start: "top top",
-        end: () => `+=${getEndDistance()}`,
-        pin: section,
-        pinSpacing: true,
-        scrub: 0.9,
-        anticipatePin: 1,
-        invalidateOnRefresh: true,
+        // Debe calcularse con el ancho visible del carrusel (viewport),
+        // no con pinLayer, para que la ultima card llegue completa.
+        const getShift = () =>
+          Math.max(track.scrollWidth - viewport.clientWidth, 0);
+        const getEndDistance = () =>
+          getShift() * INCLUDES_SCROLL_TUNING.horizontalFactor;
+
+        // Timeline de una sola fase: solo desplazamiento horizontal.
+        // Se elimina la pausa final para liberar el pin en cuanto termina.
+        const tl = gsap.timeline();
+        tl.to(track, { x: () => -getShift(), ease: "none", duration: 1 }, 0);
+        tl.to(progressFill, { scaleX: 1, ease: "none", duration: 1 }, 0);
+
+        const st = ScrollTrigger.create({
+          animation: tl,
+          trigger: section,
+          start: "top top",
+          end: () => `+=${getEndDistance()}`,
+          pin: section,
+          pinSpacing: true,
+          scrub: 0.9,
+          anticipatePin: 1,
+          invalidateOnRefresh: true,
+        });
+
+        return () => {
+          st.kill();
+          tl.kill();
+        };
       });
 
       return () => {
-        st.kill();
-        tl.kill();
+        mm.revert();
       };
     },
     { scope: sectionRef },

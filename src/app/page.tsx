@@ -22,7 +22,7 @@ export default function Home() {
         <Snapshot />
       </section>
 
-      <section className="relative z-[3] h-screen w-full overflow-hidden bg-white dark:bg-black">
+      <section className="relative z-[1] h-screen w-full overflow-hidden bg-white dark:bg-black md:z-[3]">
         <ImgSection />
       </section>
 
@@ -38,7 +38,7 @@ export default function Home() {
         <Includes />
       </section>
 
-      <section className="relative z-[2] -mt-[100vh] w-full overflow-hidden bg-white dark:bg-black">
+      <section className="relative z-[2] mt-0 w-full overflow-hidden bg-white dark:bg-black md:-mt-[100vh]">
         <Testimonials />
       </section>
 

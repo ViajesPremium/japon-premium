@@ -1,5 +1,6 @@
 import Badge from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { BlurredStagger } from "@/components/ui/blurred-stagger-text";
 import { FocusRail, type FocusRailItem } from "@/components/ui/focus-rail";
 import BracketHoverBox from "./bracket-hover-box";
 import styles from "./highlights.module.css";
@@ -7,51 +8,55 @@ import styles from "./highlights.module.css";
 const FOCUS_RAIL_ITEMS: FocusRailItem[] = [
   {
     id: "kyoto-privado",
-    title: "Kyoto Privado",
+    title: "Recorridos diseñados con más criterio",
     description:
-      "Accesos reservados, tiempos cuidados y acompanamiento premium.",
+      "Cada itinerario se estructura para dar más sentido, ritmo y calidad al viaje.",
     meta: "Cultura",
     imageSrc: "/images/gallery-1.webp",
     href: "#contacto",
   },
   {
     id: "tokyo-nocturno",
-    title: "Tokyo Nocturno",
-    description: "Ciudad viva con rutas curated para cada estilo de viaje.",
+    title: "Acompañamiento personalizado",
+    description:
+      "Atención cercana antes, durante y después de su experiencia en Japón.",
     meta: "Urbano",
     imageSrc: "/images/gallery-2.webp",
     href: "#contacto",
   },
   {
-    id: "onsen-premium",
-    title: "Onsen Premium",
-    description:
-      "Rituales de descanso con hospedajes seleccionados por nuestro equipo.",
-    meta: "Bienestar",
-    imageSrc: "/images/gallery-3.webp",
-    href: "#contacto",
-  },
-  {
     id: "sabores-omakase",
-    title: "Sabores Omakase",
-    description: "Experiencias gastronomicas privadas con enfoque autentico.",
+    title: "Respaldo 24/7",
+    description:
+      "Soporte continuo para viajar con tranquilidad de principio a fin.",
     meta: "Gastronomia",
     imageSrc: "/images/gallery-4.webp",
     href: "#contacto",
   },
   {
+    id: "onsen-premium",
+    title: "Estancias a la altura del viaje",
+    description:
+      "Seleccionadas por su carácter, ubicación y nivel de servicio.",
+    meta: "Bienestar",
+    imageSrc: "/images/gallery-3.webp",
+    href: "#contacto",
+  },
+
+  {
     id: "paisajes-iconicos",
-    title: "Paisajes Iconicos",
-    description: "Escenarios emblema de Japon en momentos de baja saturacion.",
+    title: "Expertos que hablan su idioma",
+    description:
+      "Guías en español para vivir Japón con más claridad y profundidad.",
     meta: "Naturaleza",
     imageSrc: "/images/gallery-5.webp",
     href: "#contacto",
   },
   {
     id: "experiencia-ryokan",
-    title: "Experiencia Ryokan",
+    title: "Tranquilidad de principio a fin",
     description:
-      "Hospitalidad tradicional con estandares premium de principio a fin.",
+      "Cada detalle se cuida para que usted viaje con más confianza y respaldo.",
     meta: "Tradicion",
     imageSrc: "/images/gallery-6.webp",
     href: "#contacto",
@@ -63,16 +68,19 @@ export default function Highlights() {
     <section className={styles.highlights}>
       <div className={styles.container}>
         <div className={styles.badgeRow}>
-          <Badge text="Por que Japon Premium?" variant="dark" align="center" />
+          <Badge text="¿Por qué Japón Premium?" variant="dark" align="center" />
         </div>
 
         <header className={styles.kicker}>
-          <p className={styles.kickerTop}>Trabajamos con las mejores marcas</p>
-          <p className={styles.kickerBottom}>De todo el mundo</p>
+          <BlurredStagger
+            text="Trabajamos con marcas"
+            className={styles.kickerTop}
+          />
+          <p className={styles.kickerBottom}>Cuidadosamente seleccionadas.</p>
         </header>
 
         <div className={styles.editorialGrid}>
-          <div className={styles.lineRow}>
+          <div className={`${styles.lineRow} ${styles.lineRowWithBracket}`}>
             <p className={`${styles.megaText} ${styles.lineText}`}>
               TE LLEVAMOS
             </p>
@@ -86,15 +94,17 @@ export default function Highlights() {
             <p className={`${styles.megaText} ${styles.lineText}`}>A</p>
           </div>
 
-          <div className={styles.lineRow}>
-            <p className={`${styles.megaText} ${styles.lineText}`}>
-              VIVIR{" "}
-              <span
-                className={`${styles.japanWord} ${styles.secondaryUnderline}`}
-              >
-                JAPÓN
-              </span>
-            </p>
+          <div className={`${styles.lineRow} ${styles.lineRowWithBracket}`}>
+            <BlurredStagger
+              text="VIVIR JAPÓN"
+              className={`${styles.megaText} ${styles.lineText}`}
+              highlights={[
+                {
+                  word: "JAPÓN",
+                  className: `${styles.japanWord} ${styles.secondaryUnderline}`,
+                },
+              ]}
+            />
             <BracketHoverBox
               className={styles.inlineBracket}
               imageSrc="/images/kioto-japon.webp"
@@ -105,7 +115,7 @@ export default function Highlights() {
             <p className={`${styles.megaText} ${styles.lineText}`}>CON</p>
           </div>
 
-          <div className={styles.lineRow}>
+          <div className={`${styles.lineRow} ${styles.lineRowWithBracket}`}>
             <p className={`${styles.megaText} ${styles.lineText}`}>
               EL RESPALDO
             </p>
@@ -120,11 +130,54 @@ export default function Highlights() {
           </div>
 
           <div className={styles.lineRow}>
-            <p className={`${styles.megaText} ${styles.lineText}`}>
-              ATENCIÓN QUE{" "}
-              <span className={styles.secondaryUnderline}>MERECES</span>
-            </p>
+            <BlurredStagger
+              text="ATENCIÓN QUE MERECES"
+              className={`${styles.megaText} ${styles.lineText}`}
+              highlights={[
+                { word: "MERECES", className: styles.secondaryUnderline },
+              ]}
+            />
           </div>
+        </div>
+
+        <div className={styles.editorialGridMobile}>
+          <BlurredStagger
+            text="TE LLEVAMOS A"
+            className={`${styles.megaText} ${styles.mobileLine}`}
+          />
+          <BlurredStagger
+            text="VIVIR JAPÓN"
+            className={`${styles.megaText} ${styles.mobileLine}`}
+            highlights={[
+              {
+                word: "JAPÓN",
+                className: `${styles.japanWord} ${styles.secondaryUnderline}`,
+              },
+            ]}
+          />
+          <BlurredStagger
+            text="CON"
+            className={`${styles.megaText} ${styles.mobileLine}`}
+          />
+          <BlurredStagger
+            text="EL RESPALDO"
+            className={`${styles.megaText} ${styles.mobileLine}`}
+          />
+          <BlurredStagger
+            text="Y LA"
+            className={`${styles.megaText} ${styles.mobileLine}`}
+          />
+          <BlurredStagger
+            text="ATENCIÓN QUE"
+            className={`${styles.megaText} ${styles.mobileLine}`}
+          />
+          <BlurredStagger
+            text="MERECES"
+            className={`${styles.megaText} ${styles.mobileLine}`}
+            highlights={[
+              { word: "MERECES", className: styles.secondaryUnderline },
+            ]}
+          />
         </div>
       </div>
 
@@ -133,8 +186,8 @@ export default function Highlights() {
       </div>
 
       <div className={styles.ctaRow}>
-        <Button variant="primary">Crear mi viaje</Button>
-        <Button variant="secondary">Faqs</Button>
+        <Button variant="primary">Solicita tu propuesta</Button>
+        <Button variant="secondary">Ver itinerarios</Button>
       </div>
     </section>
   );

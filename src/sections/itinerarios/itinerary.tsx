@@ -13,10 +13,13 @@ import { Button } from "@/components/ui/button";
 const items = [
   {
     id: 1,
-    day: "Espiritual",
-    title: "El camino de Kumano",
+    day: "14 DÍAS · ESPIRITUALIDAD · TRADICIÓN · Bienestar · Cultura",
+    title: "Alma de Japón",
     description:
-      "Aterriza en Narita y sumérgete en el caos luminoso de Shinjuku. Primera noche en un ryokan urbano con vistas a la ciudad.",
+      "Un recorrido por el Japón más espiritual y profundo: templos milenarios, rutas sagradas, ryokans, onsen y experiencias que transforman el viaje.",
+    ideal:
+      "'' Ideal para parejas, familias, lunas de miel y viajeros que buscan desconexión profunda. ''",
+    price: "Desde $1,999 USD",
     image1: "/images/hotel-jp.webp",
     image2: "/images/tren-jp.webp",
   },
@@ -26,6 +29,9 @@ const items = [
     title: "Titanes del pacífico",
     description:
       "Visita Senso-ji al amanecer antes de que lleguen los turistas. Tarde en los jardines imperiales de Shinjuku-gyoen.",
+    ideal:
+      "Ideal para viajeros que buscan contrastes urbanos, arquitectura contemporanea y ritmo cosmopolita.",
+    price: "Desde $2,390 USD",
     image1: "/images/kyoto.webp",
     image2: "/images/turismo-1.webp",
   },
@@ -35,6 +41,9 @@ const items = [
     title: "La montaña sagrada",
     description:
       "Desayuno kaiseki en el hotel. Mercado Tsukiji para almorzar y cena omakase en restaurante con estrella Michelin.",
+    ideal:
+      "Ideal para quienes quieren naturaleza activa, rutas panoramicas y experiencias fuera de lo convencional.",
+    price: "Desde $2,790 USD",
     image1: "/images/buffet-jp.webp",
     image2: "/images/turismo-2.webp",
   },
@@ -63,17 +72,21 @@ export default function Itinerary() {
       const getLenis = () =>
         (window as unknown as Record<string, LenisLike>).__lenis;
 
-      const SCRUB_SMOOTHNESS = 0.12;
-      const SNAP_MIN_DURATION = 0.03;
-      const SNAP_MAX_DURATION = 0.09;
-      const ENTRY_HOLD_VH = 1;
-      const REVEAL_PIN_VH = 1;
+      const isMobileViewport = window.matchMedia("(max-width: 768px)").matches;
+      const SCRUB_SMOOTHNESS = isMobileViewport ? 0.08 : 0.12;
+      const SNAP_MIN_DURATION = isMobileViewport ? 0.02 : 0.03;
+      const SNAP_MAX_DURATION = isMobileViewport ? 0.07 : 0.09;
+      const SNAP_DELAY = isMobileViewport ? 0.12 : 0.25;
+      const ENTRY_HOLD_VH = isMobileViewport ? 0.45 : 1;
+      const REVEAL_PIN_VH = isMobileViewport ? 0.4 : 1;
       const TRANSITION_UNITS = total - 1;
       const TOTAL_UNITS = ENTRY_HOLD_VH + TRANSITION_UNITS + REVEAL_PIN_VH;
       const getTotalPinDistance = () => window.innerHeight * TOTAL_UNITS;
       const getTransitionStartProgress = () => ENTRY_HOLD_VH / TOTAL_UNITS;
       const getTransitionEndProgress = () =>
         (ENTRY_HOLD_VH + TRANSITION_UNITS) / TOTAL_UNITS;
+
+      let lastDirection = 1;
 
       // ── Estado inicial ─────────────────────────────────────────────────
       items.forEach((_, i) => {
@@ -89,6 +102,32 @@ export default function Itinerary() {
         }
       });
 
+      const interiorStops = Array.from(
+        { length: total },
+        (_, i) => (ENTRY_HOLD_VH + i) / TOTAL_UNITS,
+      );
+      const stops = [0, ...interiorStops, 1];
+
+      const closestStop = (value: number) =>
+        stops.reduce((closest, stop) =>
+          Math.abs(stop - value) < Math.abs(closest - value) ? stop : closest,
+        );
+
+      const closestInteriorStopIndex = (value: number) => {
+        let bestIndex = 0;
+        let bestDistance = Number.POSITIVE_INFINITY;
+
+        for (let i = 0; i < interiorStops.length; i++) {
+          const distance = Math.abs(interiorStops[i] - value);
+          if (distance < bestDistance) {
+            bestDistance = distance;
+            bestIndex = i;
+          }
+        }
+
+        return bestIndex;
+      };
+
       // ── Timeline principal ──────────────────────────────────────────────
       const masterTl = gsap.timeline({
         scrollTrigger: {
@@ -99,27 +138,50 @@ export default function Itinerary() {
           pinSpacing: true,
           scrub: SCRUB_SMOOTHNESS,
           snap: {
+            // Mobile: siempre avanza/retrocede por direccion de gesto
+            // sin exigir pasar el 50% del tramo.
             snapTo: (value: number) => {
-              const stops = [
-                0,
-                ...Array.from(
-                  { length: total },
-                  (_, i) => (ENTRY_HOLD_VH + i) / TOTAL_UNITS,
-                ),
-                1,
-              ];
-              return stops.reduce((closest, stop) =>
-                Math.abs(stop - value) < Math.abs(closest - value)
-                  ? stop
-                  : closest,
-              );
+              if (!isMobileViewport) return closestStop(value);
+
+              const firstInterior = interiorStops[0];
+              const lastInterior = interiorStops[interiorStops.length - 1];
+              const edgeThreshold = 0.02;
+              const restThreshold = 0.003;
+
+              // Evita iniciar antes de tiempo o quedarse pegado al final.
+              if (value < firstInterior - edgeThreshold) return 0;
+              if (value > lastInterior + edgeThreshold) return 1;
+
+              const currentIndex = closestInteriorStopIndex(value);
+              const currentStop = interiorStops[currentIndex];
+
+              // Si ya estamos en reposo sobre un stop, no forzar otro salto.
+              if (Math.abs(value - currentStop) < restThreshold) {
+                return currentStop;
+              }
+
+              if (lastDirection > 0) {
+                if (currentIndex >= interiorStops.length - 1) return 1;
+                return interiorStops[currentIndex + 1];
+              }
+
+              if (lastDirection < 0) {
+                if (currentIndex <= 0) return 0;
+                return interiorStops[currentIndex - 1];
+              }
+
+              return currentStop;
             },
             duration: { min: SNAP_MIN_DURATION, max: SNAP_MAX_DURATION },
-            delay: 0.25,
+            delay: SNAP_DELAY,
             ease: "power3.out",
             inertia: false,
           },
           onUpdate: (self) => {
+            if (self.direction !== 0) {
+              lastDirection = self.direction;
+            }
+
             const transitionStart = getTransitionStartProgress();
             const transitionEnd = getTransitionEndProgress();
             const transitionProgress = Math.min(
@@ -182,7 +244,9 @@ export default function Itinerary() {
           const lenis = getLenis();
 
           if (lenis) {
-            lenis.scrollTo(targetScroll, { duration: 0.45 });
+            lenis.scrollTo(targetScroll, {
+              duration: isMobileViewport ? 0.32 : 0.45,
+            });
           } else {
             window.scrollTo({ top: targetScroll, behavior: "smooth" });
           }
@@ -262,9 +326,7 @@ export default function Itinerary() {
                 }`}
               >
                 <div className={styles.header}>
-                  <span className={styles.eyebrow}>
-                    Día {String(item.id).padStart(2, "0")} • {item.day}
-                  </span>
+                  <span className={styles.eyebrow}>{item.day}</span>
                   <GradientText
                     className={styles.titleGradient}
                     colors={["#BF953F", "#FCF6BA", "#B38728", "#FCF6BA"]}
@@ -281,6 +343,7 @@ export default function Itinerary() {
                     className={styles.descriptionBlur}
                     isActive={activeStep === i}
                   />
+                  <p className={styles.idealText}>{item.ideal}</p>
                 </div>
               </div>
             ))}
@@ -288,9 +351,14 @@ export default function Itinerary() {
 
           {/* Footer Fijo de la Card */}
           <div className={styles.cardFooter}>
-            <Button variant="primary" className={styles.ctaButton}>
-              Lo quiero
-            </Button>
+            <div className={styles.buttons}>
+              <Button variant="secondary" className={styles.ctaButton2}>
+                Descargar PDF
+              </Button>
+              <Button variant="primary" className={styles.ctaButton}>
+                Quiero esta experiencia
+              </Button>
+            </div>
 
             <div className={styles.controls}>
               <div className={styles.counterGroup}>
@@ -302,36 +370,10 @@ export default function Itinerary() {
                   {String(items.length).padStart(2, "0")}
                 </span>
               </div>
-
-              <div className={styles.navGroup}>
-                <button
-                  className={styles.navArrow}
-                  onClick={() => navRef.current?.go(-1)}
-                  disabled={activeStep === 0}
-                  aria-label="Anterior"
-                >
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                    <path
-                      d="M19 15l-7-7-7 7"
-                      strokeWidth="1.5"
-                      strokeLinecap="square"
-                    />
-                  </svg>
-                </button>
-                <button
-                  className={styles.navArrow}
-                  onClick={() => navRef.current?.go(1)}
-                  disabled={activeStep === items.length - 1}
-                  aria-label="Siguiente"
-                >
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                    <path
-                      d="M5 9l7 7 7-7"
-                      strokeWidth="1.5"
-                      strokeLinecap="square"
-                    />
-                  </svg>
-                </button>
+              <div className={styles.priceSlot}>
+                <span className={styles.priceVertical}>
+                  {items[activeStep].price}
+                </span>
               </div>
             </div>
           </div>

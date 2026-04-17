@@ -29,7 +29,8 @@ const AccordionTrigger = React.forwardRef<
       className={[styles.trigger, className].filter(Boolean).join(" ")}
       {...props}
     >
-      {children}
+      {/* Envolvemos el texto en un span para controlar su desbordamiento en Flexbox */}
+      <span className={styles.triggerText}>{children}</span>
       <ChevronDownIcon
         width={16}
         height={16}

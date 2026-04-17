@@ -69,11 +69,13 @@ const GEISHA_SCALE = 1;
 const GEISHA_OFFSET_X = "0";
 const GEISHA_OFFSET_Y = "0px";
 const SAMURAI_SCALE = 1.08;
-const GEISHA_MOBILE_SCALE = 2;
+const GEISHA_MOBILE_SCALE = 2.22;
 const GEISHA_MOBILE_OFFSET_X = "0px";
-const GEISHA_MOBILE_OFFSET_Y = "220px";
+const GEISHA_MOBILE_OFFSET_Y = "140px";
 const SAMURAI_OFFSET_X = "0px";
 const SAMURAI_OFFSET_Y = "0px";
+const SAMURAI_MOBILE_OFFSET_X = "0px";
+const SAMURAI_MOBILE_OFFSET_Y = "172px";
 
 // ====================================================================
 
@@ -312,10 +314,13 @@ export default function App() {
     "--samurai-scale": SAMURAI_SCALE,
     "--samurai-offset-x": SAMURAI_OFFSET_X,
     "--samurai-offset-y": SAMURAI_OFFSET_Y,
+    "--samurai-mobile-offset-x": SAMURAI_MOBILE_OFFSET_X,
+    "--samurai-mobile-offset-y": SAMURAI_MOBILE_OFFSET_Y,
   } as CSSProperties;
 
   const useStaticHeroText = isCoarsePointer || prefersReducedMotion;
-  const allowHeroInteraction = !useStaticHeroText;
+  // Mobile keeps static typography, but still runs the ghost WebGL effect.
+  const allowHeroInteraction = !prefersReducedMotion;
 
   const startGhostCycle = useCallback(() => {
     if (!ghostPathRef.current || ghostPathLengthRef.current <= 0) return;
@@ -1128,16 +1133,17 @@ export default function App() {
 
       <div className="content-container">
         <div className="description">
-          <p>Eleva tu vida con una experiencia de viaje con calidad premium.</p>
-
-          <div className="scroll-content">
-            <span className="scroll-text">Scroll</span>
-            <ArrowDown width={16} />
-          </div>
+          <p style={{ fontSize: "0.9rem" }}>
+            Eleva tu vida con una forma más cuidada de vivir Japón.
+          </p>
+          <p style={{ fontSize: "0.9rem" }}>
+            Diseñamos experiencias para quienes valoran atención personal,
+            criterio y una forma más cuidada de vivir Japón.
+          </p>
         </div>
         <div className="cta-row">
-          <Button variant="primary">Comenzar</Button>
-          <Button variant="secondary">Ver destinos</Button>
+          <Button variant="primary">Solicita tu propuesta</Button>
+          <Button variant="secondary">Ver itinerarios</Button>
         </div>
       </div>
     </section>

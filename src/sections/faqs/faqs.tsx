@@ -179,7 +179,11 @@ export default function Faqs() {
               const contentId = `faq-content-${faq.id}`;
 
               return (
-                <div key={faq.id} className={accordionStyles.item} role="listitem">
+                <div
+                  key={faq.id}
+                  className={accordionStyles.item}
+                  role="listitem"
+                >
                   <h3 className={accordionStyles.header}>
                     <button
                       id={triggerId}
@@ -243,4 +247,3 @@ export default function Faqs() {
     </section>
   );
 }
-

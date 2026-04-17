@@ -1,33 +1,49 @@
 /* ── Accordion — CSS puro, sin Tailwind ──────────────────────────────── */
 
 @keyframes accordion-down {
-  from { height: 0; opacity: 0; }
-  to   { height: var(--radix-accordion-content-height); opacity: 1; }
+  from {
+    height: 0;
+    opacity: 0;
+  }
+  to {
+    height: var(--radix-accordion-content-height);
+    opacity: 1;
+  }
 }
 
 @keyframes accordion-up {
-  from { height: var(--radix-accordion-content-height); opacity: 1; }
-  to   { height: 0; opacity: 0; }
+  from {
+    height: var(--radix-accordion-content-height);
+    opacity: 1;
+  }
+  to {
+    height: 0;
+    opacity: 0;
+  }
 }
 
 /* ── Item (fila) ─────────────────────────────────────────────────────── */
 .item {
   border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+  width: 100%;
+  box-sizing: border-box;
 }
 
 /* ── Header + Trigger ────────────────────────────────────────────────── */
 .header {
   display: flex;
+  margin: 0;
+  width: 100%;
 }
 
 .trigger {
   display: flex;
   flex: 1;
+  width: 100%; /* Asegura que no crezca más allá del contenedor padre */
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
   padding: 1.4rem 0;
-  text-align: left;
   background: none;
   border: none;
   cursor: pointer;
@@ -37,17 +53,29 @@
   color: var(--black);
   letter-spacing: 0.01em;
   transition: color 0.2s ease;
+  box-sizing: border-box;
 }
 
 .trigger:hover {
   color: rgba(0, 0, 0, 0.6);
 }
 
+/* ── TEXTO DEL TRIGGER (La magia anti-desbordamiento) ────────────────── */
+.triggerText {
+  flex: 1 1 auto;
+  text-align: left;
+  min-width: 0; /* ESTO ES CLAVE: Permite que el flex child se encoja y fuerce el salto de línea */
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
 /* ── Icono chevron ───────────────────────────────────────────────────── */
 .chevron {
   flex-shrink: 0;
   opacity: 0.5;
-  transition: transform 0.25s ease, opacity 0.25s ease;
+  transition:
+    transform 0.25s ease,
+    opacity 0.25s ease;
 }
 
 /* Rota cuando el item está abierto */
@@ -59,6 +87,7 @@
 /* ── Contenido ───────────────────────────────────────────────────────── */
 .content {
   overflow: hidden;
+  width: 100%;
 }
 
 .content[data-state="open"] {
@@ -77,4 +106,7 @@
   line-height: 1.75;
   color: rgba(0, 0, 0, 0.55);
   letter-spacing: 0.01em;
+  width: 100%;
+  box-sizing: border-box;
+  overflow-wrap: break-word;
 }
