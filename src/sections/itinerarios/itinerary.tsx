@@ -10,6 +10,36 @@ import GradientText from "@/components/ui/GradientText";
 import { BlurredStagger } from "@/components/ui/blurred-stagger-text";
 import { Button } from "@/components/ui/button";
 
+const toRoman = (value: number) => {
+  const numerals: Array<[number, string]> = [
+    [1000, "M"],
+    [900, "CM"],
+    [500, "D"],
+    [400, "CD"],
+    [100, "C"],
+    [90, "XC"],
+    [50, "L"],
+    [40, "XL"],
+    [10, "X"],
+    [9, "IX"],
+    [5, "V"],
+    [4, "IV"],
+    [1, "I"],
+  ];
+
+  let remainder = Math.max(1, Math.floor(value));
+  let output = "";
+
+  for (const [arabic, roman] of numerals) {
+    while (remainder >= arabic) {
+      output += roman;
+      remainder -= arabic;
+    }
+  }
+
+  return output;
+};
+
 const items = [
   {
     id: 1,
@@ -18,20 +48,20 @@ const items = [
     description:
       "Un recorrido por el Japón más espiritual y profundo: templos milenarios, rutas sagradas, ryokans, onsen y experiencias que transforman el viaje.",
     ideal:
-      "'' Ideal para parejas, familias, lunas de miel y viajeros que buscan desconexión profunda. ''",
-    price: "Desde $1,999 USD",
+      "Ideal para parejas, familias, lunas de miel y viajeros que buscan desconexión profunda.",
+    price: "Desde $6,172 USD",
     image1: "/images/hotel-jp.webp",
     image2: "/images/tren-jp.webp",
   },
   {
     id: 2,
-    day: "Modernidad",
-    title: "Titanes del pacífico",
+    day: "14 DÍAS · ANIME · PARQUES TEMÁTICOS · TECNOLOGÍA · CULTURA POP",
+    title: "Japón Pop",
     description:
-      "Visita Senso-ji al amanecer antes de que lleguen los turistas. Tarde en los jardines imperiales de Shinjuku-gyoen.",
+      "Un recorrido por el Japón más vibrante y fantástico: anime, parques temáticos, tecnología, neón, tradición y experiencias que transforman el viaje.",
     ideal:
-      "Ideal para viajeros que buscan contrastes urbanos, arquitectura contemporanea y ritmo cosmopolita.",
-    price: "Desde $2,390 USD",
+      "Ideal para familias, amigos, parejas jóvenes, fans del anime, manga y la tecnología.",
+    price: "Desde $6,478 USD",
     image1: "/images/kyoto.webp",
     image2: "/images/turismo-1.webp",
   },
@@ -343,7 +373,11 @@ export default function Itinerary() {
                     className={styles.descriptionBlur}
                     isActive={activeStep === i}
                   />
-                  <p className={styles.idealText}>{item.ideal}</p>
+                  <BlurredStagger
+                    text={item.ideal}
+                    className={styles.idealText}
+                    isActive={activeStep === i}
+                  />
                 </div>
               </div>
             ))}
@@ -360,19 +394,17 @@ export default function Itinerary() {
               </Button>
             </div>
 
+            <div className={styles.price}>
+              <p>
+                {items[activeStep].price}{" "}
+                <span className={styles.priceBase}>por persona base doble</span>
+              </p>
+            </div>
+
             <div className={styles.controls}>
               <div className={styles.counterGroup}>
                 <span className={styles.current}>
-                  {String(activeStep + 1).padStart(2, "0")}
-                </span>
-                <div className={styles.divider} />
-                <span className={styles.total}>
-                  {String(items.length).padStart(2, "0")}
-                </span>
-              </div>
-              <div className={styles.priceSlot}>
-                <span className={styles.priceVertical}>
-                  {items[activeStep].price}
+                  {toRoman(activeStep + 1)}
                 </span>
               </div>
             </div>
