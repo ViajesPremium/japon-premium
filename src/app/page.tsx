@@ -5,6 +5,7 @@ import Itinerary from "@/sections/itinerarios/itinerary";
 import Highlights from "@/sections/highlights/highlights";
 import Includes from "@/sections/includes/includes";
 import Testimonials from "@/sections/testimonios/testimonials";
+import InterludeSection from "@/sections/interlude/interlude";
 import Faqs from "@/sections/faqs/faqs";
 import CTAForm from "@/sections/form/ctaForm";
 import MarqueeSection from "@/sections/marquee/marquee-section";
@@ -39,6 +40,10 @@ export default function Home() {
 
       <section className="relative z-[2] -mt-[100vh] w-full overflow-hidden bg-white dark:bg-black">
         <Testimonials />
+      </section>
+
+      <section className="relative z-[2] w-full overflow-hidden bg-white dark:bg-black">
+        <InterludeSection />
       </section>
 
       <section className="relative z-[2] w-full overflow-hidden">

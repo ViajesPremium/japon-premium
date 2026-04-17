@@ -1,0 +1,126 @@
+.interlude {
+  position: relative;
+  width: 100%;
+  height: 80vh;
+  min-height: 480px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f2d857;
+  isolation: isolate;
+}
+
+.textLayer {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: clamp(0.25rem, 1.1vh, 0.6rem);
+  opacity: 0.16;
+}
+
+.row {
+  overflow: hidden;
+  margin: 0;
+  white-space: nowrap;
+  line-height: 0.82;
+  letter-spacing: -0.02em;
+}
+
+.track {
+  display: flex;
+  width: max-content;
+  white-space: nowrap;
+  will-change: transform;
+  font-family: var(--font-nohemi), sans-serif;
+  text-transform: uppercase;
+  font-weight: 100;
+  font-size: 10rem;
+  line-height: 1;
+  color: #000;
+}
+
+.chunk {
+  display: inline-block;
+  margin-right: 2.4rem;
+}
+
+.card {
+  position: relative;
+  z-index: 3;
+  width: min(92vw, 560px);
+  background: var(--white);
+  height: 60%;
+  padding: clamp(1rem, 2.2vw, 1.4rem);
+  text-align: left;
+  display: grid;
+  grid-template-columns: clamp(86px, 9.5vw, 120px) 1fr;
+  gap: clamp(0.9rem, 2vw, 1.25rem);
+  align-items: center;
+}
+
+.photoWrap {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  border-radius: calc(var(--radius-sm) - 4px);
+  overflow: hidden;
+}
+
+.photo {
+  object-fit: cover;
+  object-position: center;
+}
+
+.copy {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.role {
+  margin: 0;
+  font-family: var(--font-nohemi), sans-serif;
+  font-size: clamp(0.68rem, 0.95vw, 0.82rem);
+  font-weight: 600;
+  color: var(--secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.title {
+  margin: 0;
+  font-family: var(--font-nohemi), sans-serif;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--black);
+  line-height: 1;
+  letter-spacing: 0.02em;
+  font-size: clamp(1.15rem, 2.2vw, 1.7rem);
+}
+
+.subtitle {
+  margin: 0;
+  font-family: var(--font-nohemi), sans-serif;
+  color: color-mix(in srgb, var(--black) 80%, transparent);
+  line-height: 1.35;
+  font-size: clamp(0.82rem, 1.2vw, 0.95rem);
+}
+
+@media (max-width: 768px) {
+  .interlude {
+    min-height: 420px;
+    height: 56vh;
+  }
+
+  .card {
+    width: min(92vw, 480px);
+    padding: 0.9rem;
+    grid-template-columns: 86px 1fr;
+    gap: 0.8rem;
+  }
+}
