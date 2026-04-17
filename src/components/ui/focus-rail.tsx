@@ -171,10 +171,10 @@ export function FocusRail({
 
             const isCenter = offset === 0;
             const dist = Math.abs(offset);
-            const xOffset = offset * 320;
-            const zOffset = -dist * 180;
+            const xOffset = offset * 300;
+            const zOffset = -dist * 10;
             const scale = isCenter ? 1 : 0.85;
-            const rotateY = offset * -20;
+            const rotateY = offset * -0;
             const opacity = isCenter ? 1 : Math.max(0.1, 1 - dist * 0);
             const blur = isCenter ? 0 : dist * 0.5;
             const brightness = isCenter ? 1 : 1;

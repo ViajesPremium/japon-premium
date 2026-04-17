@@ -43,8 +43,7 @@
   max-width: 850px;
   height: 420px;
   z-index: 10;
-  
-  background: linear-gradient(135deg, var(--black) 0%, rgba(0, 0, 0, 1) 100%);
+  background-color: var(--black);
   border: 1px solid rgba(191, 149, 63, 0.15);
   border-radius: 4px;
   overflow: hidden;
@@ -54,7 +53,11 @@
 .cardOverlay {
   position: absolute;
   inset: 0;
-  background: radial-gradient(circle at 0% 0%, rgba(191, 149, 63, 0.06) 0%, transparent 60%);
+  background: radial-gradient(
+    circle at 0% 0%,
+    rgba(191, 149, 63, 0.06) 0%,
+    transparent 60%
+  );
   pointer-events: none;
 }
 
@@ -69,7 +72,7 @@
 /* ── CONTENEDOR DE TEXTOS ANIMADOS (Fija la lógica de GSAP) ──────────── */
 .infoContainer {
   position: relative;
-  flex-grow: 1; 
+  flex-grow: 1;
   width: 100%;
 }
 
@@ -98,7 +101,7 @@
   text-transform: uppercase;
   letter-spacing: 0.4em;
   font-size: 0.65rem;
-  color: #BF953F;
+  color: #bf953f;
   margin-bottom: 1rem;
   opacity: 0.8;
 }
@@ -149,14 +152,14 @@
 .ctaButton {
   background: transparent !important;
   border: 1px solid rgba(191, 149, 63, 0.4) !important;
-  color: #FCF6BA !important;
+  color: #fcf6ba !important;
   cursor: pointer;
 }
 
 .ctaButton:hover {
-  background: #BF953F !important;
+  background: #bf953f !important;
   color: black !important;
-  border-color: #BF953F !important;
+  border-color: #bf953f !important;
   box-shadow: 0 0 20px rgba(191, 149, 63, 0.3);
 }
 
@@ -176,7 +179,7 @@
 .current {
   font-family: var(--font-bigcaslon), serif;
   font-size: 1.2rem;
-  color: #FCF6BA;
+  color: #fcf6ba;
   line-height: 1;
 }
 
@@ -212,16 +215,18 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: color 0.3s ease, transform 0.3s ease;
+  transition:
+    color 0.3s ease,
+    transform 0.3s ease;
 }
 
-.navArrow svg { 
-  width: 100%; 
-  height: auto; 
+.navArrow svg {
+  width: 100%;
+  height: auto;
 }
 
 .navArrow:hover:not(:disabled) {
-  color: #FCF6BA;
+  color: #fcf6ba;
   transform: scale(1.1);
 }
 

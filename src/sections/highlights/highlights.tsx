@@ -1,6 +1,6 @@
-import { FocusRail, type FocusRailItem } from "@/components/ui/focus-rail";
+import Badge from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import GradientText from "@/components/ui/GradientText";
+import { FocusRail, type FocusRailItem } from "@/components/ui/focus-rail";
 import BracketHoverBox from "./bracket-hover-box";
 import styles from "./highlights.module.css";
 
@@ -62,6 +62,10 @@ export default function Highlights() {
   return (
     <section className={styles.highlights}>
       <div className={styles.container}>
+        <div className={styles.badgeRow}>
+          <Badge text="Por que Japon Premium?" variant="dark" align="center" />
+        </div>
+
         <header className={styles.kicker}>
           <p className={styles.kickerTop}>Trabajamos con las mejores marcas</p>
           <p className={styles.kickerBottom}>De todo el mundo</p>
@@ -85,15 +89,11 @@ export default function Highlights() {
           <div className={styles.lineRow}>
             <p className={`${styles.megaText} ${styles.lineText}`}>
               VIVIR{" "}
-              <GradientText
-                as="span"
-                className={styles.goldWord}
-                colors={["#BF953F", "#FCF6BA", "#B38728", "#FCF6BA"]}
-                animationSpeed={6}
-                direction="horizontal"
+              <span
+                className={`${styles.japanWord} ${styles.secondaryUnderline}`}
               >
                 JAPÓN
-              </GradientText>
+              </span>
             </p>
             <BracketHoverBox
               className={styles.inlineBracket}
@@ -122,15 +122,7 @@ export default function Highlights() {
           <div className={styles.lineRow}>
             <p className={`${styles.megaText} ${styles.lineText}`}>
               ATENCIÓN QUE{" "}
-              <GradientText
-                as="span"
-                className={styles.goldWord}
-                colors={["#BF953F", "#FCF6BA", "#B38728", "#FCF6BA"]}
-                animationSpeed={6}
-                direction="horizontal"
-              >
-                MERECES
-              </GradientText>
+              <span className={styles.secondaryUnderline}>MERECES</span>
             </p>
           </div>
         </div>
@@ -147,4 +139,3 @@ export default function Highlights() {
     </section>
   );
 }
-

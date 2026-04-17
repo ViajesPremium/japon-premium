@@ -5,6 +5,7 @@ import { AnimatePresence, motion } from "motion/react";
 import { ChevronDownIcon } from "@radix-ui/react-icons";
 import styles from "./faqs.module.css";
 import accordionStyles from "@/components/ui/accordion.module.css";
+import Badge from "@/components/ui/badge";
 import GradientText from "@/components/ui/GradientText";
 import { BlurredStagger } from "@/components/ui/blurred-stagger-text";
 
@@ -142,6 +143,8 @@ export default function Faqs() {
       <div className={styles.center}>
         {/* Encabezado */}
         <div className={styles.header}>
+          <Badge text="Preguntas frecuentes" variant="dark" align="center" />
+
           <GradientText
             colors={["#BF953F", "#FCF6BA", "#B38728", "#FCF6BA"]}
             animationSpeed={6}

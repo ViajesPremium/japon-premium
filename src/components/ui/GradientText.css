@@ -32,7 +32,7 @@
 }
 
 .gradient-overlay::before {
-  content: '';
+  content: "";
   position: absolute;
   border-radius: inherit;
   width: calc(100% - 2px);
@@ -69,12 +69,20 @@
 
 /* Desplazamiento horizontal y diagonal */
 @keyframes gradient-slide-horizontal {
-  0% { background-position: 0% 50%; }
-  100% { background-position: 100% 50%; }
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 100% 50%;
+  }
 }
 
 /* Desplazamiento vertical */
 @keyframes gradient-slide-vertical {
-  0% { background-position: 50% 0%; }
-  100% { background-position: 50% 100%; }
+  0% {
+    background-position: 50% 0%;
+  }
+  100% {
+    background-position: 50% 100%;
+  }
 }

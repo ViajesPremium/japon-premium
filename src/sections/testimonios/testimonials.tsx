@@ -17,6 +17,7 @@ import { motion, AnimatePresence } from "motion/react";
 import { BlurredStagger } from "@/components/ui/blurred-stagger-text";
 import type { GoogleRatingData } from "@/lib/google-reviews";
 import { GOOGLE_RATING_FALLBACK } from "@/lib/google-reviews";
+import Badge from "@/components/ui/badge";
 import styles from "./testimonials.module.css";
 import { Button } from "@/components/ui/button";
 
@@ -345,6 +346,10 @@ export default function Testimonials({ googleRating }: TestimonialsProps) {
 
   return (
     <section ref={sectionRef} className={styles.testimonials}>
+      <div className={styles.sectionBadge}>
+        <Badge text="Testimonios" variant="dark" align="center" />
+      </div>
+
       <div className={styles.sakuraLayer} aria-hidden="true">
         {petals.map((petal) => (
           <span
@@ -371,107 +376,113 @@ export default function Testimonials({ googleRating }: TestimonialsProps) {
       </div>
 
       <div className={styles.inner}>
-      <div className={styles.photo}>
-        <div className={styles.photoSquare}>
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={current}
-              style={{ position: "absolute", inset: 0 }}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.5, ease: "easeInOut" }}
-            >
-              <Image
-                src={t.avatar}
-                alt={t.name}
-                fill
-                className={styles.photoImg}
-                sizes="(max-width: 768px) 90px, (max-width: 1024px) 32vw, 25vw"
-              />
-            </motion.div>
-          </AnimatePresence>
-        </div>
-      </div>
-
-      <div className={styles.content}>
-        <div className={styles.testimonialNumber}>
-          <p className={styles.number}>
-            {pad(current + 1)}/{pad(TESTIMONIALS.length)}
-          </p>
+        <div className={styles.photo}>
+          <div className={styles.photoSquare}>
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={current}
+                style={{ position: "absolute", inset: 0 }}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.5, ease: "easeInOut" }}
+              >
+                <Image
+                  src={t.avatar}
+                  alt={t.name}
+                  fill
+                  className={styles.photoImg}
+                  sizes="(max-width: 768px) 90px, (max-width: 1024px) 32vw, 25vw"
+                />
+              </motion.div>
+            </AnimatePresence>
+          </div>
         </div>
 
-        <div className={styles.arrows}>
-          <button className={styles.arrow} onClick={prev} aria-label="Anterior">
-            <ArrowLeft size={18} strokeWidth={1.5} />
-          </button>
-          <button
-            className={styles.arrow}
-            onClick={next}
-            aria-label="Siguiente"
-          >
-            <ArrowRight size={18} strokeWidth={1.5} />
-          </button>
-        </div>
-
-        <div className={styles.container}>
-          <div className={styles.testimonial}>
-            <svg
-              className={styles.quoteMark}
-              viewBox="0 0 27 20"
-              xmlns="http://www.w3.org/2000/svg"
-              aria-hidden="true"
-            >
-              <defs>
-                <linearGradient
-                  id="quoteGold"
-                  x1="0%"
-                  y1="0%"
-                  x2="100%"
-                  y2="0%"
-                >
-                  <stop offset="0%" stopColor="#BF953F" />
-                  <stop offset="40%" stopColor="#FCF6BA" />
-                  <stop offset="70%" stopColor="#B38728" />
-                  <stop offset="100%" stopColor="#FCF6BA" />
-                </linearGradient>
-              </defs>
-              <path
-                fill="url(#quoteGold)"
-                d="M 27 20 H 15.286 V 11.2929 L 20.3288 0 H 24.9514 L 20.8541 10.4485 H 27 V 20 Z M 11.7665 20 H 0 V 11.2929 L 5.09533 0 H 9.7179 L 5.62062 10.4485 H 11.7665 V 20 Z"
-              />
-            </svg>
-
-            <BlurredStagger
-              key={current}
-              text={t.quote}
-              isActive={true}
-              className={styles.text}
-            />
+        <div className={styles.content}>
+          <div className={styles.testimonialNumber}>
+            <p className={styles.number}>
+              {pad(current + 1)}/{pad(TESTIMONIALS.length)}
+            </p>
           </div>
 
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={`author-${current}`}
-              className={styles.author}
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
-              transition={{ duration: 0.35, ease: "easeOut" }}
+          <div className={styles.arrows}>
+            <button
+              className={styles.arrow}
+              onClick={prev}
+              aria-label="Anterior"
             >
-              <p className={styles.name}>{t.name}</p>
-              <p className={styles.location}>{t.location}</p>
-            </motion.div>
-          </AnimatePresence>
-        </div>
+              <ArrowLeft size={18} strokeWidth={1.5} />
+            </button>
+            <button
+              className={styles.arrow}
+              onClick={next}
+              aria-label="Siguiente"
+            >
+              <ArrowRight size={18} strokeWidth={1.5} />
+            </button>
+          </div>
 
-        <div className={styles.bottomRow}>
-          <GoogleBadge data={ratingData} />
-          <Button variant="primary">Planea tu viaje</Button>
+          <div className={styles.container}>
+            <div className={styles.testimonial}>
+              <svg
+                className={styles.quoteMark}
+                viewBox="0 0 27 20"
+                xmlns="http://www.w3.org/2000/svg"
+                aria-hidden="true"
+              >
+                <defs>
+                  <linearGradient
+                    id="quoteGold"
+                    x1="0%"
+                    y1="0%"
+                    x2="100%"
+                    y2="0%"
+                  >
+                    <stop offset="0%" stopColor="#BF953F" />
+                    <stop offset="40%" stopColor="#FCF6BA" />
+                    <stop offset="70%" stopColor="#B38728" />
+                    <stop offset="100%" stopColor="#FCF6BA" />
+                  </linearGradient>
+                </defs>
+                <path
+                  fill="url(#quoteGold)"
+                  d="M 27 20 H 15.286 V 11.2929 L 20.3288 0 H 24.9514 L 20.8541 10.4485 H 27 V 20 Z M 11.7665 20 H 0 V 11.2929 L 5.09533 0 H 9.7179 L 5.62062 10.4485 H 11.7665 V 20 Z"
+                />
+              </svg>
+
+              <BlurredStagger
+                key={current}
+                text={t.quote}
+                isActive={true}
+                className={styles.text}
+              />
+            </div>
+
+            <div className={styles.testimonialFooter}>
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={`author-${current}`}
+                  className={styles.author}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  transition={{ duration: 0.35, ease: "easeOut" }}
+                >
+                  <p className={styles.name}>{t.name}</p>
+                  <p className={styles.location}>{t.location}</p>
+                </motion.div>
+              </AnimatePresence>
+
+              <GoogleBadge data={ratingData} />
+            </div>
+          </div>
+
+          <div className={styles.bottomRow}>
+            <Button variant="primary">Planea tu viaje</Button>
+          </div>
         </div>
-      </div>
       </div>
     </section>
   );
 }
-

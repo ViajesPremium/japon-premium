@@ -1,178 +1,189 @@
 .snapshot {
-    width: 100%;
-    min-height: 100dvh;
-    background-color: var(--bg);
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    padding-top: 2.5rem;
-    padding-bottom: 6rem;
-    position: relative;
-    overflow: hidden;
+  width: 100%;
+  min-height: 100dvh;
+  background-color: var(--bg);
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding-top: 2.5rem;
+  padding-bottom: 6rem;
+  position: relative;
+  overflow: hidden;
 }
 
 .textContainer {
-    display: flex;
-    flex-direction: column;
-    justify-content:center ;
-    gap: 1rem;
-    position: relative;
-    z-index: 10;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1rem;
+  position: relative;
+  z-index: 10;
 }
 
 .postersWrapper {
-    position: absolute;
-    right: 0;
-    top: 0;
-    bottom: 0;
-    width: 50%;
-    z-index: 99;
-    pointer-events: none;
-    mask-image: linear-gradient(to right, transparent, black 40%);
-    opacity: 1;
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 50%;
+  z-index: 99;
+  pointer-events: none;
+  mask-image: linear-gradient(to right, transparent, black 40%);
+  opacity: 1;
 }
 
 .snapshotContent {
-    width: 100%;
-    max-width: var(--site-max);
-    padding-inline: var(--site-px);
-    margin-inline: auto;
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
-    position: relative;
-    z-index: 10;
+  width: 100%;
+  max-width: var(--site-max);
+  padding-inline: var(--site-px);
+  margin-inline: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  position: relative;
+  z-index: 10;
 }
 
 .trustStrip {
-    display: flex;
-    flex-wrap: wrap;
-   font-family: var(--font-nohemi); 
-    font-size: clamp(2.8rem, 5.5vw, 6rem);
-    line-height: 1;
-    font-weight: 300;
-    color: var(--black);
+  display: flex;
+  flex-wrap: wrap;
+  font-family: var(--font-nohemi);
+  font-size: clamp(2.8rem, 5.5vw, 6rem);
+  line-height: 1;
+  font-weight: 300;
+  color: var(--black);
 }
 
 .highlighted {
-    font-weight: 900;
-    font-style: italic;
+  font-weight: 900;
+  font-style: italic;
 }
 
 /* Bento Grid */
 .bentoGrid {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 2rem;
-    width: 100%;
-    margin-top: 2rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 2rem;
+  width: 100%;
+  margin-top: 2rem;
 }
 
 /* =========================================
    LAS CARDS MEJORADAS
    ========================================= */
 .bentoCard {
-    position: relative;
-    border-radius: var(--radius-sm);
-    overflow: hidden;
-    background-size: cover;
-    background-position: center;
-    height: 360px;
-    cursor: pointer;
-    transform: translateZ(0) translateY(0) scale(1);
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0);    
-    transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+  position: relative;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  background-size: cover;
+  background-position: center;
+  height: 360px;
+  cursor: pointer;
+  transform: translateZ(0) translateY(0) scale(1);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0);
+  transition:
+    transform 0.4s cubic-bezier(0.25, 1, 0.5, 1),
+    box-shadow 0.4s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
 /* El Hover Premium */
 .bentoCard:hover {
-    transform: translateZ(0) translateY(-10px) scale(1.04);
+  transform: translateZ(0) translateY(-10px) scale(1.04);
 }
 
 /* =========================================
    OVERLAY Y GRADIENTES (Truco de Opacidad)
    ========================================= */
 .bentoCardOverlay {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(to top, rgba(0,0,0,0.65) 0%, rgba(0,0,0,0.05) 50%, transparent 100%);
-    z-index: 1;
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.65) 0%,
+    rgba(0, 0, 0, 0.05) 50%,
+    transparent 100%
+  );
+  z-index: 1;
 }
 
 /* Capa extra oscura que solo aparece en el hover */
 .bentoCardOverlay::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.3) 60%, transparent 100%);
-    opacity: 0;
-    transition: opacity 0.4s ease;
-    z-index: 2;
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.9) 0%,
+    rgba(0, 0, 0, 0.3) 60%,
+    transparent 100%
+  );
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  z-index: 2;
 }
 
 .bentoCard:hover .bentoCardOverlay::after {
-    opacity: 1;
+  opacity: 1;
 }
 
 /* =========================================
    CONTENIDO INTERNO (Efecto Parallax)
    ========================================= */
 .bentoCardContent {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    padding: 1.5rem 1.8rem;
-    display: flex;
-    align-items: flex-end;
-    justify-content: space-between;
-    gap: 1rem;
-    z-index: 3; /* Asegura que el texto esté por encima de los gradientes */
-    transform: translateY(0);
-    transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 1.5rem 1.8rem;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem;
+  z-index: 3; /* Asegura que el texto esté por encima de los gradientes */
+  transform: translateY(0);
+  transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
 .bentoCard:hover .bentoCardContent {
-    /* El contenido flota hacia arriba de forma independiente a la carta */
-    transform: translateY(-6px);
+  /* El contenido flota hacia arriba de forma independiente a la carta */
+  transform: translateY(-6px);
 }
 
 .bentoCardText {
-    font-family: var(--font-nohemi);
-    font-size: clamp(1.2rem, 2vw, 1.6rem);
-    font-weight: 600;
-    color: #fff;
-    line-height: 1.2;
-    margin: 0;
+  font-family: var(--font-nohemi);
+  font-size: clamp(1.2rem, 2vw, 1.6rem);
+  font-weight: 600;
+  color: #fff;
+  line-height: 1.2;
+  margin: 0;
 }
 
 @media (max-width: 640px) {
-    .bentoGrid {
-        grid-template-columns: 1fr;
-    }
+  .bentoGrid {
+    grid-template-columns: 1fr;
+  }
 
-    .bentoCardWide {
-        grid-column: 1;
-    }
+  .bentoCardWide {
+    grid-column: 1;
+  }
 
-    .bentoCard,
-    .bentoCardWide {
-        height: 260px;
-    }
+  .bentoCard,
+  .bentoCardWide {
+    height: 260px;
+  }
 }
 
 .italic {
-    color: var(--black);
-    font-family: var(--font-nohemi);
-    font-weight: 600;
-    font-style: italic;
-    
+  color: var(--black);
+  font-family: var(--font-nohemi);
+  font-weight: 600;
+  font-style: italic;
 }
 
 .description {
-    font-family: var(--font-nohemi);
-    font-size: clamp(2rem, 2vw, 2rem);
-    font-weight: 400;
-    max-width: 700px;
-    color: var(--black);
+  font-family: var(--font-nohemi);
+  font-size: clamp(2rem, 2vw, 2rem);
+  font-weight: 400;
+  max-width: 700px;
+  color: var(--black);
 }

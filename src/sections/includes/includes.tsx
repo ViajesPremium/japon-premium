@@ -5,6 +5,7 @@ import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Image from "next/image";
+import Badge from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import styles from "./includes.module.css";
 import { BlurredStagger } from "@/components/ui/blurred-stagger-text";
@@ -125,6 +126,8 @@ export default function Includes() {
   return (
     <section ref={sectionRef} className={styles.includes}>
       <div ref={pinRef} className={styles.pinLayer}>
+        <Badge text="Incluimos" align="center" />
+
         <header className={styles.header}>
           <div className={styles.headerLeft}>
             <BlurredStagger

@@ -2,10 +2,21 @@
   display: block;
   width: 100%;
   height: 100vh;
+  padding: clamp(1.75rem, 4vw, 4rem);
+  box-sizing: border-box;
   background-color: var(--bg, #fff);
   position: relative;
   overflow: hidden;
   isolation: isolate;
+}
+
+.sectionBadge {
+  position: absolute;
+  top: 1rem;
+  left: 0;
+  right: 0;
+  z-index: 20;
+  pointer-events: none;
 }
 
 .inner {
@@ -44,7 +55,8 @@
   transform-origin: 50% 50%;
   filter: blur(var(--petal-blur))
     drop-shadow(0 1px 2px rgba(220, 138, 171, 0.32));
-  animation: sakura-sway var(--petal-sway-duration) ease-in-out infinite alternate;
+  animation: sakura-sway var(--petal-sway-duration) ease-in-out infinite
+    alternate;
 }
 
 .petal::before {
@@ -52,12 +64,36 @@
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(circle at 50% 12%, rgba(255, 248, 252, 0.651) 0 20%, transparent 21%),
-    radial-gradient(circle at 84% 36%, rgba(255, 234, 244, 0.97) 0 20%, transparent 21%),
-    radial-gradient(circle at 71% 82%, rgba(255, 225, 238, 0.96) 0 20%, transparent 21%),
-    radial-gradient(circle at 29% 82%, rgba(255, 225, 238, 0.96) 0 20%, transparent 21%),
-    radial-gradient(circle at 16% 36%, rgba(255, 234, 244, 0.537) 0 20%, transparent 21%),
-    radial-gradient(circle at 50% 50%, rgba(249, 186, 209, 0.598) 0 14%, transparent 15%);
+    radial-gradient(
+      circle at 50% 12%,
+      rgba(255, 248, 252, 0.651) 0 20%,
+      transparent 21%
+    ),
+    radial-gradient(
+      circle at 84% 36%,
+      rgba(255, 234, 244, 0.97) 0 20%,
+      transparent 21%
+    ),
+    radial-gradient(
+      circle at 71% 82%,
+      rgba(255, 225, 238, 0.96) 0 20%,
+      transparent 21%
+    ),
+    radial-gradient(
+      circle at 29% 82%,
+      rgba(255, 225, 238, 0.96) 0 20%,
+      transparent 21%
+    ),
+    radial-gradient(
+      circle at 16% 36%,
+      rgba(255, 234, 244, 0.537) 0 20%,
+      transparent 21%
+    ),
+    radial-gradient(
+      circle at 50% 50%,
+      rgba(249, 186, 209, 0.598) 0 14%,
+      transparent 15%
+    );
 }
 
 .petal::after {
@@ -69,7 +105,11 @@
   height: 18%;
   transform: translate(-50%, -50%);
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(255, 238, 170, 0.95) 0%, rgba(234, 168, 114, 0.9) 75%);
+  background: radial-gradient(
+    circle,
+    rgba(255, 238, 170, 0.95) 0%,
+    rgba(234, 168, 114, 0.9) 75%
+  );
   box-shadow: 0 0 3px rgba(255, 201, 120, 0.091);
 }
 
@@ -105,8 +145,15 @@
   }
 
   100% {
-    transform: translate3d(var(--petal-drift), 0, 0) rotate(var(--petal-rotation));
+    transform: translate3d(var(--petal-drift), 0, 0)
+      rotate(var(--petal-rotation));
   }
+}
+
+.testimonialFooter {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
 }
 
 .photo {
@@ -120,7 +167,7 @@
   align-items: center;
   justify-content: start;
   gap: 1.5rem;
-  padding: 2rem 1.5rem 2rem var(--site-px);
+  padding-top: 7rem;
   overflow: hidden;
 }
 
@@ -192,7 +239,9 @@
   justify-content: center;
   cursor: pointer;
   color: var(--black);
-  transition: background 0.2s ease, color 0.2s ease;
+  transition:
+    background 0.2s ease,
+    color 0.2s ease;
 }
 
 .arrow:hover {
@@ -273,7 +322,8 @@
 .bottomRow {
   position: absolute;
   bottom: 1.75rem;
-  left: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
   display: flex;
   align-items: center;
   gap: 1.25rem;
@@ -341,7 +391,6 @@
   color: rgba(0, 0, 0, 0.6);
 }
 
-
 @media (max-width: 1024px) {
   .photo {
     width: 32%;
@@ -366,6 +415,10 @@
     flex-direction: column;
     height: auto;
     min-height: 100vh;
+  }
+
+  .sectionBadge {
+    top: 0.75rem;
   }
 
   .photo {
@@ -441,11 +494,13 @@
   }
 
   .bottomRow {
-    left: 1.5rem;
-    right: 1.5rem;
+    left: 50%;
+    right: auto;
+    transform: translateX(-50%);
     bottom: 1.25rem;
     flex-wrap: wrap;
     gap: 0.75rem;
+    justify-content: center;
   }
 
   .googleBadge {
@@ -455,5 +510,4 @@
   .googleLabel {
     display: none;
   }
-
 }

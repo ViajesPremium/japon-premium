@@ -7,6 +7,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import styles from "./trust-strip.module.css";
 import { BlurredStagger } from "@/components/ui/blurred-stagger-text";
 import BentoGrid from "./BentoGrid";
+import Badge from "@/components/ui/badge";
 
 export default function Snapshot() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -37,6 +38,7 @@ export default function Snapshot() {
     <section ref={sectionRef} className={styles.snapshot}>
       <div className={styles.postersWrapper}></div>
       <div className={styles.snapshotContent}>
+        <Badge text="Nueva seccion" variant="dark" align="center" />
         <BlurredStagger
           text="Más de 21 años creando experiencias premium."
           className={styles.trustStrip}

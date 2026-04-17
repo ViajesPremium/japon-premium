@@ -5,6 +5,7 @@ import Image from "next/image";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import Badge from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import styles from "./ctaForm.module.css";
 
@@ -181,6 +182,7 @@ export default function CTAForm() {
         <div ref={formRef} className={styles.formLayer}>
           <div className={styles.formShell}>
             <div className={styles.formHeader}>
+              <Badge text="Disena tu viaje" variant="dark" align="center" />
               <h2 className={styles.title}>Bienvenido al salon privado</h2>
               <p className={styles.subtitle}>
                 Cuentanos como imaginas tu viaje a Japon y te enviamos una

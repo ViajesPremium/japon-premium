@@ -2,7 +2,7 @@
   width: 100%;
   background: var(--bg);
   padding-bottom: clamp(3rem, 6vw, 5rem);
-  padding-bottom: 15rem;
+  padding-bottom: 10rem;
 }
 
 /* ── Contenido centrado ──────────────────────────────────────────────── */
@@ -11,6 +11,7 @@
   max-width: var(--site-max);
   margin-inline: auto;
   padding: clamp(2rem, 3.2vw, 3.2rem) var(--site-px) clamp(1.5rem, 3vw, 2.5rem);
+  padding-top: 1.5rem;
   display: flex;
   flex-direction: column;
 }
@@ -84,6 +85,17 @@
   position: relative;
 }
 
+.japanWord {
+  color: var(--black);
+}
+
+.secondaryUnderline {
+  text-decoration-line: underline;
+  text-decoration-color: var(--secondary);
+  text-decoration-thickness: 0.08em;
+  text-underline-offset: 0.11em;
+}
+
 .goldWord {
   display: inline-flex !important;
   align-items: baseline;
@@ -121,15 +133,24 @@
 .bracketBox::after {
   content: "";
   position: absolute;
-  width: 11px; height: 30px;
+  width: 11px;
+  height: 30px;
   border-style: solid;
   border-color: rgba(7, 20, 45, 0.58);
   z-index: 5;
   pointer-events: none;
   transition: border-color 0.25s ease;
 }
-.bracketBox::before { top: -9px; left: -9px; border-width: 1px 0 0 1px; }
-.bracketBox::after  { right: -9px; bottom: -9px; border-width: 0 1px 1px 0; }
+.bracketBox::before {
+  top: -9px;
+  left: -9px;
+  border-width: 1px 0 0 1px;
+}
+.bracketBox::after {
+  right: -9px;
+  bottom: -9px;
+  border-width: 0 1px 1px 0;
+}
 
 .hoverBracket {
   cursor: pointer;
@@ -205,12 +226,13 @@
 
 .flipInner {
   display: inline-block;
-  
+
   transform-style: preserve-3d;
   animation: bracketFlip 5.6s ease-in-out infinite;
 }
 
-.epochal, .ot {
+.epochal,
+.ot {
   margin: 0;
   color: var(--secondary);
   font-family: var(--font-bigcaslon), sans-serif;
@@ -220,7 +242,7 @@
   font-size: clamp(1.7rem, 2.5vw, 2.45rem);
   font-weight: 500;
   letter-spacing: -0.03em;
-    color: var(--white);
+  color: var(--white);
   background-color: var(--secondary);
   padding: 10px 5px 2px 5px;
 }
@@ -322,7 +344,7 @@
 .marqueeOverlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(to top, rgba(0,0,0,0.55) 0%, transparent 55%);
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.55) 0%, transparent 55%);
   pointer-events: none;
 }
 
@@ -348,7 +370,7 @@
   font-family: var(--font-nohemi), sans-serif;
   font-size: clamp(0.65rem, 0.7vw, 0.74rem);
   font-weight: 300;
-  color: rgba(255,255,255,0.72);
+  color: rgba(255, 255, 255, 0.72);
 }
 
 /* ── Responsive ──────────────────────────────────────────────────────── */
@@ -367,21 +389,31 @@
   .lineRow {
     gap: clamp(0.5rem, 1.6vw, 0.95rem);
   }
-  .megaText { font-size: clamp(3rem, 11vw, 6rem); }
+  .megaText {
+    font-size: clamp(3rem, 11vw, 6rem);
+  }
 }
 
 @media (max-width: 768px) {
   .container {
     padding: 1.5rem var(--site-px) 1.5rem;
   }
-  .badgeRow { margin-bottom: 0.7rem; }
+  .badgeRow {
+    margin-bottom: 0.7rem;
+  }
   .megaText {
     font-size: clamp(2.4rem, 13.8vw, 4.6rem);
     line-height: 0.88;
   }
-  .kickerBottom { font-size: clamp(1rem, 5vw, 1.35rem); }
-  .footerCopy   { font-size: clamp(1.12rem, 6vw, 1.55rem); }
-  .ctaRow { margin-top: 0.9rem; }
+  .kickerBottom {
+    font-size: clamp(1rem, 5vw, 1.35rem);
+  }
+  .footerCopy {
+    font-size: clamp(1.12rem, 6vw, 1.55rem);
+  }
+  .ctaRow {
+    margin-top: 0.9rem;
+  }
   .bracketBox {
     width: clamp(120px, 42vw, 168px);
     height: clamp(54px, 16vw, 74px);
@@ -391,12 +423,18 @@
     justify-content: center;
     row-gap: 0.45rem;
   }
-  .marqueeWrapper { margin-top: 1.5rem; }
-  .marqueeCard { width: clamp(150px, 42vw, 200px); }
+  .marqueeWrapper {
+    margin-top: 1.5rem;
+  }
+  .marqueeCard {
+    width: clamp(150px, 42vw, 200px);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .marqueeTrack { animation: none; }
+  .marqueeTrack {
+    animation: none;
+  }
   .hoverBracket:hover .flipInner {
     animation-play-state: running;
   }

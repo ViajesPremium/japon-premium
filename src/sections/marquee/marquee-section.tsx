@@ -1,4 +1,5 @@
 import LogoLoop, { type LogoItem } from "@/components/marquee";
+import Badge from "@/components/ui/badge";
 import styles from "./marquee-section.module.css";
 import Image from "next/image";
 
@@ -35,6 +36,10 @@ export default function MarqueeSection() {
   return (
     <section className={styles.section} aria-label="Marquee de logos">
       <div className={styles.container}>
+        <div className={styles.header}>
+          <Badge text="Nuestras alianzas" variant="dark" align="center" />
+        </div>
+
         <div className={styles.logoIntro}>
           <Image
             src={JAPAN_ENDLESS_DISCOVERY_SRC}
