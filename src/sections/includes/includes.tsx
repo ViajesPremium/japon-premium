@@ -21,42 +21,42 @@ type IncludeItem = {
 const INCLUDE_ITEMS: IncludeItem[] = [
   {
     id: "stays",
-    label: "01",
-    title: "Hoteles boutique",
+    label: "I",
+    title: "Estancias con carácter",
     description:
-      "Selecciones premium en zonas estrategicas con check-in guiado y soporte durante toda la estancia.",
+      "Espacios cuidadosamente seleccionados por ubicación, servicio y la experiencia que aportan al viaje.",
     image: "/images/hotel-jp.webp",
   },
   {
     id: "transport",
-    label: "02",
-    title: "Traslados coordinados",
+    label: "II",
+    title: "Traslados mejor coordinados",
     description:
-      "Shinkansen, traslados privados y tiempos optimizados para que el ritmo del viaje sea fluido.",
+      "Shinkansen, traslados privados y tiempos pensados para que el viaje fluya con más orden y comodidad.",
     image: "/images/tren-jp.webp",
   },
   {
     id: "culture",
-    label: "03",
-    title: "Experiencias culturales",
+    label: "III",
+    title: "Experiencias culturales curadas",
     description:
-      "Templos, barrios tradicionales y actividades curadas para conectar con el Japon autentico.",
+      "Templos, barrios históricos y actividades elegidas para conectar con el Japón más auténtico.",
     image: "/images/kyoto.webp",
   },
   {
     id: "gastronomy",
-    label: "04",
-    title: "Ruta gastronomica",
+    label: "IV",
+    title: "Escenas gastronómicas seleccionadas",
     description:
-      "Reservas en spots locales, recomendaciones por ciudad y experiencias culinarias de autor.",
+      "Reservas y momentos en la mesa pensados para descubrir Japón con más detalle y autenticidad.",
     image: "/images/buffet-jp.webp",
   },
   {
     id: "support",
-    label: "05",
-    title: "Acompanamiento total",
+    label: "V",
+    title: "Acompañamiento en cada etapa",
     description:
-      "Atencion en espanol antes y durante el viaje para resolver ajustes en tiempo real.",
+      "Atención en español antes y durante el viaje para acompañarle con claridad y resolver cada detalle con oportunidad.",
     image: "/images/turismo-2.webp",
   },
 ];
@@ -140,13 +140,31 @@ export default function Includes() {
   return (
     <section ref={sectionRef} className={styles.includes}>
       <div ref={pinRef} className={styles.pinLayer}>
-        <Badge text="Incluimos" align="center" />
+        <Badge text="LO ESCENCIAL" align="center" />
 
         <header className={styles.header}>
           <div className={styles.headerLeft}>
             <BlurredStagger
-              text="Lo que incluye tu experiencia Premium"
+              text="Lo que da forma a tu experiencia premium"
               className={styles.title}
+              highlights={[
+                {
+                  word: "premium",
+                  useGradient: true,
+                  gradientColors: ["#BF953F", "#FCF6BA", "#B38728"],
+                },
+                {
+                  word: "forma",
+                  useGradient: true,
+                  gradientColors: ["#BF953F", "#FCF6BA", "#B38728"],
+                },
+
+                {
+                  word: "da",
+                  useGradient: true,
+                  gradientColors: ["#BF953F", "#FCF6BA", "#B38728"],
+                },
+              ]}
             />
           </div>
 
@@ -155,7 +173,7 @@ export default function Includes() {
             className={styles.headerButton}
             type="button"
           >
-            Empezar
+            Solicitar mi propuesta
           </Button>
         </header>
 
@@ -176,7 +194,7 @@ export default function Includes() {
                 <div className={styles.cardBody}>
                   <div className={styles.cardMeta}>
                     <span className={styles.cardIndex}>{item.label}</span>
-                    <span className={styles.cardChip}>Incluido</span>
+                    <span className={styles.cardChip}>Integramos</span>
                   </div>
                   <h3 className={styles.cardTitle}>{item.title}</h3>
                   <p className={styles.cardDescription}>{item.description}</p>
@@ -195,4 +213,3 @@ export default function Includes() {
     </section>
   );
 }
-

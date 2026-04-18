@@ -406,6 +406,8 @@ export default function Itinerary() {
                 <span className={styles.current}>
                   {toRoman(activeStep + 1)}
                 </span>
+                <div className={styles.divider} />
+                <span className={styles.total}>{toRoman(items.length)}</span>
               </div>
             </div>
           </div>
