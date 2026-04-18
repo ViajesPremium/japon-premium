@@ -173,7 +173,7 @@ export default function Includes() {
             className={styles.headerButton}
             type="button"
           >
-            Solicitar mi propuesta
+            Solicita tu propuesta
           </Button>
         </header>
 

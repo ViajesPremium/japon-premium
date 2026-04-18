@@ -2,15 +2,16 @@
   position: relative;
   width: 100%;
   height: 80vh;
-  min-height: 480px;
+  max-height: 700px;
   overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #f2d857;
+  background-color: var(--secondary);
   isolation: isolate;
 }
 
+/* ── Capa de texto de fondo ── */
 .textLayer {
   position: absolute;
   inset: 0;
@@ -20,7 +21,7 @@
   flex-direction: column;
   justify-content: center;
   gap: clamp(0.25rem, 1.1vh, 0.6rem);
-  opacity: 0.16;
+  opacity: 0.36;
 }
 
 .row {
@@ -39,8 +40,8 @@
   font-family: var(--font-nohemi), sans-serif;
   text-transform: uppercase;
   font-weight: 100;
-  font-size: 10rem;
-  line-height: 1;
+  font-size: 11rem;
+  line-height: 0.95;
   color: #000;
 }
 
@@ -49,78 +50,123 @@
   margin-right: 2.4rem;
 }
 
+/* ══════════════════════════════════════════════
+   CARD — imagen full + texto superpuesto
+   ══════════════════════════════════════════════ */
 .card {
   position: relative;
   z-index: 3;
-  width: min(92vw, 560px);
+  width: min(92vw, 400px);
+  height: min(78%, 520px);
+  border-radius: var(--radius-sm);
   background: var(--white);
-  height: 60%;
-  padding: clamp(1rem, 2.2vw, 1.4rem);
-  text-align: left;
-  display: grid;
-  grid-template-columns: clamp(86px, 9.5vw, 120px) 1fr;
-  gap: clamp(0.9rem, 2vw, 1.25rem);
-  align-items: center;
+  padding: 10px;
+  overflow: hidden;
 }
 
-.photoWrap {
-  position: relative;
-  width: 100%;
-  aspect-ratio: 1 / 1;
-  border-radius: calc(var(--radius-sm) - 4px);
+/* Imagen: rellena el área interior (dentro del padding) */
+.imageWrap {
+  position: absolute;
+  inset: 5px;
+  border-radius: var(--radius-sm);
   overflow: hidden;
 }
 
 .photo {
   object-fit: cover;
-  object-position: center;
+  object-position: center 75%;
 }
 
+/* Gradiente para que el texto sea legible */
+.imageOverlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.772) 0%,
+    rgba(0, 0, 0, 0.749) 35%,
+    transparent 100%
+  );
+}
+
+/* Texto superpuesto en la parte inferior */
 .copy {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 2;
+  padding: 0 1.6rem 1.6rem;
   display: flex;
   flex-direction: column;
-  gap: 0.35rem;
+  gap: 0.3rem;
 }
 
 .role {
   margin: 0;
   font-family: var(--font-nohemi), sans-serif;
-  font-size: clamp(0.68rem, 0.95vw, 0.82rem);
-  font-weight: 600;
-  color: var(--secondary);
+  font-size: clamp(0.65rem, 0.9vw, 0.78rem);
+  color: var(--primary);
   text-transform: uppercase;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.12em;
+  font-weight: 400;
+  font-style: italic;
 }
 
 .title {
   margin: 0;
-  font-family: var(--font-nohemi), sans-serif;
-  font-weight: 700;
+  font-family: var(--font-bigcaslon), sans-serif;
+  font-weight: 500;
   text-transform: uppercase;
-  color: var(--black);
+  color: var(--white);
   line-height: 1;
   letter-spacing: 0.02em;
-  font-size: clamp(1.15rem, 2.2vw, 1.7rem);
+  font-size: clamp(1.4rem, 2vw, 2rem);
 }
 
 .subtitle {
   margin: 0;
   font-family: var(--font-nohemi), sans-serif;
-  color: color-mix(in srgb, var(--black) 80%, transparent);
-  line-height: 1.35;
-  font-size: clamp(0.82rem, 1.2vw, 0.95rem);
+  color: var(--white);
+  font-weight: 300;
+  line-height: 1.4;
+  font-size: clamp(0.7rem, 1.1vw, 0.9rem);
 }
 
+/* ══════════════════════════════════════════════
+   RESPONSIVE
+   ══════════════════════════════════════════════ */
 @media (max-width: 768px) {
   .interlude {
     min-height: 420px;
-    height: 56vh;
+    height: 60vh;
+  }
+
+  .track {
+    font-size: 9rem;
   }
 
   .card {
-    width: min(92vw, 480px);
-    padding: 0.9rem;
-    grid-template-columns: 86px 1fr;
-    gap: 0.8rem;
+    width: min(88vw, 340px);
+    height: min(76%, 440px);
+    padding: 8px;
+  }
+
+  .imageWrap {
+    inset: 8px;
+  }
+
+  .copy {
+    padding: 0 1.2rem 1.2rem;
+  }
+}
+
+@media (max-width: 430px) {
+  .track {
+    font-size: 5rem;
+  }
+
+  .card {
+    width: 88vw;
   }
 }

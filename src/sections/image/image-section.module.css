@@ -1,4 +1,4 @@
-.section {
+﻿.section {
   position: relative;
   width: 100%;
   height: 100vh;
@@ -14,6 +14,7 @@
   max-width: var(--site-max);
   margin-inline: auto;
   height: 100%;
+  min-height: inherit;
   display: grid;
   grid-template-columns: 1fr 1fr;
   pointer-events: none;
@@ -91,7 +92,13 @@
 }
 
 .titleJaponGold {
-  background-image: linear-gradient(to right, #bf953f, #fcf6ba, #b38728, #fcf6ba);
+  background-image: linear-gradient(
+    to right,
+    #bf953f,
+    #fcf6ba,
+    #b38728,
+    #fcf6ba
+  );
   background-size: 300% 100%;
   -webkit-background-clip: text;
   background-clip: text;
@@ -132,13 +139,21 @@
 
 @media (max-width: 768px) {
   .section {
+    height: auto;
+    min-height: 100svh;
+  }
+
+  .inner {
     grid-template-columns: 1fr;
+    place-items: center;
+    height: 100%;
   }
 
   .left {
-    justify-content: flex-end;
+    justify-content: center;
+    align-items: center;
     gap: 1.1rem;
-    padding: 1rem 1rem 2rem;
+    padding: 1.4rem var(--site-px) 1.6rem;
   }
 
   .titles {
@@ -160,14 +175,200 @@
   }
 
   .right {
-    justify-content: flex-end;
-    padding: 2rem 1.5rem 3rem;
-    gap: 1.5rem;
+    display: none;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .titleJaponGold {
     animation: none;
+  }
+}
+
+/* Form style */
+.formContainer {
+  pointer-events: auto;
+  position: relative;
+  width: 100%;
+  max-width: 540px;
+  margin-top: 1rem;
+  padding: 3rem 2.5rem 2.4rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  border-radius: var(--radius-sm);
+  box-shadow: 0 26px 64px -36px rgba(0, 0, 0, 0.8);
+  background: var(--black);
+}
+
+.formContainer::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 4px;
+  background: linear-gradient(180deg, #bf953f, #fcf6ba, #b38728);
+  border-top-left-radius: inherit;
+  border-bottom-left-radius: inherit;
+}
+
+.formHead {
+  display: flex;
+  flex-direction: column;
+  gap: 0.52rem;
+  margin-bottom: 0.6rem;
+}
+
+.formEyebrow {
+  margin: 0;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: rgba(252, 246, 186, 0.82);
+}
+
+.formTitle {
+  margin: 0;
+  font-family: var(--font-bigcaslon), serif;
+  font-size: clamp(1.68rem, 2.4vw, 2.35rem);
+  line-height: 1.04;
+  color: #f4eee4;
+}
+
+.formSub {
+  margin: 0;
+  font-size: 0.92rem;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.7);
+  max-width: 34ch;
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+}
+
+.formLabel {
+  color: rgba(252, 246, 186, 0.95);
+  font-size: 0.76rem;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  font-family: var(--font-nohemi), sans-serif;
+  opacity: 0.95;
+}
+
+.formInput {
+  background: rgba(255, 255, 255, 0.06);
+  color: #fff;
+  padding: 0.8rem 0.9rem;
+  font-size: 1.06rem;
+  outline: none;
+  border-radius: var(--radius-sm);
+  transition:
+    border-color 0.3s ease,
+    background-color 0.3s ease,
+    box-shadow 0.3s ease;
+  font-family: inherit;
+}
+
+.formInput::placeholder {
+  color: rgba(255, 255, 255, 0.42);
+  font-weight: 300;
+}
+
+.formInput:focus {
+  border-color: #bf953f;
+  box-shadow: 0 0 0 2px rgba(191, 149, 63, 0.2);
+  background: rgba(0, 0, 0, 0.26);
+}
+
+.formButton {
+  margin-top: 0.85rem;
+  width: 100% !important;
+  max-width: none !important;
+  height: auto !important;
+  min-height: 3.1rem;
+  background: linear-gradient(90deg, #bf953f, #fcf6ba, #b38728);
+  color: #111;
+  border: none;
+  border-radius: 8px;
+  padding: 0.92rem 1.6rem !important;
+  font-size: 0.92rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  cursor: pointer;
+  transition:
+    filter 0.3s ease,
+    transform 0.3s ease;
+  font-family: var(--font-nohemi), sans-serif;
+  position: relative;
+  overflow: hidden;
+}
+
+.formButton:hover {
+  filter: brightness(1.04);
+  transform: translateY(-1px);
+}
+
+.formSeal {
+  position: absolute;
+  right: 1rem;
+  bottom: 1rem;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 999px;
+  border: 1px solid rgba(219, 47, 33, 0.7);
+  color: rgba(219, 47, 33, 0.9);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+}
+
+@media (max-width: 768px) {
+  .formContainer {
+    max-width: min(92vw, 560px);
+    margin-top: 0;
+    margin-inline: auto;
+    padding: 1.65rem 1.2rem 1.35rem;
+    background: linear-gradient(
+      140deg,
+      rgba(10, 10, 10, 0.9),
+      rgba(12, 12, 12, 0.72)
+    );
+    border-radius: 10px;
+  }
+
+  .formHead {
+    margin-bottom: 0.45rem;
+    gap: 0.42rem;
+  }
+
+  .formTitle {
+    font-size: clamp(1.38rem, 7vw, 1.8rem);
+  }
+
+  .formSub {
+    font-size: 0.8rem;
+    max-width: none;
+  }
+
+  .formInput {
+    font-size: 0.96rem;
+    padding: 0.72rem 0.75rem;
+  }
+
+  .formButton {
+    min-height: 2.6rem;
+    font-size: 0.78rem;
+    padding: 0.78rem 1rem !important;
+  }
+
+  .formSeal {
+    width: 1.9rem;
+    height: 1.9rem;
+    font-size: 0.62rem;
   }
 }

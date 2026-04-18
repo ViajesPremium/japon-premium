@@ -110,3 +110,23 @@
   box-sizing: border-box;
   overflow-wrap: break-word;
 }
+
+/* ── Mobile: tap targets más generosos ── */
+@media (max-width: 768px) {
+  .trigger {
+    padding: 1.25rem 0;
+    font-size: clamp(0.92rem, 3.8vw, 1.05rem);
+    /* Evita que texto largo desborde */
+    white-space: normal;
+    text-align: left;
+    word-break: break-word;
+    overflow-wrap: break-word;
+    min-width: 0;
+  }
+
+  .contentInner {
+    font-size: 0.88rem;
+    line-height: 1.7;
+    padding-bottom: 1rem;
+  }
+}

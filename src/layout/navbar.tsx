@@ -4,6 +4,19 @@ import { gsap } from "gsap";
 import Image from "next/image";
 import "./StaggeredMenu.css";
 
+const clamp = (value: number, min: number, max: number) =>
+  Math.min(Math.max(value, min), max);
+
+const easeOutQuint = (t: number) => 1 - Math.pow(1 - t, 5);
+
+const REVEAL_SCROLL_OFFSETS: Record<
+  string,
+  { viewportHeightMultiplier: number; desktopOnly?: boolean }
+> = {
+  "#itinerarios": { viewportHeightMultiplier: 1 },
+  "#testimonios": { viewportHeightMultiplier: 1, desktopOnly: true },
+};
+
 export interface StaggeredMenuItem {
   label: string;
   ariaLabel: string;
@@ -414,6 +427,55 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
     }
   }, [playClose, animateIcon, animateColor, animateText, onMenuClose]);
 
+  const handleNavItemClick = useCallback(
+    (event: React.MouseEvent<HTMLAnchorElement>, item: StaggeredMenuItem) => {
+      const { link } = item;
+      closeMenu();
+
+      if (!link.startsWith("#")) {
+        return;
+      }
+
+      event.preventDefault();
+
+      const target = document.querySelector(link) as HTMLElement | null;
+      if (!target) {
+        return;
+      }
+
+      const offsetConfig = REVEAL_SCROLL_OFFSETS[link];
+      const isDesktop = window.matchMedia("(min-width: 768px)").matches;
+      const shouldApplyOffset =
+        !!offsetConfig && (!offsetConfig.desktopOnly || isDesktop);
+      const offsetPx = shouldApplyOffset
+        ? window.innerHeight * offsetConfig.viewportHeightMultiplier
+        : 0;
+
+      const rawY =
+        target.getBoundingClientRect().top + window.scrollY + offsetPx;
+      const maxY = Math.max(
+        document.documentElement.scrollHeight - window.innerHeight,
+        0,
+      );
+      const targetY = clamp(rawY, 0, maxY);
+
+      const performScroll = () => {
+        const lenis = window.__lenis;
+        if (lenis) {
+          lenis.scrollTo(targetY, { duration: 1.1, easing: easeOutQuint });
+        } else {
+          window.scrollTo({ top: targetY, behavior: "smooth" });
+        }
+        window.history.replaceState(null, "", link);
+      };
+
+      requestAnimationFrame(() => {
+        requestAnimationFrame(performScroll);
+      });
+    },
+    [closeMenu],
+  );
+
   React.useEffect(() => {
     if (!closeOnClickAway || !open) return;
 
@@ -526,6 +588,7 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
                     href={it.link}
                     aria-label={it.ariaLabel}
                     data-index={idx + 1}
+                    onClick={(event) => handleNavItemClick(event, it)}
                   >
                     <span className="sm-panel-itemLabel">{it.label}</span>
                   </a>

@@ -12,7 +12,7 @@
 
 .sectionBadge {
   position: absolute;
-  top: 2rem;
+  top: 2.5rem;
   left: 0;
   right: 0;
   z-index: 20;
@@ -54,7 +54,7 @@
   height: var(--petal-size);
   transform-origin: 50% 50%;
   filter: blur(var(--petal-blur))
-    drop-shadow(0 1px 2px rgba(220, 138, 171, 0.32));
+    drop-shadow(0 1px 2px rgba(220, 138, 171, 0.671));
   animation: sakura-sway var(--petal-sway-duration) ease-in-out infinite
     alternate;
 }
@@ -585,4 +585,3 @@
     gap: 1.5rem;
   }
 }
-

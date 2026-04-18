@@ -14,7 +14,7 @@ import Footer from "@/sections/footer/footer";
 export default function Home() {
   return (
     <main className="isolate">
-      <section className="relative z-[1] w-full overflow-hidden">
+      <section id="inicio" className="relative z-[1] w-full overflow-hidden">
         <Hero />
       </section>
 
@@ -22,23 +22,32 @@ export default function Home() {
         <Snapshot />
       </section>
 
-      <section className="relative z-[1] h-screen w-full overflow-hidden bg-white dark:bg-black md:z-[3]">
+      <section className="relative z-[1] h-auto min-h-[100svh] w-full overflow-hidden bg-white dark:bg-black md:z-[3] md:h-screen">
         <ImgSection />
       </section>
 
-      <section className="relative z-[3] w-full overflow-visible bg-white dark:bg-black">
+      <section
+        id="highlights"
+        className="relative z-[3] w-full overflow-visible bg-white dark:bg-black"
+      >
         <Highlights />
       </section>
 
-      <section className="relative z-[2] -mt-[100vh] w-full overflow-hidden bg-black">
+      <section
+        id="itinerarios"
+        className="relative z-[2] w-full overflow-hidden bg-black md:-mt-[100vh]"
+      >
         <Itinerary />
       </section>
 
-      <section className="relative z-[3] w-full bg-black">
+      <section id="includes" className="relative z-[3] w-full bg-black">
         <Includes />
       </section>
 
-      <section className="relative z-[2] mt-0 w-full overflow-hidden bg-white dark:bg-black md:-mt-[100vh]">
+      <section
+        id="testimonios"
+        className="relative z-[2] mt-0 w-full overflow-hidden bg-white dark:bg-black md:-mt-[100vh]"
+      >
         <Testimonials />
       </section>
 
@@ -46,11 +55,11 @@ export default function Home() {
         <InterludeSection />
       </section>
 
-      <section className="relative z-[2] w-full overflow-hidden">
+      <section id="faqs" className="relative z-[2] w-full overflow-hidden">
         <Faqs />
       </section>
 
-      <section className="relative z-[2] w-full overflow-hidden">
+      <section id="contacto" className="relative z-[2] w-full overflow-hidden">
         <CTAForm />
       </section>
 

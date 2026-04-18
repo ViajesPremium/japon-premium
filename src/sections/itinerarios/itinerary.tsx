@@ -100,10 +100,12 @@ export default function Itinerary() {
         (window as unknown as Record<string, LenisLike>).__lenis;
 
       const isMobileViewport = window.matchMedia("(max-width: 768px)").matches;
-      const SCRUB_SMOOTHNESS = isMobileViewport ? 0.08 : 0.12;
-      const SNAP_MIN_DURATION = isMobileViewport ? 0.02 : 0.03;
-      const SNAP_MAX_DURATION = isMobileViewport ? 0.07 : 0.09;
-      const SNAP_DELAY = isMobileViewport ? 0.12 : 0.25;
+      // Mobile: más damping (scrub más lento) para que swipes rápidos
+      // no salten varios itinerarios de golpe.
+      const SCRUB_SMOOTHNESS = isMobileViewport ? 0.28 : 0.12;
+      const SNAP_MIN_DURATION = isMobileViewport ? 0.28 : 0.03;
+      const SNAP_MAX_DURATION = isMobileViewport ? 0.52 : 0.09;
+      const SNAP_DELAY = isMobileViewport ? 0.05 : 0.25;
       const ENTRY_HOLD_VH = isMobileViewport ? 0.45 : 1;
       const REVEAL_PIN_VH = isMobileViewport ? 0.4 : 1;
       const TRANSITION_UNITS = total - 1;
@@ -114,17 +116,27 @@ export default function Itinerary() {
         (ENTRY_HOLD_VH + TRANSITION_UNITS) / TOTAL_UNITS;
 
       let lastDirection = 1;
+      // Captura el step ANTES de que el usuario empiece a deslizar.
+      // snapTo usa este valor para garantizar máximo un paso por gesto.
+      let touchStartStep = 0;
 
       // ── Estado inicial ─────────────────────────────────────────────────
       items.forEach((_, i) => {
         if (i === 0) {
           gsap.set(c1[i], { yPercent: 0, zIndex: 1, force3D: true });
+          // c2[0] siempre se inicializa — mobile o desktop
           gsap.set(c2[i], { yPercent: 0, zIndex: 1, force3D: true });
           gsap.set(info[i], { yPercent: 0, opacity: 1, force3D: true });
         } else {
           gsap.set(c1[i], { yPercent: 100, zIndex: i + 1, force3D: true });
-          gsap.set(c2[i], { yPercent: -100, zIndex: i + 1, force3D: true });
-          // Ajustado a 20% para que el deslizamiento del texto sea más sutil y premium
+          // Tanto en desktop como en mobile, c2 entra desde arriba (-100)
+          // mientras c1 entra desde abajo (100) → efecto split opuesto en ambos layouts.
+          // En mobile (columna): c1 sube al panel superior, c2 baja al panel inferior.
+          gsap.set(c2[i], {
+            yPercent: -100,
+            zIndex: i + 1,
+            force3D: true,
+          });
           gsap.set(info[i], { yPercent: 20, opacity: 0, force3D: true });
         }
       });
@@ -165,58 +177,60 @@ export default function Itinerary() {
           pinSpacing: true,
           scrub: SCRUB_SMOOTHNESS,
           snap: {
-            // Mobile: siempre avanza/retrocede por direccion de gesto
-            // sin exigir pasar el 50% del tramo.
             snapTo: (value: number) => {
               if (!isMobileViewport) return closestStop(value);
 
               const firstInterior = interiorStops[0];
               const lastInterior = interiorStops[interiorStops.length - 1];
-              const edgeThreshold = 0.02;
-              const restThreshold = 0.003;
 
-              // Evita iniciar antes de tiempo o quedarse pegado al final.
-              if (value < firstInterior - edgeThreshold) return 0;
-              if (value > lastInterior + edgeThreshold) return 1;
+              // Bordes: antes del primer itinerario o después del último
+              if (value < firstInterior - 0.02) return 0;
+              if (value > lastInterior + 0.02) return 1;
 
-              const currentIndex = closestInteriorStopIndex(value);
-              const currentStop = interiorStops[currentIndex];
+              // Mobile: usa el step capturado en touchstart (ANTES del gesto),
+              // no currentStepRef que ya se actualiza durante el scroll.
+              // Así un swipe rápido avanza exactamente UN itinerario siempre.
+              const step = touchStartStep;
+              const currentStop = interiorStops[step];
 
-              // Si ya estamos en reposo sobre un stop, no forzar otro salto.
-              if (Math.abs(value - currentStop) < restThreshold) {
-                return currentStop;
-              }
+              // Ya en reposo — no mover
+              if (Math.abs(value - currentStop) < 0.003) return currentStop;
 
               if (lastDirection > 0) {
-                if (currentIndex >= interiorStops.length - 1) return 1;
-                return interiorStops[currentIndex + 1];
+                // Avanzar exactamente un paso
+                const next = Math.min(step + 1, interiorStops.length - 1);
+                // Si ya estamos en el último interior, ir al final
+                if (next === interiorStops.length - 1 && value > lastInterior)
+                  return 1;
+                return interiorStops[next];
               }
 
               if (lastDirection < 0) {
-                if (currentIndex <= 0) return 0;
-                return interiorStops[currentIndex - 1];
+                // Retroceder exactamente un paso
+                const prev = Math.max(step - 1, 0);
+                if (prev === 0 && value < firstInterior) return 0;
+                return interiorStops[prev];
               }
 
               return currentStop;
             },
             duration: { min: SNAP_MIN_DURATION, max: SNAP_MAX_DURATION },
             delay: SNAP_DELAY,
-            ease: "power3.out",
+            ease: "power2.out",
             inertia: false,
           },
           onUpdate: (self) => {
-            if (self.direction !== 0) {
-              lastDirection = self.direction;
-            }
+            if (self.direction !== 0) lastDirection = self.direction;
 
-            const transitionStart = getTransitionStartProgress();
-            const transitionEnd = getTransitionEndProgress();
-            const transitionProgress = Math.min(
-              Math.max(self.progress - transitionStart, 0) /
-                (transitionEnd - transitionStart),
-              1,
+            // Fast-path: fuera del rango de transición no hay cambio de step
+            const p = self.progress;
+            if (p <= transitionStartProg || p >= transitionEndProg) return;
+
+            // Usa valores cacheados — sin recalcular en cada frame
+            const transitionProgress = (p - transitionStartProg) / transitionRange;
+            const step = Math.round(
+              Math.min(transitionProgress, 1) * (total - 1),
             );
-            const step = Math.round(transitionProgress * (total - 1));
             if (step !== currentStepRef.current) {
               currentStepRef.current = step;
               setActiveStep(step);
@@ -254,6 +268,25 @@ export default function Itinerary() {
         ENTRY_HOLD_VH + TRANSITION_UNITS,
       );
 
+      // Caché de rangos — se calculan una sola vez en lugar de en cada
+      // frame de scroll dentro de onUpdate (que puede dispararse a 60fps).
+      const transitionStartProg = getTransitionStartProgress();
+      const transitionEndProg = getTransitionEndProgress();
+      const transitionRange = transitionEndProg - transitionStartProg;
+
+      // ── Captura del step al inicio del gesto táctil ───────────────────
+      // Debe registrarse DESPUÉS del setup del timeline para que
+      // currentStepRef esté listo cuando touchstart dispare.
+      let cleanupTouch: (() => void) | null = null;
+      if (isMobileViewport && containerRef.current) {
+        const el = containerRef.current;
+        const onTouchStart = () => {
+          touchStartStep = currentStepRef.current;
+        };
+        el.addEventListener("touchstart", onTouchStart, { passive: true });
+        cleanupTouch = () => el.removeEventListener("touchstart", onTouchStart);
+      }
+
       // ── Botones de navegación ──────────────────────────────────────────
       navRef.current = {
         go: (dir: number) => {
@@ -281,6 +314,7 @@ export default function Itinerary() {
       };
 
       return () => {
+        cleanupTouch?.();
         masterTl.scrollTrigger?.kill();
         masterTl.kill();
         navRef.current = null;
@@ -370,11 +404,7 @@ export default function Itinerary() {
                     className={styles.descriptionBlur}
                     isActive={activeStep === i}
                   />
-                  <BlurredStagger
-                    text={item.ideal}
-                    className={styles.idealText}
-                    isActive={activeStep === i}
-                  />
+                  <p className={styles.idealText}>{item.ideal}</p>
                 </div>
               </div>
             ))}

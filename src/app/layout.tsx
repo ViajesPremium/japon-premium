@@ -6,6 +6,28 @@ import "./globals.css";
 import "../styles/variables.css";
 import Navbar from "@/layout/navbar";
 
+const NAV_ITEMS = [
+  { label: "Inicio", ariaLabel: "Ir a inicio", link: "#inicio" },
+  {
+    label: "Highlights",
+    ariaLabel: "Ir a la seccion de highlights",
+    link: "#highlights",
+  },
+  {
+    label: "Itinerarios",
+    ariaLabel: "Ir a la seccion de itinerarios",
+    link: "#itinerarios",
+  },
+  { label: "Includes", ariaLabel: "Ir a la seccion de includes", link: "#includes" },
+  {
+    label: "Testimonios",
+    ariaLabel: "Ir a la seccion de testimonios",
+    link: "#testimonios",
+  },
+  { label: "FAQ", ariaLabel: "Ir a la seccion de preguntas frecuentes", link: "#faqs" },
+  { label: "Contacto", ariaLabel: "Ir a la seccion de contacto", link: "#contacto" },
+] as const;
+
 const dmSans = DM_Sans({
   subsets: ["latin"],
   weight: ["900"],
@@ -116,7 +138,7 @@ export default function RootLayout({
             contrastBoost={1.5}
             disableOnTouch
           >
-            <Navbar />
+            <Navbar items={[...NAV_ITEMS]} />
             {children}
           </MagneticCursor>
         </SmoothScroll>

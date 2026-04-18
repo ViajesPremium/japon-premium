@@ -17,7 +17,7 @@ body {
   gap: 10px;
 }
 
-.button-nav{
+.button-nav {
   height: 37px !important;
   background-color: var(--secondary) !important;
 }
@@ -188,9 +188,7 @@ body {
   right: 0;
   width: min(100vw, 420px);
   height: 100dvh;
-  background: white;
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  background: var(--white);
   display: flex;
   flex-direction: column;
   padding: 6rem 1.25rem 2rem;
@@ -231,9 +229,9 @@ body {
 
 .sm-panel-item {
   position: relative;
-  color: #000;
+  color: var(--black);
   font-weight: 600;
-  font-size: clamp(2rem, 8vw, 3.5rem);
+  font-size: clamp(1.5rem, 7vw, 3rem);
   cursor: pointer;
   line-height: 0.95;
   letter-spacing: -0.04em;
@@ -324,7 +322,9 @@ body {
   opacity: 0.35;
 }
 
-.staggered-menu-panel .sm-socials-list:focus-within .sm-socials-link:not(:focus-visible) {
+.staggered-menu-panel
+  .sm-socials-list:focus-within
+  .sm-socials-link:not(:focus-visible) {
   opacity: 0.35;
 }
 
@@ -351,8 +351,7 @@ body {
   border-radius: var(--radius-sm);
 
   background: var(--black);
-  box-shadow:
-    0 4px 24px rgba(0, 0, 0, 0.28);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.28);
 
   cursor: pointer;
   font-family: var(--font-nohemi), sans-serif;
@@ -386,7 +385,6 @@ body {
 .sm-pill:hover .sm-pill-icon span {
   background: #fff;
 }
-
 
 /* Logo en la píldora */
 .sm-pill-logo {
@@ -436,7 +434,9 @@ body {
     display: none !important;
   }
 
-  .staggered-menu-wrapper[data-open] .sm-logo-img { filter: none; }
+  .staggered-menu-wrapper[data-open] .sm-logo-img {
+    filter: none;
+  }
 }
 
 @media (max-width: 640px) {

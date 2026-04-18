@@ -20,11 +20,9 @@
   min-height: 100vh;
   background-color: var(--bg);
   position: relative;
-  /* CAMBIO CLAVE: hidden para evitar scroll horizontal por las imágenes escaladas */
   overflow: hidden;
   isolation: isolate;
   display: grid;
-  /* izquierda (imagen futura) | contenido | derecha (imagen futura) */
   grid-template-columns: 1fr 2fr 1fr;
   align-items: stretch;
   box-sizing: border-box;
@@ -84,7 +82,7 @@
   flex-direction: column;
   justify-content: center;
   gap: 3rem;
-  padding: 6rem 2rem;
+  padding: 2.5rem;
   width: 100%;
   box-sizing: border-box;
 }
@@ -190,69 +188,151 @@
 }
 
 /* ── Responsivo Móvil ─────────────────────────────────────────────────── */
+/* Concepto: "cornisas teatrales"
+   Samurai esquina sup-izq + Geisha esquina sup-der enmarcan el título,
+   igual que en desktop pero adaptado al ancho móvil.
+   El acordeón fluye limpio debajo. */
 @media (max-width: 768px) {
   .section {
+    /* Volvemos a bloque normal para que la altura sea auto y no haya overflow */
+    display: block;
     grid-template-columns: 1fr;
     min-height: auto;
+    /* overflow:hidden garantizado para que los abs no generen scroll horizontal */
+    overflow: hidden;
   }
 
-  /* Rescatamos las imágenes como texturas de fondo elegantes */
-  .sideLeft,
-  .sideRight {
+  /* ── Cornisa izquierda (samurai) ───────────────── */
+  .sideLeft {
     display: block;
-    transform: none !important; /* Desactivamos el JS parallax en móvil para evitar brincos */
-    opacity: 0.12; /* Muy sutil para no estorbar la lectura */
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: auto;
+    width: 48%;
+    height: 54%;
+    min-height: 260px;
+    /* Apagamos el parallax JS en móvil */
+    transform: none !important;
+    background-size: auto 95%;
+    background-position: right top;
+    background-repeat: no-repeat;
+    opacity: 0.26;
     z-index: 0;
     pointer-events: none;
+    /* Desvanece hacia la derecha (centro) y hacia abajo */
+    mask-image: linear-gradient(to right, black 10%, transparent 82%);
+    -webkit-mask-image: linear-gradient(to right, black 10%, transparent 82%);
   }
 
-  .sideLeft {
-    top: 0;
-    left: auto;
-    right: -15%;
-    width: 85%;
-    height: 380px;
-    background-position: top center;
-    background-size: cover;
-    /* Efecto de desvanecimiento hacia abajo */
-    mask-image: linear-gradient(to bottom, black 25%, transparent 100%);
-    -webkit-mask-image: linear-gradient(to bottom, black 25%, transparent 100%);
+  /* Fade adicional hacia abajo usando el hijo interior */
+  .sideImgFadeLeft {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to bottom,
+      transparent 45%,
+      var(--bg, #fff) 100%
+    );
   }
 
+  /* ── Cornisa derecha (geisha) ──────────────────── */
   .sideRight {
-    top: auto;
-    bottom: 0;
-    left: -15%;
-    width: 85%;
-    height: 380px;
-    background-position: bottom center;
-    background-size: cover;
-    /* Efecto de desvanecimiento hacia arriba */
-    mask-image: linear-gradient(to top, black 25%, transparent 100%);
-    -webkit-mask-image: linear-gradient(to top, black 25%, transparent 100%);
+    display: block;
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: auto;
+    width: 48%;
+    height: 54%;
+    min-height: 260px;
+    transform: none !important;
+    background-size: auto 95%;
+    background-position: left top;
+    background-repeat: no-repeat;
+    opacity: 0.26;
+    z-index: 0;
+    pointer-events: none;
+    /* Desvanece hacia la izquierda (centro) y hacia abajo */
+    mask-image: linear-gradient(to left, black 10%, transparent 82%);
+    -webkit-mask-image: linear-gradient(to left, black 10%, transparent 82%);
   }
 
+  /* Fade adicional hacia abajo usando el hijo interior */
+  .sideImgFade {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to bottom,
+      transparent 45%,
+      var(--bg, #fff) 100%
+    );
+  }
+
+  /* ── Contenido central ─────────────────────────── */
   .center {
-    grid-column: 1;
-    padding: 4rem 1.25rem 4rem;
-    gap: 2.5rem;
     position: relative;
-    z-index: 2; /* Asegura que el texto y clics queden por encima de las fotos */
+    z-index: 2;
+    /* El padding-top empuja el contenido debajo del topCap + da espacio a las cornisas */
+    padding: 3.5rem 1.25rem 3.5rem;
+    gap: 2.2rem;
+    /* Ancho contenido: nunca desborda */
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
   }
 
+  /* Header centrado en mobile — más impacto visual */
   .header {
-    align-items: flex-start;
+    align-items: center;
+    text-align: center;
+  }
+
+  .titleGradient {
+    text-align: center !important;
   }
 
   .title {
-    font-size: clamp(2rem, 8vw, 2.4rem);
-    text-align: left;
-    line-height: 1.15;
+    font-size: clamp(1.85rem, 7.5vw, 2.4rem);
+    text-align: center;
+    line-height: 1.12;
   }
 
   .subtitle {
-    font-size: 1rem;
-    line-height: 1.6;
+    font-size: 0.88rem;
+    line-height: 1.65;
+    text-align: center;
     max-width: 100%;
+  }
+
+  .contactHint {
+    align-items: center;
+  }
+
+  /* Acordeón: tap targets más generosos en touch */
+  .accordionWrap {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    overflow: hidden;
+  }
+}
+
+/* ── Móvil pequeño 430px ────────────────────────────────────────────── */
+@media (max-width: 430px) {
+  .sideLeft,
+  .sideRight {
+    width: 50%;
+    height: 48%;
+    min-height: 220px;
+    opacity: 0.22;
+  }
+
+  .center {
+    padding: 3rem 1rem 3rem;
+  }
+
+  .title {
+    font-size: clamp(1.7rem, 7vw, 2.1rem);
   }
 }

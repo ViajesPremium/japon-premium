@@ -4,51 +4,23 @@ import { useRef } from "react";
 import Image from "next/image";
 import {
   motion,
-  useAnimationFrame,
-  useMotionValue,
   useScroll,
   useSpring,
   useTransform,
-  useVelocity,
+  MotionValue,
 } from "motion/react";
 import styles from "./interlude.module.css";
 
-const wrap = (min: number, max: number, value: number) => {
-  const rangeSize = max - min;
-  return ((((value - min) % rangeSize) + rangeSize) % rangeSize) + min;
-};
-
-type ParallaxRowProps = {
+/* ── Fila de texto con parallax de scroll ── */
+type ScrollRowProps = {
   text: string;
-  baseVelocity: number;
+  fromX: string;
+  toX: string;
+  smooth: MotionValue<number>;
 };
 
-function ParallaxRow({ text, baseVelocity }: ParallaxRowProps) {
-  const baseX = useMotionValue(0);
-  const { scrollY } = useScroll();
-  const scrollVelocity = useVelocity(scrollY);
-  const smoothVelocity = useSpring(scrollVelocity, {
-    damping: 50,
-    stiffness: 400,
-  });
-  const velocityFactor = useTransform(smoothVelocity, [0, 1000], [0, 5], {
-    clamp: false,
-  });
-
-  const x = useTransform(baseX, (value) => `${wrap(-55, -15, value)}%`);
-  const directionFactor = useRef<number>(1);
-
-  useAnimationFrame((_, delta) => {
-    let moveBy = directionFactor.current * baseVelocity * (delta / 1000);
-    const factor = velocityFactor.get();
-
-    if (factor < 0) directionFactor.current = -1;
-    if (factor > 0) directionFactor.current = 1;
-
-    moveBy += directionFactor.current * moveBy * factor;
-    baseX.set(baseX.get() + moveBy);
-  });
-
+function ScrollRow({ text, fromX, toX, smooth }: ScrollRowProps) {
+  const x = useTransform(smooth, [0, 1], [fromX, toX]);
   return (
     <div className={styles.row}>
       <motion.div style={{ x }} className={styles.track}>
@@ -61,30 +33,65 @@ function ParallaxRow({ text, baseVelocity }: ParallaxRowProps) {
   );
 }
 
+/* ── Sección principal ── */
 export default function InterludeSection() {
+  const sectionRef = useRef<HTMLElement>(null);
+
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start end", "end start"],
+  });
+
+  const smooth = useSpring(scrollYProgress, { damping: 30, stiffness: 120 });
+
   return (
-    <section className={styles.interlude}>
+    <section className={styles.interlude} ref={sectionRef}>
+      {/* ── Texto de fondo — estático, solo se mueve con scroll ── */}
       <div className={styles.textLayer} aria-hidden="true">
-        <ParallaxRow text="japon premium experience" baseVelocity={-5} />
-        <ParallaxRow text="curaduria atencion precision" baseVelocity={5} />
-        <ParallaxRow text="momentos que si importan" baseVelocity={-3} />
+        <ScrollRow
+          text="japon premium experience"
+          fromX="0%"
+          toX="-18%"
+          smooth={smooth}
+        />
+        <ScrollRow
+          text="curaduria atencion precision"
+          fromX="-18%"
+          toX="0%"
+          smooth={smooth}
+        />
+        <ScrollRow
+          text="momentos que si importan"
+          fromX="-4%"
+          toX="-20%"
+          smooth={smooth}
+        />
       </div>
 
+      {/* ── Card central ── */}
       <article className={styles.card}>
-        <div className={styles.photoWrap}>
+        {/* Imagen a todo el card con pequeño padding */}
+        <div className={styles.imageWrap}>
           <Image
-            src="/images/geisha-perfil.webp"
+            src="/images/karina-img.webp"
             alt="Asesora de viaje Japon Premium"
             fill
             className={styles.photo}
-            sizes="(max-width: 768px) 90px, 120px"
+            sizes="(max-width: 768px) 92vw, 420px"
           />
+          <div className={styles.imageOverlay} />
         </div>
 
+        {/* Texto superpuesto */}
         <div className={styles.copy}>
-          <p className={styles.role}>Luxury Travel Advisor</p>
-          <h3 className={styles.title}>Aiko Nakamura</h3>
-          <p className={styles.subtitle}>Especialista en experiencias privadas en Japon</p>
+          <p className={styles.role}>Directora Comercial</p>
+          <h3 className={styles.title}>Karina Sánchez</h3>
+          <p className={styles.subtitle}>
+            Nuestra misión es diseñar experiencias personalizadas para que
+            conectes emocionalmente con tu viaje. Creemos que viajar va más allá
+            de acumular destinos; se trata de crear vínculos reales con cada
+            lugar.
+          </p>
         </div>
       </article>
     </section>

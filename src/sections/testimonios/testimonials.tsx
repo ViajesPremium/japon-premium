@@ -353,7 +353,11 @@ export default function Testimonials({ googleRating }: TestimonialsProps) {
   return (
     <section ref={sectionRef} className={styles.testimonials}>
       <div className={styles.sectionBadge}>
-        <Badge text="Testimonios" variant="dark" align="center" />
+        <Badge
+          text="La voz del viajero premium"
+          variant="dark"
+          align="center"
+        />
       </div>
 
       <div className={styles.sakuraLayer} aria-hidden="true">
@@ -485,12 +489,11 @@ export default function Testimonials({ googleRating }: TestimonialsProps) {
               <GoogleBadge data={ratingData} />
             </div>
           </div>
-
         </div>
       </div>
 
       <div className={styles.bottomRow}>
-        <Button variant="primary">Solicitar mi propuesta</Button>
+        <Button variant="primary">Solicita tu propuesta</Button>
       </div>
     </section>
   );

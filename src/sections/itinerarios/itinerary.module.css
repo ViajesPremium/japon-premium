@@ -17,6 +17,10 @@
   position: relative;
   overflow: hidden;
   flex-shrink: 0;
+  /* Fuerza capa de composición propia: garantiza que overflow:hidden
+     clipee correctamente los transforms de GSAP en iOS Safari */
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
 }
 
 .imageFrame {
@@ -280,8 +284,9 @@
   cursor: not-allowed;
 }
 
-/* ── Responsividad ────────────────────────────────────────────────────── */
+/* ── Responsividad mobile ─────────────────────────────────────────────── */
 @media (max-width: 768px) {
+  /* Layout en columna: c1 arriba (50%), c2 abajo (50%) */
   .container {
     flex-direction: column;
   }
@@ -292,43 +297,124 @@
     height: 50%;
   }
 
+  /* En mobile: quitar will-change de todos los frames —
+     6 capas GPU permanentes en dispositivos con poca RAM causan jank.
+     Solo el primer hijo de cada panel (el visible al inicio) se pre-promueve;
+     los demás se promueven bajo demanda cuando GSAP aplica el transform. */
+  .imageFrame {
+    will-change: auto;
+  }
+
+  .imageFrame:first-child {
+    will-change: transform;
+  }
+
+  /* ── Card: centrada, altura más generosa en mobile ── */
   .premiumCard {
-    width: 90%;
-    height: auto;
-    min-height: 380px;
+    width: 92%;
+    max-width: 460px;
+    /* Altura fija para que flex-grow del infoContainer funcione bien con GSAP */
+    height: clamp(300px, 54svh, 360px);
   }
 
   .contentWrapper {
-    padding: 2rem;
+    padding: 1.5rem 1.4rem 1.2rem;
   }
 
-  .infoContainer {
-    min-height: 180px; /* Asegura espacio para los textos en móvil */
-    margin-bottom: 2rem;
+  /* Eyebrow: truncar texto largo para que no desborde */
+  .eyebrow {
+    font-size: 0.56rem;
+    margin-bottom: 0.55rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: calc(100% - 2rem); /* deja espacio al contador */
   }
 
   .titleText {
-    font-size: clamp(2rem, 8vw, 2.8rem);
+    font-size: clamp(1.6rem, 6.5vw, 2rem);
   }
 
   .body {
+    margin-top: 0.75rem;
     max-width: 100%;
   }
 
+  .descriptionBlur {
+    font-size: clamp(2rem, 3vw, 0.88rem) !important;
+    padding-bottom: 0.6rem;
+    line-height: 1.5 !important;
+  }
+
+  .idealText {
+    font-size: clamp(0.72rem, 2.8vw, 0.84rem) !important;
+    line-height: 1.45 !important;
+    padding: 4px 8px;
+  }
+
+  /* infoContainer: flex-grow ya le da todo el espacio sobrante;
+     min-height como seguro para que los items absolutos tengan contenedor */
+  .infoContainer {
+    min-height: 190px;
+    margin-bottom: 0.75rem;
+  }
+
+  /* Botones: apilados en mobile para que no se corten */
+  .buttons {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .ctaButton,
+  .ctaButton2 {
+    width: 100%;
+    justify-content: center;
+  }
+
+  /* Contador top-right */
+  .counterGroup {
+    top: 12px;
+    right: 12px;
+  }
+
+  .current {
+    font-size: 1rem;
+    padding: 3px;
+  }
+
   .controls {
-    gap: 1.5rem;
+    gap: 1rem;
+  }
+}
+
+/* ── Teléfonos pequeños ≤430px ─────────────────────────────────────── */
+@media (max-width: 430px) {
+  .premiumCard {
+    width: 94%;
+    height: clamp(320px, 62svh, 420px);
   }
 
-  .price {
-    bottom: 16px;
-    padding-left: 120px;
+  .contentWrapper {
+    padding: 1.2rem 1.1rem 1rem;
   }
 
-  .price p {
-    font-size: 0.8rem;
+  .eyebrow {
+    font-size: 0.52rem;
   }
 
-  .priceBase {
-    font-size: 0.68rem;
+  .titleText {
+    font-size: clamp(1.4rem, 6vw, 1.75rem);
+  }
+
+  .infoContainer {
+    min-height: 170px;
+  }
+
+  .descriptionBlur {
+    font-size: 0.9rem !important;
+  }
+
+  .idealText {
+    font-size: 0.9rem !important;
   }
 }

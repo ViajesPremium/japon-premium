@@ -11,8 +11,7 @@
   width: 100%;
   max-width: var(--site-max);
   margin-inline: auto;
-  padding: clamp(2rem, 3.2vw, 3.2rem) var(--site-px) clamp(1.5rem, 3vw, 2.5rem);
-  padding-top: 1.5rem;
+  padding-top: 2.5rem;
   display: flex;
   flex-direction: column;
 }
