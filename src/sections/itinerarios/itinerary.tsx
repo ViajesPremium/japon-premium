@@ -49,7 +49,6 @@ const items = [
       "Un recorrido por el Japón más espiritual y profundo: templos milenarios, rutas sagradas, ryokans, onsen y experiencias que transforman el viaje.",
     ideal:
       "Ideal para parejas, familias, lunas de miel y viajeros que buscan desconexión profunda.",
-    price: "Desde $6,172 USD",
     image1: "/images/hotel-jp.webp",
     image2: "/images/tren-jp.webp",
   },
@@ -61,19 +60,17 @@ const items = [
       "Un recorrido por el Japón más vibrante y fantástico: anime, parques temáticos, tecnología, neón, tradición y experiencias que transforman el viaje.",
     ideal:
       "Ideal para familias, amigos, parejas jóvenes, fans del anime, manga y la tecnología.",
-    price: "Desde $6,478 USD",
     image1: "/images/kyoto.webp",
     image2: "/images/turismo-1.webp",
   },
   {
     id: 3,
-    day: "Aventura",
-    title: "La montaña sagrada",
+    day: "15 DÍAS · SAMURÁIS · GEISHAS · SUMO · ALPES JAPONESES",
+    title: "El Camino del Shōgun",
     description:
-      "Desayuno kaiseki en el hotel. Mercado Tsukiji para almorzar y cena omakase en restaurante con estrella Michelin.",
+      "Un recorrido por el Japón más auténtico y menos transitado: alpes japoneses, templos zen, ryokans y santuarios sagrados que transforman el viaje.",
     ideal:
-      "Ideal para quienes quieren naturaleza activa, rutas panoramicas y experiencias fuera de lo convencional.",
-    price: "Desde $2,790 USD",
+      "Ideal para parejas aventureras, viajeros con mirada cultural y quienes prefieren el Japón que pocos conocen.",
     image1: "/images/buffet-jp.webp",
     image2: "/images/turismo-2.webp",
   },
@@ -394,20 +391,11 @@ export default function Itinerary() {
               </Button>
             </div>
 
-            <div className={styles.price}>
-              <p>
-                {items[activeStep].price}{" "}
-                <span className={styles.priceBase}>por persona base doble</span>
-              </p>
-            </div>
-
             <div className={styles.controls}>
               <div className={styles.counterGroup}>
                 <span className={styles.current}>
                   {toRoman(activeStep + 1)}
                 </span>
-                <div className={styles.divider} />
-                <span className={styles.total}>{toRoman(items.length)}</span>
               </div>
             </div>
           </div>

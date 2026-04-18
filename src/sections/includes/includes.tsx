@@ -56,7 +56,7 @@ const INCLUDE_ITEMS: IncludeItem[] = [
     label: "V",
     title: "Acompañamiento en cada etapa",
     description:
-      "Atención en español antes y durante el viaje para acompañarle con claridad y resolver cada detalle con oportunidad.",
+      "Atención en español antes y durante el viaje para acompañarle con claridad y resolver cada detalle.",
     image: "/images/turismo-2.webp",
   },
 ];

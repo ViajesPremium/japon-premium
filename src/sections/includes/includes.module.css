@@ -150,7 +150,7 @@
   text-transform: uppercase;
   color: var(--secondary);
   border-bottom: 1px solid var(--secondary);
-  padding: 0.1rem 0.1rem;
+  padding: 0.1rem 0.2rem;
 }
 
 .cardTitle {

@@ -25,40 +25,40 @@ const TESTIMONIALS = [
   {
     id: 1,
     quote:
-      "Una experiencia que redefinio completamente lo que significa viajar. Cada detalle, desde los ryokanes hasta los trenes bala, fue seleccionado con un gusto impecable.",
-    name: "Ana Garcia",
-    location: "Ciudad de Mexico",
+      "Japón nos parecía un viaje complejo, pero aquí todo se sintió claro, cuidado y bien acompañado desde el principio.",
+    name: "Mariana Gutiérrez",
+    location: "Ciudad de México",
     avatar: "https://i.pravatar.cc/600?img=47",
   },
   {
     id: 2,
     quote:
-      "Viaje solo por primera vez y no podria haber elegido mejor compania. La atencion, la logistica y la curaduria de experiencias gastronomicas fue excepcional.",
-    name: "Carlos Mendoza",
+      "Se nota cuando un viaje está diseñado con criterio. Hubo orden, atención y experiencias que sí valieron la inversión.",
+    name: "Rodrigo Treviño",
     location: "Guadalajara",
     avatar: "https://i.pravatar.cc/600?img=33",
   },
   {
     id: 3,
     quote:
-      "Lo que mas me sorprendio fue la profundidad cultural del itinerario. No fue solo turismo, fue una inmersion real en el alma de Japon.",
-    name: "Sofia Reyes",
+      "Viajamos en familia y lo que más agradecimos fue la tranquilidad de sentir que todo estaba bien resuelto.",
+    name: "Paola Mendoza",
     location: "Monterrey",
     avatar: "https://i.pravatar.cc/600?img=49",
   },
   {
     id: 4,
     quote:
-      "El servicio fue tan discreto y preciso que simplemente flui por Japon sin preocupaciones. Los hoteles boutique, las cenas omakase, los jardines al amanecer.",
-    name: "Miguel Angel Torres",
-    location: "Ciudad de Mexico",
+      "No fue solo un gran viaje, fue una experiencia mejor pensada, mejor cuidada y a la altura de lo que buscábamos.",
+    name: "Ernesto Ramírez",
+    location: "Ciudad de México",
     avatar: "https://i.pravatar.cc/600?img=60",
   },
   {
     id: 5,
     quote:
-      "Celebre mis 40 años en Kyoto gracias a Japon Premium. Organizaron una cena privada en un ryokan centenario que nunca olvidare.",
-    name: "Valentina Cruz",
+      "La diferencia estuvo en los detalles: tiempos bien organizados, atención cercana y una experiencia realmente fluida.",
+    name: "Fernanda Lozano",
     location: "Puebla",
     avatar: "https://i.pravatar.cc/600?img=44",
   },
@@ -486,10 +486,11 @@ export default function Testimonials({ googleRating }: TestimonialsProps) {
             </div>
           </div>
 
-          <div className={styles.bottomRow}>
-            <Button variant="primary">Planea tu viaje</Button>
-          </div>
         </div>
+      </div>
+
+      <div className={styles.bottomRow}>
+        <Button variant="primary">Solicitar mi propuesta</Button>
       </div>
     </section>
   );
